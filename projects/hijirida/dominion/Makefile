@@ -1,7 +1,7 @@
 CFLAGS = -Wall -fpic -coverage -lm
 
 all: playdom player testDrawCard testBuyCard badTestDrawCard
-  $(info ******** testing all *******)
+	$(info ******** testing all *******)
   
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -9,42 +9,42 @@ rngs.o: rngs.h rngs.c
   
 dominion.o: dominion.h dominion.c rngs.o
 	gcc -c dominion.c -g  $(CFLAGS)
-  $(info ******** compiling dominion.o *******)
+	$(info ******** compiling dominion.o *******)
 
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
-  $(info ******** compiling playdom *******)
+	$(info ******** compiling playdom *******)
   
 testDrawCard: testDrawCard.c dominion.o rngs.o
 	gcc -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
-  $(info ******** compiling testDrawCard *******)
+	$(info ******** compiling testDrawCard *******)
   
 badTestDrawCard: badTestDrawCard.c dominion.o rngs.o
 	gcc -o badTestDrawCard -g  badTestDrawCard.c dominion.o rngs.o $(CFLAGS)
-  $(info ******** compiling badTestDrawCard *******)
+	$(info ******** compiling badTestDrawCard *******)
   
 testBuyCard: testDrawCard.c dominion.o rngs.o
 	gcc -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
-  $(info ******** compiling testBuyCard *******)
+	$(info ******** compiling testBuyCard *******)
   
 testAll: dominion.o testSuite.c
 	gcc -o testSuite testSuite.c -g  dominion.o rngs.o $(CFLAGS)
-  $(info ******** compiling testAll *******)
+	$(info ******** compiling testAll *******)
 
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
-  $(info ******** compiling interface.o *******)
+	$(info ******** compiling interface.o *******)
   
 runtests: testDrawCard 
 	./testDrawCard &> unittestresult.out
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
-  $(info ******** compiling runtests *******)
+	$(info ******** compiling runtests *******)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
-  $(info ******** compiling player *******)
+	$(info ******** compiling player *******)
 
 clean:
 	#rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
-  $(info ******** clean is off now *******)
+	$(info ******** clean is off now *******)

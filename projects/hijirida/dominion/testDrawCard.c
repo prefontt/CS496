@@ -45,7 +45,7 @@ int checkDrawCard(int p, struct gameState *post) {
 
 int main () {
 
-  int i, n, r, p, deckCount, discardCount, handCount;
+  int i, n, r, p, deckCount, discardCount, handCount; // hijiridd: r is used despite compiler warrning
 
   int k[10] = {adventurer, council_room, feast, gardens, mine,
 	       remodel, smithy, village, baron, great_hall};
