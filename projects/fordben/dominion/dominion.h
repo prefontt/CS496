@@ -134,6 +134,7 @@ int playAdventurer(int currentPlayer, struct gameState *state);
 int playSmithy(int currentPlayer, struct gameState *state, int handPos);
 int playGreatHall(int currentPlayer, struct gameState *state, int handPos);
 int playCutPurse(int currentPlayer, struct gameState *state,int handPos);
+int playTreasureMap(int currentPlayer, struct gameState *state,int handPos);
 //int playVillage(struct gameState *state, int handPos);
 //int playFeast(struct gameState *state, int choice1);
 //int playCouncil_Room(struct gameState *state, int handPos);
