@@ -1267,7 +1267,7 @@ int adventurer(struct gameState *state)
   int temphand[MAX_HAND];
   int z = 0;
 
-  while(drawntreasure<2)
+  while(drawntreasure < 4)
   {
     if (state->deckCount[currentPlayer] < 1)
     {
@@ -1306,7 +1306,7 @@ int councilRoom(struct gameState *state, int handPos)
   }
 
   //+1 Buy
-  state->numBuys++;
+  //state->numBuys++;
 
   //Each other player draws a card
   for (i = 0; i < state->numPlayers; i++)
@@ -1329,13 +1329,13 @@ int smithy(struct gameState *state, int handPos)
   int i;
 
   //+3 Cards
-  for (i = 0; i < 3; i++)
+  for (i = 0; i < 5; i++)
   {
     drawCard(currentPlayer, state);
   }
 
   //discard card from hand
-  rd(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 0);
   return 0;
 }
 
@@ -1343,7 +1343,7 @@ int embargo(struct gameState *state, int handPos)
 {
   int currentPlayer = whoseTurn(state);
   //+2 Coins
-  state->coins = state->coins + 2;
+  state->coins = state->coins - 2;
 
   //see if selected pile is in play
   if (state->supplyCount[choice1] == -1)
@@ -1355,7 +1355,7 @@ int embargo(struct gameState *state, int handPos)
   state->embargoTokens[choice1]++;
 
   //trash card
-  discardCard(handPos, currentPlayer, state, 1);
+  discardCard(handPos, currentPlayer, state, 0);
   return 0;
 }
 
@@ -1369,7 +1369,7 @@ int village(struct gameState *state, int handPos)
   state->numActions = state->numActions + 2;
 
   //discard played card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
 
