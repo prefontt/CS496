@@ -10,7 +10,7 @@
 
 #define DEBUG 0
 
-
+//Testing commit
 
 /* http://dominion.diehrstraits.com has card texts */
 /* http://dominion.isotropic.org has other stuff */
@@ -130,11 +130,14 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
-int playAdventurer(struct gameState *state);
-int playSmithy(struct gameState *state, int handPos);
-int playVillage(struct gameState *state, int handPos);
-int playFeast(struct gameState *state, int choice1);
-int playCouncil_Room(struct gameState *state, int handPos);
+int playAdventurer(int currentPlayer, struct gameState *state);
+int playSmithy(int currentPlayer, struct gameState *state, int handPos);
+int playGreatHall(int currentPlayer, struct gameState *state, int handPos);
+int playCutPurse(int currentPlayer, struct gameState *state,int handPos);
+int playTreasureMap(int currentPlayer, struct gameState *state,int handPos);
+//int playVillage(struct gameState *state, int handPos);
+//int playFeast(struct gameState *state, int choice1);
+//int playCouncil_Room(struct gameState *state, int handPos);
 
 
 #endif

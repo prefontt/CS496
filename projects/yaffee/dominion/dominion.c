@@ -1172,8 +1172,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 }
 }
 
-//new adventurer function
-int adventureCard(struct gameState *state, int drawntreasure, int currentPlayer, int *temphand, int cardDrawn, int z) {
+//new functions
+int adventurerCard(struct gameState *state, int drawntreasure, int currentPlayer, int *temphand, int cardDrawn, int z) {
   while(drawntreasure<2) {
     if (state->deckCount[currentPlayer] <= 1){
       shuffle(currentPlayer, state);
@@ -1197,7 +1197,8 @@ int adventureCard(struct gameState *state, int drawntreasure, int currentPlayer,
 
 int smithyCard(struct gameState *state, int currentPlayer, int handPos) {
   //draw cards
-  for(int i = 1; i < 3; i++) {
+  int i;
+  for(i = 1; i < 3; i++) {
     drawCard(currentPlayer, state);
   }
   //discard smithy card
@@ -1215,7 +1216,7 @@ int embargoCard(struct gameState *state, int currentPlayer, int handPos, int cho
 }
 
 int outpostCard(struct gameState *state, int currentPlayer, int handPos) {
-  state->outpostPlayer++;
+  state->outpostPlayed++;
   discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
