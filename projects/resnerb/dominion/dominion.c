@@ -1,3 +1,5 @@
+/* Bryan Resner - CS362 Winter 2017 - Refactored Code */
+
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
