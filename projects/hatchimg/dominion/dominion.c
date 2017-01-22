@@ -7,11 +7,11 @@
 
 //new function prototypes
 
-int play_adventurer(gameState* state);
-int play_smithy(gameState* state, int handPos);
-int play_great_hall(gameState* state, int handPos);
-int play_village(gameState* state, int handPos);
-int play_outpost(gameState* state, int handPos);
+int play_adventurer(struct gameState* state);
+int play_smithy(struct gameState* state, int handPos);
+int play_great_hall(struct gameState* state, int handPos);
+int play_village(struct gameState* state, int handPos);
+int play_outpost(struct gameState* state, int handPos);
 
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
@@ -819,12 +819,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       return 0;
 		
-    case play_smithy:
-    	smithy(state, handPos);
+    case smithy:
+    	play_smithy(state, handPos);
           return 0;
 		
-    case play_village:
-    	village(state, handPos);
+    case village:
+    	play_village(state, handPos);
            return 0;
 		
     case baron:
