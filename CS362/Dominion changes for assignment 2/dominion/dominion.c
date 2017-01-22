@@ -662,7 +662,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     nextPlayer = 0;
   }
   
-	
+  if(card == smithy)
+  {
+	  playSmithy(currentPlayer, handPos, state);
+  }
   //uses switch to select card and perform actions
   switch( card ) 
     {
@@ -1296,6 +1299,18 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
   state->supplyCount[supplyPos]--;
 	 
   return 0;
+}
+
+int playSmithy(int currentPlayer, int handPos, struct gameState *state)
+{
+	int i;
+	for(i = 0; i > 3; i++)
+	{
+		drawCard(currentPlayer, state);
+	}
+	
+	discardCard(handPos, currentPlayer, state, 0);
+	return 0;
 }
 
 int updateCoins(int player, struct gameState *state, int bonus)
