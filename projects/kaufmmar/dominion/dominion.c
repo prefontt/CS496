@@ -668,7 +668,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer: 
-        return playAdventurer (temphand,drawntreasure,cardDrawn, int z, struct gameState *state, int currentPlayer) ;
+        return playAdventurer (temphand,drawntreasure,cardDrawn, z, state, currentPlayer) ;
      
 			
     case council_room:
@@ -1234,7 +1234,7 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 //Adventurer
 
-int playAdventurer(int *temphand, int drawntreasure, int cardDrawn,z, state,currentPlayer); 
+int playAdventurer(int *temphand, int drawntreasure, int cardDrawn, int z, struct gameState *state, int currentPlayer) 
 { 
     
     while(drawntreasure<3){

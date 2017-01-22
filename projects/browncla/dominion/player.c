@@ -106,17 +106,16 @@ int main(int argc, char* argv[]) {
 			for(playerNum = 0; playerNum < game->numPlayers; playerNum++){
 				if(players[playerNum] == WINNER) printf("Player %d\n", playerNum);
 			}
-		for(playerNum = 0; playerNum < game->numPlayers; playerNum++){
-				printHand(playerNum, game);
-				printPlayed(playerNum, game);
-				printDiscard(playerNum, game);
-				printDeck(playerNum, game);
-			}
-			
-			break; //Exit out of the game/while loop
-		}         
+			for(playerNum = 0; playerNum < game->numPlayers; playerNum++){
+					printHand(playerNum, game);
+					printPlayed(playerNum, game);
+					printDiscard(playerNum, game);
+					printDeck(playerNum, game);
+				}
+				
+				break; //Exit out of the game/while loop
+			}         
 		
-
 		if(isBot[currentPlayer] == TRUE) {
 				executeBotTurn(currentPlayer, &turnNum, game);
 				continue;

@@ -816,15 +816,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
           return 0;
 		
     case village:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+2 Actions
-      state->numActions = state->numActions + 2;
-			
-      //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+    	village(state, handPos);
+           return 0;
 		
     case baron:
       state->numBuys++;//Increase buys by 1!
@@ -878,15 +871,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+    	
+	great_hall(state, handPos);
+           return 0;
 		
     case minion:
       //+1 action
@@ -1132,12 +1119,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case outpost:
-      //set outpost flag
-      state->outpostPlayed++;
-			
-      //discard card
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+    	outpost(state, handPos);
+
+          return 0;
 		
     case salvager:
       //+1 buy
@@ -1304,13 +1288,9 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
-int adventurer(struct gamestate* state){
+int adventurer(struct gameState* state){
 
-  int index;
   int currentPlayer = whoseTurn(state);
-  int nextPlayer = currentPlayer + 1;
-
-  int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
   int cardDrawn;
@@ -1341,7 +1321,7 @@ int adventurer(struct gamestate* state){
       return 0;
 }
 
-int smithy(struct gamestate* state, int handPos){
+int smithy(struct gameState* state, int handPos){
  	int i;
 	int currentPlayer = whoseTurn(state);
  //+3 Cards
@@ -1355,5 +1335,51 @@ int smithy(struct gamestate* state, int handPos){
 
       return 0;
  }
+
+int great_hall(struct gameState* state, int handPos){
+ 
+ 	int currentPlayer = whoseTurn(state);
+
+ //+1 Card
+      drawCard(currentPlayer, state);
+			
+      //+1 Actions
+      state->numActions++;
+			
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+
+      return 0;
+}
+
+int village(struct gameState* state, int handPos){
+	
+	int currentPlayer = whoseTurn(state);
+
+	//+1 Card
+      drawCard(currentPlayer, state);
+			
+      //+2 Actions
+      state->numActions = state->numActions + 2;
+			
+      //discard played card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+
+	return 0;
+}
+
+int outpost(struct gameState* state, int handPos){
+  
+ 	int currentPlayer = whoseTurn(state);
+
+  //set outpost flag
+      state->outpostPlayed++;
+			
+      //discard card
+      discardCard(handPos, currentPlayer, state, 0);
+	
+	return 0;
+}
+
 //end of dominion.c
 
