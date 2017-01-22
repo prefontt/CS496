@@ -1,7 +1,9 @@
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include <assert.h>
 #include "rngs.h"
 
@@ -37,6 +39,8 @@ int checkDrawCard(int p, struct gameState *post) {
   assert (r == 0);
 
   assert(memcmp(&pre, post, sizeof(struct gameState)) == 0);
+  
+  return 0; // hijiridd: added to turn off warning RE return value expected 
 }
 
 int main () {
