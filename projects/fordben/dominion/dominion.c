@@ -1125,34 +1125,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case treasure_map:
-      //search hand for another treasure_map
-      index = -1;
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-	{
-	  if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
-	    {
-	      index = i;
-	      break;
-	    }
-	}
-      if (index > -1)
-	{
-	  //trash both treasure cards
-	  discardCard(handPos, currentPlayer, state, 1);
-	  discardCard(index, currentPlayer, state, 1);
-
-	  //gain 4 Gold cards
-	  for (i = 0; i < 4; i++)
-	    {
-	      gainCard(gold, state, 1, currentPlayer);
-	    }
-				
-	  //return success
-	  return 1;
-	}
-			
-      //no second treasure_map found in hand
-      return -1;
+		playTreasureMap(currentPlayer,state,handPos);
     }
 	
   return -1;
@@ -1269,9 +1242,6 @@ int playSmithy(int currentPlayer, struct gameState *state, int handPos){
 	{
 	  drawCard(currentPlayer, state);
 	}
-			
-     //discard card from hand
-     discardCard(handPos, currentPlayer, state, 0);
       
 	return 0;
 }
@@ -1279,7 +1249,7 @@ int playSmithy(int currentPlayer, struct gameState *state, int handPos){
 int playAdventurer(int currentPlayer, struct gameState *state){
 	int z=0;
 	int cardDrawn;
-	int drawntreasure=0;
+	int drawntreasure;
 	int temphand[MAX_HAND];// moved above the if statement
 	while(drawntreasure<2){
 	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
@@ -1287,7 +1257,7 @@ int playAdventurer(int currentPlayer, struct gameState *state){
 	}
 	drawCard(currentPlayer, state);
 	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	if (cardDrawn == copper || cardDrawn == silver)
 	  drawntreasure++;
 	else{
 	  temphand[z]=cardDrawn;
@@ -1304,7 +1274,7 @@ int playAdventurer(int currentPlayer, struct gameState *state){
 }
 
 int playGreatHall(int currentPlayer, struct gameState *state, int handPos){
-	      //+1 Card
+	  //+1 Card
       drawCard(currentPlayer, state);
 			
       //+1 Actions
@@ -1345,9 +1315,42 @@ int playCutPurse(int currentPlayer, struct gameState *state,int handPos){
 	}				
 
       //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);			
+      discardCard(handPos, currentPlayer, state, 1);			
 
       return 0;
 }
+
+int playTreasureMap(int currentPlayer, struct gameState *state,int handPos){
+	      //search hand for another treasure_map
+      int index = -1;
+	  int i;
+      for (i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+	  if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
+	    {
+	      index = i;
+	      break;
+	    }
+	}
+      if (index > -1)
+	{
+	  //trash both treasure cards
+	  discardCard(handPos, currentPlayer, state, 1);
+	  discardCard(index, currentPlayer, state, 1);
+
+	  //gain 4 Gold cards
+	  for (i = 0; i < 4; i++)
+	    {
+	      gainCard(silver, state, 2, currentPlayer);
+	    }
+				
+	  //return success
+	  return 1;
+	}
+			
+      //no second treasure_map found in hand
+      return -1;
+}
+	
 //end of dominion.c
 
