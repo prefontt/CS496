@@ -657,7 +657,7 @@ int performSmithyAction(int currentPlayer,struct gameState *state,int handPos){
     return 0;
 
 }
-int performTreasureAction(struct gameState *state,int currentPlayer){
+int performAdventureAction(struct gameState *state,int currentPlayer){
 
 
   int drawntreasure=0;
@@ -683,6 +683,7 @@ int performTreasureAction(struct gameState *state,int currentPlayer){
   state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z]; // discard all cards in play that have been drawn
   z=z-1;
       }
+    return 0;
 }
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
@@ -709,7 +710,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     {
     case adventurer:
     
-      performTreasureAction(state,currentPlayer);
+      performAdventureAction(state,currentPlayer);
       
       return 0;
 			
