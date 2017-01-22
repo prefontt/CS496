@@ -643,6 +643,21 @@ int getCost(int cardNumber)
   return -1;
 }
 
+int performSmithyAction(int currentPlayer,struct gameState *state,int handPos){
+
+      int i;
+        for (i = 0; i < 2; i++)
+  {
+    drawCard(currentPlayer, state);
+  }
+      
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+
+    return 0;
+
+}
+
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
   int i;
@@ -829,14 +844,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+     
+     performSmithyAction(currentPlayer, state, handPos);
+     
       return 0;
 		
     case village:
