@@ -666,28 +666,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   //uses switch to select card and perform actions
   switch( card ) 
     {
+
     case adventurer:
-      while(drawntreasure<2){
-	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
-	  shuffle(currentPlayer, state);
-	}
-	drawCard(currentPlayer, state);
-	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
-	  drawntreasure++;
-	else{
-	  temphand[z]=cardDrawn;
-	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-	  z++;
-	}
-      }
-      while(z-1>=0){
-	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
-	z=z-1;
-      }
-      return 0;
-			
-    case council_room:
+		adventurerCard(state, handPos, currentPlayer);
+    	break;
+
+	case council_room:
       //+4 Cards
       for (i = 0; i < 4; i++)
 	{
@@ -710,7 +694,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 0);
 			
       return 0;
-			
+
     case feast:
       //gain card with cost up to 5
       //Backup hand
@@ -829,27 +813,13 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+		smithyCard(state, handPos, currentPlayer);
+		break;
+
     case village:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+2 Actions
-      state->numActions = state->numActions + 2;
-			
-      //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+		villageCard(state, handPos, currentPlayer);
+		break;
+
     case baron:
       state->numBuys++;//Increase buys by 1!
       if (choice1 > 0){//Boolean true or going to discard an estate
@@ -964,28 +934,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case steward:
-      if (choice1 == 1)
-	{
-	  //+2 cards
-	  drawCard(currentPlayer, state);
-	  drawCard(currentPlayer, state);
-	}
-      else if (choice1 == 2)
-	{
-	  //+2 coins
-	  state->coins = state->coins + 2;
-	}
-      else
-	{
-	  //trash 2 cards in hand
-	  discardCard(choice2, currentPlayer, state, 1);
-	  discardCard(choice3, currentPlayer, state, 1);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+		stewardCard(state, handPos, currentPlayer, choice1, choice2, choice3);
+		break;
+      		
     case tribute:
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
 	if (state->deckCount[nextPlayer] > 0){
@@ -1190,38 +1141,121 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case treasure_map:
-      //search hand for another treasure_map
-      index = -1;
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-	{
-	  if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
-	    {
-	      index = i;
-	      break;
-	    }
+		treasuremapCard(state, handPos, currentPlayer);
+		break;
+	return -1;     
 	}
-      if (index > -1)
-	{
-	  //trash both treasure cards
-	  discardCard(handPos, currentPlayer, state, 1);
-	  discardCard(index, currentPlayer, state, 1);
+}
 
-	  //gain 4 Gold cards
-	  for (i = 0; i < 4; i++)
-	    {
-	      gainCard(gold, state, 1, currentPlayer);
-	    }
-				
-	  //return success
-	  return 1;
+
+int smithyCard(struct gameState *state, int handPos, int currentPlayer){
+	int i;
+      //+3 Cards
+      for (i = 1; i < 3; i++)
+	{
+	  drawCard(currentPlayer, state);
 	}
 			
-      //no second treasure_map found in hand
-      return -1;
-    }
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+      return 0;
+}	
+int adventurerCard(struct gameState *state, int handPos, int currentPlayer){
+  	int temphand[MAX_HAND];// moved above the if statement
+  	int drawntreasure=0;
+  	int cardDrawn;
+  	int z = 0;// this is the counter for the temp hand
 	
-  return -1;
+	while(drawntreasure<2){
+		if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+	 		shuffle(currentPlayer, state);
+		}
+		drawCard(currentPlayer, state);
+		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	  		//drawntreasure++;
+			drawntreasure = drawntreasure;
+		else{
+	  		temphand[z]=cardDrawn;
+	  		state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+	  		z++;
+		}
+	}
+    while(z-1>=0){
+		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+		z=z-1;
+    }
+    return 0;
 }
+
+int villageCard(struct gameState *state, int handPos, int currentPlayer){
+      //+1 Card
+      drawCard(currentPlayer, state);
+			
+      //+2 Actions
+      state->numActions = state->numActions + 1;
+			
+      //discard played card from hand
+      discardCard(handPos - 1, currentPlayer, state, 0);
+      return 0;
+}
+int stewardCard(struct gameState *state, int handPos, int currentPlayer, int choice1, int choice2, int choice3){
+	choice1 = 1;
+	if (choice1 == 1)
+	{
+		//+2 cards
+	  	drawCard(currentPlayer, state);
+	  	drawCard(currentPlayer, state);
+	}
+  if (choice1 == 2)
+	{
+	  	//+2 coins
+	  	state->coins = state->coins + 2;
+	}
+    else
+	{
+	  	//trash 2 cards in hand
+	  	discardCard(choice2, currentPlayer, state, 1);
+	  	discardCard(choice3, currentPlayer, state, 1);
+	}
+			
+    //discard card from hand
+	discardCard(handPos, currentPlayer, state, 0);
+    return 0;
+
+
+}
+int treasuremapCard(struct gameState *state, int handPos, int currentPlayer){
+	//search hand for another treasure_map
+    int i;
+	int index = -1;
+    for (i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+		if (state->hand[currentPlayer][i] == treasure_map && i != handPos)
+	    {
+	    	index = i;
+	      	break;
+	    }
+	}
+    if (index > -1)
+	{
+		//trash both treasure cards
+	  	discardCard(handPos, currentPlayer, state, 1);
+	  	discardCard(index, currentPlayer, state, 1);
+
+	  	//gain 4 Gold cards
+	  	for (i = 0; i < 4; i++)
+	    {
+	    	gainCard(gold, state, 1, currentPlayer);
+	    }
+				
+	  	//return success
+	  	return 1;
+	}
+	//no second treasure_map found in hand
+    return -1;
+}
+	
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
