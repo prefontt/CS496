@@ -655,24 +655,28 @@ int playSmithy(struct gameState *state, int handPos, int currentPlayer){
     return 0;
 }
 
-int playAdventurer(struct gameState* state, int currentPlayer, int* cardDrawn, int* drawntreasure, int* temphand, int* z){
-	while(*drawntreasure<2){
-		if (state->deckCount[currentPlayer] >1){//if the deck is empty we need to shuffle discard and add to deck
+int playAdventurer(struct gameState* state, int currentPlayer){
+	int drawntreasure = 0;
+	int cardDrawn;
+	int z = 0;
+	int temphand[MAX_HAND];
+	while(drawntreasure<2){
+		if (state->deckCount[currentPlayer] >=0){//if the deck is empty we need to shuffle discard and add to deck
 		  shuffle(currentPlayer, state);
 		}
 		drawCard(currentPlayer, state);
-		*cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-		if (*cardDrawn == copper || *cardDrawn == silver || *cardDrawn == gold)
-		  *drawntreasure++;
+		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+		if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+		  drawntreasure++;
 		else{
-		  temphand[*z]=*cardDrawn;
+		  temphand[z]=cardDrawn;
 		  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-		  *z++;
+		  z++;
 		}
 	}
-	while(*z-1>=0){
-		state->discard[currentPlayer][state->discardCount[currentPlayer++]]=temphand[*z-1]; // discard all cards in play that have been drawn
-		*z=*z-1;
+	while(z-1>=0){
+		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+		z=z-1;
 	}
 	return 0;
 }
@@ -791,7 +795,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-		playAdventurer(state, currentPlayer, &cardDrawn, &drawntreasure, temphand, &z);
+		playAdventurer(state, currentPlayer);
 
 			
     case council_room:
