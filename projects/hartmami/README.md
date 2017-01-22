@@ -1,6 +1,38 @@
+
+## Assignment 2
+
+	Part 3
+
+## These cases were modified to call the functions in cardEffect's switch:
+
+	case adventurer
+
+    	case mine
+			
+    	case remodel
+	
+    	case smithy
+
+    	case baron
+
+## bugs were added to:
+
+	adventurer
+			
+    	remodel
+	
+    	smithy
+
+    	baron
+
+## udpated README
+
+	commit, push README
+
+
 ## Assignment 1
 
-Assignment 1 Part 2.
+	Part 2
 
 ## clone repo to local machine
 
