@@ -136,5 +136,12 @@ int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
 
+// NEW ADDED: CARDS AS SEPARATE FUNCTIONS
+//int playAdventurer( struct gameState *state, int currentPlayer ); added more parameters 
+int playAdventurer(int *temphand, int drawntreasure, int cardDrawn, int z, struct gameState *state, int currentPlayer); 
+int playSmithy (struct gameState * state, int currentPlayer, int handPos); 
+int playVillage(struct gameState *state, int currentPlayer, int handPos); 
+int playCouncil_Room(struct gameState * state, int currentPlayer, int handPos); 
+int playFeast(struct gameState * state, int currentPlayer, int choice1, int *temphand, int x); 
 
 #endif

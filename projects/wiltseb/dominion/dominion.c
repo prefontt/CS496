@@ -646,7 +646,7 @@ int getCost(int cardNumber)
 int playSmithy(struct gameState *state, int handPos, int currentPlayer){
     //+3 Cards
 	int i;
-    for (i = 0; i < 3; i++){
+    for (i = 0; i <= 3; i++){
 	drawCard(currentPlayer, state);
 	}
 			
@@ -657,7 +657,7 @@ int playSmithy(struct gameState *state, int handPos, int currentPlayer){
 
 int playAdventurer(struct gameState* state, int currentPlayer, int* cardDrawn, int* drawntreasure, int* temphand, int* z){
 	while(*drawntreasure<2){
-		if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+		if (state->deckCount[currentPlayer] >1){//if the deck is empty we need to shuffle discard and add to deck
 		  shuffle(currentPlayer, state);
 		}
 		drawCard(currentPlayer, state);
@@ -671,7 +671,7 @@ int playAdventurer(struct gameState* state, int currentPlayer, int* cardDrawn, i
 		}
 	}
 	while(*z-1>=0){
-		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[*z-1]; // discard all cards in play that have been drawn
+		state->discard[currentPlayer][state->discardCount[currentPlayer++]]=temphand[*z-1]; // discard all cards in play that have been drawn
 		*z=*z-1;
 	}
 	return 0;
@@ -692,12 +692,12 @@ int playSteward(struct gameState* state, int currentPlayer, int handPos, int cho
       else
 	{
 	  //trash 2 cards in hand
-	  discardCard(choice2, currentPlayer, state, 1);
-	  discardCard(choice3, currentPlayer, state, 1);
+	  discardCard(choice2, currentPlayer, state, 0);
+	  discardCard(choice3, currentPlayer, state, 0);
 	}
 			
       //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      discardCard(handPos, currentPlayer, state, 1);
       return 0;
 }
 
@@ -749,7 +749,7 @@ int playMine(struct gameState* state, int currentPlayer, int handPos, int choice
 	  return -1;
 	}
 
-      gainCard(choice2, state, 2, currentPlayer);
+      gainCard(choice2, state, 0, currentPlayer);
 
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);

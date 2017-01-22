@@ -35,6 +35,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "rngs.h"
+#include <math.h>
 
 #define MODULUS    2147483647 /* DON'T CHANGE THIS VALUE                  */
 #define MULTIPLIER 48271      /* DON'T CHANGE THIS VALUE                  */
@@ -158,13 +159,12 @@ static int  initialized   = 0;          /* test for stream initialization */
 {
   long   i;
   long   x;
-  double u;
   char   ok = 0;  
 
   SelectStream(0);                  /* select the default stream */
   PutSeed(1);                       /* and set the state to 1    */
   for(i = 0; i < 10000; i++)
-    u = Random();
+    Random();
   GetSeed(&x);                      /* get the new state value   */
   ok = (x == CHECK);                /* and check for correctness */
 
