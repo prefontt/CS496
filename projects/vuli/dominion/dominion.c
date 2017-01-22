@@ -670,12 +670,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-    resultCheck = cardEffectAdventurer(handPos, currentPlayer, *state, choice1, choice2, choice3);
+    resultCheck = cardEffectAdventurer(handPos, currentPlayer, state, choice1, choice2, choice3);
     if (resultCheck < 0) return -1;
     return 0;
 			
     case council_room:
-    resultCheck = cardEffectCouncil_Room(handPos, currentPlayer, *state, choice1, choice2, choice3);
+    resultCheck = cardEffectCouncil_Room(handPos, currentPlayer, state, choice1, choice2, choice3);
     if (resultCheck < 0) return -1;
     return 0;
 			
@@ -797,7 +797,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-    resultCheck = cardEffectSmithy(handPos, currentPlayer, *state, choice1, choice2, choice3);
+    resultCheck = cardEffectSmithy(handPos, currentPlayer, state, choice1, choice2, choice3);
     if (resultCheck < 0) return -1;
     return 0;
 		
@@ -875,7 +875,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case minion:
-    resultCheck = cardEffectMinion(handPos, currentPlayer, *state, choice1, choice2, choice3);
+    resultCheck = cardEffectMinion(handPos, currentPlayer, state, choice1, choice2, choice3);
     if (resultCheck < 0) return -1;
     return 0;
 		
@@ -1020,7 +1020,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case cutpurse:
-    resultCheck = cardEffectCutpurse(handPos, currentPlayer, *state, choice1, choice2, choice3);
+    resultCheck = cardEffectCutpurse(handPos, currentPlayer, state, choice1, choice2, choice3);
     if (resultCheck < 0) return -1;
     return 0;
 
