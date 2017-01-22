@@ -1146,9 +1146,10 @@ int playAdventurer(struct gameState *state) {
 
 int playSmithy(struct gameState *state, int handPos)
 {
-  int currentPlayer = whoseTurn(state);
+  int currentPlayer = whoseTurn(state),
+      i = 0;
   //+3 Cards
-  for (int i = 0; i < 4; i++)
+  for (i = 0; i < 4; i++)
   {
     drawCard(currentPlayer, state);
   }
@@ -1176,10 +1177,11 @@ int playVillage(struct gameState *state, int handPos)
 int playFeast(struct gameState *state, int choice1)
 {
   int currentPlayer = whoseTurn(state),
-      temphand[MAX_HAND];
+      temphand[MAX_HAND],
+      i = 0;
   //gain card with cost up to 5
   //Backup hand
-  for (int i = 0; i <= state->handCount[currentPlayer]; i++)
+  for (i = 0; i <= state->handCount[currentPlayer]; i++)
   {
     temphand[i] = state->hand[currentPlayer][i];//Backup card
     state->hand[currentPlayer][i] = -1;//Set to nothing
@@ -1212,7 +1214,7 @@ int playFeast(struct gameState *state, int choice1)
     }
   }
   //Reset Hand
-  for (int i = 0; i <= state->handCount[currentPlayer]; i++)
+  for (i = 0; i <= state->handCount[currentPlayer]; i++)
   {
     state->hand[currentPlayer][i] = temphand[i];
     temphand[i] = -1;
@@ -1224,9 +1226,10 @@ int playFeast(struct gameState *state, int choice1)
 
 int playCouncil_Room(struct gameState *state, int handPos)
 {
-  int currentPlayer = whoseTurn(state);
+  int currentPlayer = whoseTurn(state),
+      i = 0;
   //+4 Cards
-  for (int i = 0; i < 4; i++)
+  for (i = 0; i < 4; i++)
   {
     drawCard(currentPlayer, state);
   }
@@ -1235,7 +1238,7 @@ int playCouncil_Room(struct gameState *state, int handPos)
   state->numBuys+=2;
 
   //Each other player draws a card
-  for ( int i = 0; i < state->numPlayers-1; i++)
+  for (i = 0; i < state->numPlayers-1; i++)
   {
     if ( i != currentPlayer )
     {
