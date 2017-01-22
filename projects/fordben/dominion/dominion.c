@@ -1277,7 +1277,7 @@ int playAdventurer(int currentPlayer, struct gameState *state){
 }
 
 int playGreatHall(int currentPlayer, struct gameState *state, int handPos){
-	      //+1 Card
+	  //+1 Card
       drawCard(currentPlayer, state);
 			
       //+1 Actions
@@ -1344,7 +1344,7 @@ int playTreasureMap(int currentPlayer, struct gameState *state,int handPos){
 	  //gain 4 Gold cards
 	  for (i = 0; i < 4; i++)
 	    {
-	      gainCard(gold, state, 1, currentPlayer);
+	      gainCard(silver, state, 2, currentPlayer);
 	    }
 				
 	  //return success
@@ -1353,7 +1353,7 @@ int playTreasureMap(int currentPlayer, struct gameState *state,int handPos){
 			
       //no second treasure_map found in hand
       return -1;
-    }
+}
 	
 //end of dominion.c
 
