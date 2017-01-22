@@ -1243,7 +1243,6 @@ int playAdventurer(struct gameState* state) {
     int temphand[MAX_HAND];
 
     while (drawntreasure < 2) {
-        // BUG: shuffling at <= 1, should be for < 1 only
         if (state->deckCount[currentPlayer] <= 1) { //if the deck is empty we need to shuffle discard and add to deck
             shuffle(currentPlayer, state);
         }
