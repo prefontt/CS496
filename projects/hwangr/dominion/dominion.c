@@ -1264,6 +1264,7 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 /* 
 Assignment 2 - Five cards implemented in their own functions
+               Single bug introduced in each of the five cards
 */
 
 //Implements Adventurer functionality
