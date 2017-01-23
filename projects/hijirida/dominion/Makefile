@@ -1,6 +1,9 @@
+  
+	
 CFLAGS = -Wall -fpic -coverage -lm
 
 all: playdom player testDrawCard testBuyCard badTestDrawCard
+	rm -f *.o test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
 	$(info ******** testing all *******)
   
 rngs.o: rngs.h rngs.c
