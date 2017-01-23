@@ -709,8 +709,9 @@ int playMarket(struct gameState *state, int currentPlayer, int handPos)
   return 0;
 }
 
+
 //******************************************************
-// function playVillage
+// *function playVillage  
 // *****************************************************
 int playVillage(struct gameState *state, int currentPlayer, int handPos)
 {
