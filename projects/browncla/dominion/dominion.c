@@ -933,27 +933,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
     
     case steward:
-      if (choice1 == 1)
-  {
-    //+2 cards
-    drawCard(currentPlayer, state);
-    drawCard(currentPlayer, state);
-  }
-      else if (choice1 == 2)
-  {
-    //+2 coins
-    state->coins = state->coins + 2;
-  }
-      else
-  {
-    //trash 2 cards in hand
-    discardCard(choice2, currentPlayer, state, 1);
-    discardCard(choice3, currentPlayer, state, 1);
-  }
-      
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      playSteward(state, currentPlayer, choice1, choice2, choice3, handPos, card);
     
     case tribute:
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
@@ -1348,7 +1328,7 @@ int updateCoins(int player, struct gameState *state, int bonus)
                          state->numActions > 0, the player must have an action to play
                          The name of the card must be adventurer and the value must be between 7 and 26
          Post-Conditions: state->handCount[currentPlayer] should have increased by the number of drawn treasures up to 2 treasure cards
-                          state->numActions must be decreased by 1 and must be >= 0 because player played an action card
+                          state->numActions must be >= 0 because the number of actions is not changed in this function
                           The adventurer card should be discarded
       */
 int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int card){
@@ -1357,6 +1337,7 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
        assert (card >= adventurer && card <= treasure_map);
        assert(state->phase == 0);
        assert(state->numActions > 0);
+       assert(card == adventurer);
        int z=0;
        int drawntreasure = 0;
        int temphand[MAX_HAND];
@@ -1401,7 +1382,7 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
                    state->numActions > 0, the player must have an action to play
                    The name of the card must be smithy and the value must be between 7 and 26
    Post-Conditions: state->handCount[currentPlayer] should have increased by 2
-                    state->numActions must be decreased by 1 and must be >= 0 because player played an action card
+                    state->numActions must be >= 0 because the number of actions is not changed in this function
                     The smithy card should be discarded
 */
 
@@ -1411,6 +1392,7 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card
       assert (card >= adventurer && card <= treasure_map);
       assert(state->phase == 0);
       assert(state->numActions > 0);
+      assert(card == smithy);
       int i;
       int startNumCards = state->handCount[currentPlayer];
       //+3 Cards
@@ -1429,12 +1411,24 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card
       return 0;
     }
 
-
+/* Description: If a player plays a village card, the player draws one card from his deck. The player
+   does not need to discard this card until the clean up phase. He may use the cards to buy items
+   unless he has another action left. The player also gains two actions. If he had one action to start
+   and then uses a village card, then he has two more actions that he can play.
+   Pre-Conditions: state->phase == 0, the player must be in the action phase
+                   state->numActions > 0, the player must have an action to play
+                   The name of the card must be village and the value must be between 7 and 26
+   Post-Conditions: state->handCount[currentPlayer] should stay the same
+                    state->numActions must be increased by 2 and must be >= 0 because player gained 2 action cardss
+                    The village card should be discarded
+*/
 int playVillage(struct gameState *state, int currentPlayer, int handPos, int card){
      //assert statements for preconditions
        assert (card >= adventurer && card <= treasure_map);
        assert(state->phase == 0);
        assert(state->numActions > 0);
+       assert(card == village);
+
        int origNumActions = state->numActions;
        int startNumCards = state->handCount[currentPlayer];
      //+1 Card
@@ -1446,12 +1440,74 @@ int playVillage(struct gameState *state, int currentPlayer, int handPos, int car
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
 
-      //assert statemetns for postconditions
+      //assert statements for postconditions
       assert(state->numActions = origNumActions + 2);
       assert(state->handCount[currentPlayer] = startNumCards); //gain card but lose one
       assert(state->discard[currentPlayer][state->playedCardCount-1] == village);
       return 0;
 }
-int playFeast(struct gameState *state, int choice1);
-int playMinion(struct gameState *state, int handPos);
+
+/* Description: If a player plays a steward card, the player has a choice between 3 actions. If the
+   the player has entered 1 as his choice, then he draws two cards from his deck. If the player
+   has entered 2 as his choice, then he gains two coins to use in the buy phase. If the player
+   has entered any other number as his choice, then he trashes the two cards from his hand that 
+   are indicated by choice2 and choice3. 
+   Pre-Conditions: state->phase == 0, the player must be in the action phase
+                   state->numActions > 0, the player must have an action to play
+                   The name of the card must be steward and the value must be between 7 and 26
+   Post-Conditions: if choice1 = 1, then state->handCount[currentPlayer] should increase by 2
+                    if choice1 = 2, then state->coins should be increased by 2
+                    if choice1 = other number, then state->handCount[currentPlayer] should be decreased by 2
+                    state->numActions must be >= 0 because the number of actions isn't changed in this function
+                    The steward card should be discarded
+*/
+int playSteward(struct gameState *state, int currentPlayer, int choice1, int choice2, int choice3, int handPos, int card){
+  //assert statments for pre-conditions
+  assert (card >= adventurer && card <= treasure_map);
+  assert(state->phase == 0);
+  assert(state->numActions > 0);
+  assert(card == steward);
+
+  int startNumCards = state->handCount[currentPlayer]; //storing starting card count for later asserts
+  int origNumCoins = state->coins;
+  if (choice1 == 1)
+  {
+    //+2 cards
+    drawCard(currentPlayer, state);
+    drawCard(currentPlayer, state);
+  }
+  else if (choice1 == 2)
+  {
+    //+2 coins
+    state->coins = state->coins + 2;
+  }
+  else
+  {
+    //trash 2 cards in hand
+    discardCard(choice2, currentPlayer, state, 1);
+    discardCard(choice3, currentPlayer, state, 1);
+  }
+      
+    //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+
+  //assert statements for postconditions
+  if (choice1 == 1){
+    assert(state->handCount[currentPlayer] = startNumCards + 2); //gained 2 cards
+  }
+  else if (choice1 == 2){
+    assert(state->coins = origNumCoins + 2); //gained 2 coins
+  }
+  else{
+    assert(state->handCount[currentPlayer] = startNumCards - 2); //trashed 2 cards
+  }
+  assert(state->numActions >=0);
+  assert(state->discard[currentPlayer][state->playedCardCount-1] == steward);
+  return 0;
+
+}
+
+int playMinion(struct gameState *state, int handPos){
+
+}
 //end of dominion.c

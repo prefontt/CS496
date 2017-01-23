@@ -135,8 +135,8 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int card);
 int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card);
 int playVillage(struct gameState *state, int currentPlayer, int handPos, int card);
-int playFeast(struct gameState *state, int choice1);
-int playCouncil_Room(struct gameState *state, int handPos);
+int playSteward(struct gameState *state, int currentPlayer, int choice1, int choice2, int choice3, int handPos, int card);
+int playMinion(struct gameState *state, int handPos);
 
 
 #endif
