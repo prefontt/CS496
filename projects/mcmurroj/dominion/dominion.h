@@ -140,5 +140,6 @@ int playCouncil_Room(struct gameState *state, int handPos);
 int adventurerAction(int currentPlayer, struct gameState *state, int *temphand);
 int smithyAction(int currentPlayer,int handPos,struct gameState *state);
 int villageAction(int currentPlayer, int handPos, struct gameState *state);
+int sea_hagAction(int currentPlayer, struct gameState *state);
 
 #endif
