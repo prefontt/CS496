@@ -9,6 +9,8 @@
 #define MAX_PLAYERS 4
 
 #define DEBUG 0
+#include <stdlib.h>
+#include <assert.h>
 
 
 
@@ -26,11 +28,10 @@ enum CARD
    copper,
    silver,
    gold,
-
    adventurer,
    /* If no/only 1 treasure found, stop when full deck seen */
    council_room,
-   feast, /* choice1 is supply # of card gained) */
+   feast, /* choice1 is supply # of card gained */
    gardens,
    mine, /* choice1 is hand# of money to trash, choice2 is supply# of
 	    money to put in hand */
@@ -83,58 +84,60 @@ struct gameState* newGame();
 int* kingdomCards(int k1, int k2, int k3, int k4, int k5, int k6, int k7,
 		  int k8, int k9, int k10);
 
-int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
-		   struct gameState *state);
 /* Responsible for initializing all supplies, and shuffling deck and
    drawing starting hands for all players.  Check that 10 cards selected
    are in fact (different) kingdom cards, and that numPlayers is valid.
+   Cards not in game should initialize supply position to -1 */
+int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
+		   struct gameState *state);
 
-Cards not in game should initialize supply position to -1 */
-
-int shuffle(int player, struct gameState *state);
 /* Assumes all cards are now in deck array (or hand/played):  discard is
  empty */
+int shuffle(int player, struct gameState *state);
 
+/* Play card with index handPos from current player's hand */
 int playCard(int handPos, int choice1, int choice2, int choice3,
 	     struct gameState *state);
-/* Play card with index handPos from current player's hand */
 
-int buyCard(int supplyPos, struct gameState *state);
 /* Buy card with supply index supplyPos */
+int buyCard(int supplyPos, struct gameState *state);
 
-int numHandCards(struct gameState *state);
 /* How many cards current player has in hand */
+int numHandCards(struct gameState *state);
 
-int handCard(int handNum, struct gameState *state);
 /* enum value of indexed card in player's hand */
+int handCard(int handNum, struct gameState *state);
 
-int supplyCount(int card, struct gameState *state);
 /* How many of given card are left in supply */
+int supplyCount(int card, struct gameState *state);
 
-int fullDeckCount(int player, int card, struct gameState *state);
 /* Here deck = hand + discard + deck */
+int fullDeckCount(int player, int card, struct gameState *state);
 
+// Which player's turn it is
 int whoseTurn(struct gameState *state);
 
-int endTurn(struct gameState *state);
 /* Must do phase C and advance to next player; do not advance whose turn
    if game is over */
+int endTurn(struct gameState *state);
 
 int isGameOver(struct gameState *state);
 
-int scoreFor(int player, struct gameState *state);
 /* Negative here does not mean invalid; scores may be negative,
    -9999 means invalid input */
+int scoreFor(int player, struct gameState *state);
 
-int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
+int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 
-int playAdventurer(struct gameState *state);
-int playSmithy(struct gameState *state, int handPos);
-int playVillage(struct gameState *state, int handPos);
-int playFeast(struct gameState *state, int choice1);
-int playCouncil_Room(struct gameState *state, int handPos);
+
+int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int card);
+int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card);
+int playVillage(struct gameState *state, int currentPlayer, int handPos, int card);
+int playSteward(struct gameState *state, int currentPlayer, int choice1, int choice2, int choice3, int handPos, int card);
+int playSalvager(struct gameState *state, int currentPlayer, int choice1, int handPos, int card);
+int inHand(struct gameState *state, int currentPlayer, int choice1);
 
 
 #endif

@@ -10,7 +10,7 @@
 
 #define DEBUG 0
 
-
+//Testing commit
 
 /* http://dominion.diehrstraits.com has card texts */
 /* http://dominion.isotropic.org has other stuff */
@@ -135,6 +135,7 @@ int playSmithy(struct gameState *state, int handPos);
 int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
+int playMine(struct gameState *state, int choice1, int choice2, int handPos);
 
 
 #endif

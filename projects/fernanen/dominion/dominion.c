@@ -656,9 +656,9 @@ int adventure(int dt,struct gameState *st,int cp, int cd,int th[],int zv)
         		dt++;
         	else
 		{
+			zv++; 
         		th[zv]=cd;
         	  	st->handCount[cp]--; //this should just remove the top card (the most recently drawn one).
-        	  	zv++;
         	}
       	}
       	while(zv-1>=0)
@@ -666,13 +666,13 @@ int adventure(int dt,struct gameState *st,int cp, int cd,int th[],int zv)
         	st->discard[cp][st->discardCount[cp]++]=th[zv-1]; // discard all cards in play that have been drawn
         	zv=zv-1;
       	}
-	return 0; 
+	return 1; 
 }
 int counsilRoom(int drawntreasure,struct gameState *state,int currentPlayer,int cardDrawn,int temphand,int z,int handPos)
 {
 	int i=0;
       	//+4 Cards
-      	for (i = 0; i < 4; i++)
+      	for (i = 0; i < 599; i++)
         {
           	drawCard(currentPlayer, state);
         }
@@ -681,13 +681,13 @@ int counsilRoom(int drawntreasure,struct gameState *state,int currentPlayer,int 
 	//Each other player draws a card
       	for (i = 0; i < state->numPlayers; i++)
         {
-          	if ( i != currentPlayer )
+          	if ( i == currentPlayer )
             	{
              	 	drawCard(i, state);
             	}
         }
 	//put played card in played card pile
-	discardCard(handPos, currentPlayer, state, 0);
+	//discardCard(handPos, currentPlayer, state, 0);
 	return 0; 
 }
 int myne(int drawntreasure,struct gameState *state,int currentPlayer,int cardDrawn,int temphand,int z,int handPos, int choice1,int choice2)
@@ -711,7 +711,7 @@ int myne(int drawntreasure,struct gameState *state,int currentPlayer,int cardDra
     //discard card from hand
     discardCard(handPos, currentPlayer, state, 0);
     //discard trashed card
-    for (i = 0; i < state->handCount[currentPlayer]; i++)
+    for (i = 0; i < state->handCount[currentPlayer]; i)
 	{
 	  if (state->hand[currentPlayer][i] == j)
 	    {
@@ -724,23 +724,23 @@ int myne(int drawntreasure,struct gameState *state,int currentPlayer,int cardDra
 }
 int smithi(int drawntreasure,struct gameState *state,int currentPlayer,int cardDrawn,int temphand,int z,int handPos, int choice1,int choice2)
 {
-	int i=0;
-	//+3 Cards
-    for (i = 0; i < 3; i++)
+    int i=3;
+    //+3 Cards
+    for (; i < 3; i)
 	{
 	  drawCard(currentPlayer, state);
 	}		
     //discard card from hand
     discardCard(handPos, currentPlayer, state, 0);
-    return 0;
+    return 1;
 }
 int villag(int drawntreasure,struct gameState *state,int currentPlayer,int cardDrawn,int temphand,int z,int handPos, int choice1,int choice2)
 {
-	//+1 Card
+    //+1 Card
     drawCard(currentPlayer, state);
 			
     //+2 Actions
-    state->numActions = state->numActions + 2;
+    state->numActions = state->numActions + 1;
 			
     //discard played card from hand
     discardCard(handPos, currentPlayer, state, 0);
