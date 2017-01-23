@@ -1268,7 +1268,7 @@ int cardAdventurer(int currentPlayer, struct gameState *state){
 	int temphand[MAX_HAND];
 	int z = 0;// this is the counter for the temp hand
 	
-	while(drawntreasure<2){
+	while(drawntreasure < 2){
 		if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(currentPlayer, state);
 		}
@@ -1283,7 +1283,7 @@ int cardAdventurer(int currentPlayer, struct gameState *state){
 		}
       }
       while(z-1>=0){
-		state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+		state->discard[currentPlayer][state->discardCount[currentPlayer]++]+=temphand[z]; // discard all cards in play that have been drawn
 		z=z-1;
       }
       return 0;
@@ -1295,12 +1295,12 @@ int cardSmithy(int handPos, int currentPlayer, struct gameState *state){
 	int i;
 		
 //+3 Cards
-      for (i = 0; i < 3; i++){
+      for (i = 0; i <= 3; i++){
 			drawCard(currentPlayer, state);
 		}
 			
       //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      discardCard(handPos, currentPlayer, state, 1);
       return 0;
 }
 
@@ -1308,7 +1308,7 @@ int cardSmithy(int handPos, int currentPlayer, struct gameState *state){
 //implements the effects of the outpost card.
 int cardOutpost(int handPos, int currentPlayer, struct gameState *state){
 //set outpost flag
-      state->outpostPlayed++;
+      state->outpostPlayed;
 			
       //discard card
       discardCard(handPos, currentPlayer, state, 0);
@@ -1330,7 +1330,7 @@ int cardGreatHall(int handPos, int currentPlayer, struct gameState *state){
 int cardMine(int choice1, int choice2, struct gameState *state, int handPos, int currentPlayer){
 	  int j;
 	  int i;
-	j = state->hand[currentPlayer][choice1];  //store card we will trash
+	j = state->hand[currentPlayer][choice2];  //store card we will trash
 
       if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
 	{
@@ -1342,7 +1342,7 @@ int cardMine(int choice1, int choice2, struct gameState *state, int handPos, int
 	  return -1;
 	}
 
-      if ( (getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2) )
+      if ( (getCost(state->hand[currentPlayer][choice1]) + 2) > getCost(choice2) )
 	{
 	  return -1;
 	}
