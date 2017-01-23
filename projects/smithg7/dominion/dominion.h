@@ -145,5 +145,7 @@ int handleSmithy(int currentPlayer, struct gameState *state, int handPos);
 int handleAdventurer(int currentPlayer, struct gameState *state, int handPos, int drawntreasure, int* temphand);
 int handleVillage(int currentPlayer, struct gameState *state, int handPos);
 int handleSteward(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2, int choice3);
+int handleCouncilRoom(int currentPlayer, struct gameState *state, int handPos);
+
 
 #endif
