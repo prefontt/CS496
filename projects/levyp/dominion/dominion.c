@@ -829,11 +829,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
+      playSmithy(currentPlayer, state);
+ //      //+3 Cards
+ //      for (i = 0; i < 3; i++)
+	// {
+	//   drawCard(currentPlayer, state);
+	// }
 			
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
@@ -1328,6 +1329,25 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
+// Refactor
+
+// Smithy - draw +3 cards
+int playSmithy(int player, struct gameState *state) {
+  int i;
+  for (i = 0; i < 3; i++)
+  {
+    drawCard(player, state);
+  }
+  return 0;
+}
+
+// Adventurer
+
+// Card 3
+  
+// Card 4
+
+// Card 5
 
 //end of dominion.c
 
