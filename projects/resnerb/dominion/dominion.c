@@ -1,3 +1,5 @@
+/* Bryan Resner - CS362 Winter 2017 - Refactored Code */
+
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
@@ -1247,7 +1249,8 @@ int playAdventurer(struct gameState *state, int *drawntreasure,
         }
     }
     while(z-1>=0){
-        state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+        /*BUG INSERTED BELOW*/
+        state->discard[currentPlayer][state->discardCount[currentPlayer++]]=temphand[z-1]; // discard all cards in play that have been drawn
         z=z-1;
     }
     return 0;
@@ -1262,14 +1265,16 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos) {
     }
     
     //discard card from hand
-    discardCard(handPos, currentPlayer, state, 0);
+    /*BUG INSERTED BELOW*/
+    discardCard(handPos, currentPlayer, state, 1);
     return 0;
 }
 
 int playSeaHag(struct gameState *state, int currentPlayer) {
     int i;
     for (i = 0; i < state->numPlayers; i++){
-        if (i != currentPlayer){
+        /*BUG INSERTED BELOW*/
+        if (i == currentPlayer){
             state->discard[i][state->discardCount[i]] = state->deck[i][state->deckCount[i]--];			    state->deckCount[i]--;
             state->discardCount[i]++;
             state->deck[i][state->deckCount[i]--] = curse;//Top card now a curse
@@ -1294,7 +1299,8 @@ int playSteward(struct gameState *state, int currentPlayer, int handPos, int cho
     else
     {
         //trash 2 cards in hand
-        discardCard(choice2, currentPlayer, state, 1);
+        /*BUG INSERTED BELOW*/
+        discardCard(choice1, currentPlayer, state, 1);
         discardCard(choice3, currentPlayer, state, 1);
     }
     
@@ -1347,9 +1353,10 @@ int playMinion(struct gameState *state, int currentPlayer, int handPos,
                     }
                     
                     //draw 4
+                    /*BUG INSERTED BELOW*/
                     for (j = 0; j < 4; j++)
                     {
-                        drawCard(i, state);
+                        drawCard(j, state);
                     }
                 }
             }

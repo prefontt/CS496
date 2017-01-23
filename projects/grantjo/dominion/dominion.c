@@ -291,7 +291,9 @@ int buyCard(int supplyPos, struct gameState *state) {
     if (DEBUG)
       printf("You do not have enough money to buy that. You have %d coins.\n", state->coins);
     return -1;
-  } else {
+  } else if (supplyPos < 0 || supplyPos > treasure_map ) {
+    return -1; 
+  }else{
     state->phase=1;
     //state->supplyCount[supplyPos]--;
     gainCard(supplyPos, state, 0, who); //card goes in discard, this might be wrong.. (2 means goes into hand, 0 goes into discard)
@@ -1189,6 +1191,7 @@ int playFeast(struct gameState *state, int choice1)
   //Backup hand
   //Update Coins for Buy
   updateCoins(currentPlayer, state, 5);
+  
   int x = 1;//Condition to loop on
   while( x == 1)
   {   //Buy one card
@@ -1199,10 +1202,16 @@ int playFeast(struct gameState *state, int choice1)
 
       if (DEBUG)
         printf("Cards Left: %d\n", supplyCount(choice1, state));
+      printf("Supply of that card is out!\n");
+      state->numActions++;
+      x--;
+     
     }
     else if (state->coins < getCost(choice1))
     {
       printf("That card is too expensive!\n");
+      state->numActions++;
+      x--;
 
       if (DEBUG)
         printf("Coins: %d < %d\n", state->coins, getCost(choice1));
@@ -1211,6 +1220,18 @@ int playFeast(struct gameState *state, int choice1)
     {
       if (DEBUG)
         printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
+      x = buyCard(choice1, state);
+      
+     if (x == 0)  {
+       printf("Card Gained!\n");
+       state->numBuys++;
+     }
+     else 
+     {
+       printf("Failed to Get that Card!\n");
+       state->numActions++;
+       x--;
+     }
     }
   }
   //Reset Hand
