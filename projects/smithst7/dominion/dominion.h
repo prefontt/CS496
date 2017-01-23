@@ -136,5 +136,9 @@ int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
 
+//Assignment 2 refactor: adding headers for card functions
+int steward (int currentPlayer, struct gameState* state, int choice1, int choice2, int choice3);
+int smithy (int currentPlayer, struct gameState* state, int handPos);
+
 
 #endif
