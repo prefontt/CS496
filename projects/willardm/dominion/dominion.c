@@ -749,15 +749,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return playSmithy(state, handPos);
 
     case village:
-    //+1 Card
-    drawCard(currentPlayer, state);
-
-    //+2 Actions
-    state->numActions = state->numActions + 2;
-
-    //discard played card from hand
-    discardCard(handPos, currentPlayer, state, 0);
-    return 0;
+      return playVillage(state, handPos);
 
     case baron:
     state->numBuys++;//Increase buys by 1!
@@ -1242,18 +1234,20 @@ int playSmithy(struct gameState *state, int handPos) {
   }
   //discard card from hand
   //  The Bug -> we don't discard
-  discardCard(handPos, currentPlayer, state, 0);
+  // discardCard(handPos, currentPlayer, state, 0);
   return 0;
 }
 
 int playAdventurer(struct gameState *state) {
   int currentPlayer = whoseTurn(state);
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
+  int drawntreasure = 0;
   int cardDrawn;
   int z = 0;// this is the counter for the temp hand
 
-  while(drawntreasure < 2){
+  // The Bug -> we draw 3 cards instead of 2
+  // while(drawntreasure < 2){
+  while(drawntreasure < 3){
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
@@ -1275,7 +1269,16 @@ int playAdventurer(struct gameState *state) {
 }
 
 int playVillage(struct gameState *state, int handPos) {
+  int currentPlayer = whoseTurn(state);
+  //+1 Card
+  drawCard(currentPlayer, state);
 
+  //+2 Actions
+  state->numActions = state->numActions + 2;
+
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
 }
 
 int playFeast(struct gameState *state, int choice1) {
@@ -1304,12 +1307,13 @@ int playFeast(struct gameState *state, int choice1) {
         printf("Cards Left: %d\n", supplyCount(choice1, state));
       }
     }
-    else if (state->coins < getCost(choice1)){
-      printf("That card is too expensive!\n");
-      if (DEBUG){
-        printf("Coins: %d < %d\n", state->coins, getCost(choice1));
-      }
-    }
+    //  The Bug -> Hid the statement which prevents a player from buying too expensive of a card.
+    // else if (state->coins < getCost(choice1)){
+    //   printf("That card is too expensive!\n");
+    //   if (DEBUG){
+    //     printf("Coins: %d < %d\n", state->coins, getCost(choice1));
+    //   }
+    // }
     else{
       if (DEBUG){
         printf("Deck Count: %d\n", state->handCount[currentPlayer] + state->deckCount[currentPlayer] + state->discardCount[currentPlayer]);
@@ -1339,9 +1343,10 @@ int playCouncil_Room(struct gameState *state, int handPos) {
   //Each other player draws a card
   // handCount[currentPlayer] -> numPlayers
   for (i = 0; i < state->numPlayers; i++) {
-    if ( i != currentPlayer) {
+    // The Bug -> remove the if control which prevents drawCard from being called if the currentPlayer is reached
+    // if ( i != currentPlayer) {
       drawCard(i, state);
-    }
+    // }
   }
   //put played card in played card pile
   discardCard(handPos, currentPlayer, state, 0);
