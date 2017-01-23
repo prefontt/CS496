@@ -5,6 +5,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -643,6 +645,105 @@ int getCost(int cardNumber)
   return -1;
 }
 
+//*******************************************************
+// function playSmithy
+//******************************************************* 
+int playSmithy(struct gameState *state, int currentPlayer, int handPos)
+{
+   int i;
+   for (i = 0; i < 3; i++)
+     {
+       drawCard(currentPlayer, state);
+     }
+   //discard card from hand
+   //bug
+   //discardCard(handPos, currentPlayer, state, 0); 
+   return 0;
+}
+//******************************************************
+// function playAdventurer
+// *****************************************************
+int playAdventurer(struct gameState *state, int currentPlayer, int drawntreasure, int cardDrawn, int temphand[], int z )
+{
+  while(drawntreasure<2)
+  {
+    if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+      shuffle(currentPlayer, state);
+    }
+    drawCard(currentPlayer, state);
+    cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+      drawntreasure++;
+    else{
+      temphand[z]=cardDrawn;
+      state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+      z++;
+    }
+  }
+  while(z-1>=0){
+    state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+    z=z-1;
+  }
+  return 0;
+}     
+
+//******************************************************
+// function playMarket
+// *****************************************************
+int playMarket(struct gameState *state, int currentPlayer, int handPos)
+{
+  //+1 Card
+  drawCard(currentPlayer, state);
+      
+  //+1 Actions
+  state->numActions++;
+  
+  //+1 Buy
+  state->numBuys++;    
+
+  //+1 coin, bug.
+  //state->coins = state->coins + 1; 
+
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
+
+//******************************************************
+// **function playVillage  
+// *****************************************************
+int playVillage(struct gameState *state, int currentPlayer, int handPos)
+{
+  //+1 Card
+  drawCard(currentPlayer, state);
+      
+  //+2 Actions, bug
+  //state->numActions = state->numActions + 2;
+  
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+//******************************************************
+// function playFestival
+// *****************************************************
+int playFestival(struct gameState *state, int currentPlayer, int handPos)
+{
+
+  //+2 Actions, bug
+  //state->numActions = state->numActions + 2;
+  //+1 Buy
+  state->numBuys++;    
+
+  //+2 coin
+  state->coins = state->coins + 2;  
+
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
   int i;
@@ -652,7 +753,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   int index;
   int currentPlayer = whoseTurn(state);
   int nextPlayer = currentPlayer + 1;
-
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
