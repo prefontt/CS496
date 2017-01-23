@@ -1266,12 +1266,12 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 int Doadventurer(int drawntreasure,struct gameState *state,int currentPlayer,int cardDrawn, int *temphand, int z){
-   while(drawntreasure<2){
+   while(drawntreasure<3){
         if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
             shuffle(currentPlayer, state);
         }
         drawCard(currentPlayer, state);
-        cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+        cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]];//??top card of hand is most recently drawn card.
         if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
             drawntreasure++;
         else{
@@ -1297,7 +1297,7 @@ int DoSmithy(int currentPlayer, struct gameState *state, int handPos)
   }
 
   //discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1);//?
 
   return 0;
 }
@@ -1306,8 +1306,8 @@ int Dovillage(int currentPlayer, struct gameState *state, int handPos){
       //+1 Card
       drawCard(currentPlayer, state);
 
-      //+2 Actions
-      state->numActions = state->numActions + 2;
+      //
+      state->numActions = state->numActions + 1;
 
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
@@ -1320,7 +1320,7 @@ int Doembargo(int currentPlayer, struct gameState *state, int handPos,int choice
       //see if selected pile is in play
       if ( state->supplyCount[choice1] == -1 )
 	{
-	  return -1;
+	  return 0;//??
 	}
 
       //add embargo token to selected supply pile
@@ -1331,13 +1331,13 @@ int Doembargo(int currentPlayer, struct gameState *state, int handPos,int choice
       return 0;
 }
 int Dosteward(int choice1,int choice2,int choice3, struct gameState *state,int currentPlayer,int handPos){
-      if (choice1 == 1)
+      if (choice1 == 2)//??
 	{
 	  //+2 cards
 	  drawCard(currentPlayer, state);
 	  drawCard(currentPlayer, state);
 	}
-      else if (choice1 == 2)
+      else if (choice1 == 1)//??
 	{
 	  //+2 coins
 	  state->coins = state->coins + 2;
