@@ -137,5 +137,6 @@ int playCouncil_Room(struct gameState *state, int handPos);
 // My new declarations
 int playSmithy(int player, struct gameState *state);
 int playAdventurer(int currentPlayer, struct gameState *state);
+int playBaron(int currentPlayer, struct gameState *state, int choice1);
 
 #endif
