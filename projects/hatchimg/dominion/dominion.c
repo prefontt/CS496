@@ -5,6 +5,14 @@
 #include <math.h>
 #include <stdlib.h>
 
+//new function prototypes
+
+int play_adventurer(struct gameState* state);
+int play_smithy(struct gameState* state, int handPos);
+int play_great_hall(struct gameState* state, int handPos);
+int play_village(struct gameState* state, int handPos);
+int play_outpost(struct gameState* state, int handPos);
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -667,7 +675,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-    	adventurer(state);
+    	play_adventurer(state);
           return 0;
 			
     case council_room:
@@ -812,11 +820,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-    	smithy(state, handPos);
+    	play_smithy(state, handPos);
           return 0;
 		
     case village:
-    	village(state, handPos);
+    	play_village(state, handPos);
            return 0;
 		
     case baron:
@@ -872,7 +880,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		
     case great_hall:
     	
-	great_hall(state, handPos);
+	play_great_hall(state, handPos);
            return 0;
 		
     case minion:
@@ -1119,7 +1127,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case outpost:
-    	outpost(state, handPos);
+    	play_outpost(state, handPos);
 
           return 0;
 		
@@ -1288,16 +1296,17 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
-int adventurer(struct gameState* state){
+int play_adventurer(struct gameState* state){
 
   int currentPlayer = whoseTurn(state);
+  int nextPlayer = currentPlayer + 1;
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
   int cardDrawn;
   int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
-
+}
 
 
   while(drawntreasure<=2){
@@ -1321,7 +1330,7 @@ int adventurer(struct gameState* state){
       return 0;
 }
 
-int smithy(struct gameState* state, int handPos){
+int play_smithy(struct gameState* state, int handPos){
  	int i;
 	int currentPlayer = whoseTurn(state);
  //+3 Cards
@@ -1336,7 +1345,7 @@ int smithy(struct gameState* state, int handPos){
       return 0;
  }
 
-int great_hall(struct gameState* state, int handPos){
+int play_great_hall(struct gameState* state, int handPos){
  
  	int currentPlayer = whoseTurn(state);
 
@@ -1353,7 +1362,7 @@ int great_hall(struct gameState* state, int handPos){
       return 0;
 }
 
-int village(struct gameState* state, int handPos){
+int play_village(struct gameState* state, int handPos){
 	
 	int currentPlayer = whoseTurn(state);
 
@@ -1369,7 +1378,7 @@ int village(struct gameState* state, int handPos){
 	return 0;
 }
 
-int outpost(struct gameState* state, int handPos){
+int play_outpost(struct gameState* state, int handPos){
   
  	int currentPlayer = whoseTurn(state);
 
