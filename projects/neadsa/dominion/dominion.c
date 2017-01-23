@@ -1203,7 +1203,8 @@ int cardEffectSmithy( int currentPlayer, struct gameState *state, int handPos )
 {
 	//+3 Cards
 	int i;
-	for (i = 0; i < 3; i++) {
+	// Making a bug here, it adds 4 cards, oops.
+	for (i = 0; i < 4; i++) {
 		drawCard(currentPlayer, state);
 	}
 
@@ -1220,7 +1221,8 @@ int cardEffectAdventurer( int currentPlayer, struct gameState *state, int handPo
 	int cardDrawn;
 	int drawntreasure = 0;
 
-	while(drawntreasure<2) {
+	// Ooops, you get 3 treaasures!
+	while(drawntreasure<3) {
 		//if the deck is empty we need to shuffle discard and add to deck
 		if (state->deckCount[currentPlayer] < 1){
 			shuffle(currentPlayer, state);
@@ -1258,7 +1260,8 @@ int cardEffectCouncilRoom( int currentPlayer, struct gameState *state, int handP
 	}
 
 	//+1 Buy
-	state->numBuys++;
+	// Oops, you don't get an additional buy!
+	state->numBuys--;
 
 	//Each other player draws a card
 	for (i = 0; i < state->numPlayers; i++) {
@@ -1288,7 +1291,8 @@ int cardEffectFeast( int currentPlayer, struct gameState *state, int handPos, in
 	//Backup hand
 
 	//Update Coins for Buy
-	updateCoins(currentPlayer, state, 5);
+	// Not worth the 5 coins like we are supposed to be
+	updateCoins(currentPlayer, state, 4);
 	x = 1;//Condition to loop on
 	while (x == 1) {//Buy one card
 		if (supplyCount(choice1, state) <= 0) {
