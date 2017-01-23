@@ -1319,11 +1319,9 @@ int playAdventurer(struct gameState *state) {
 			z++;
 		}
 	}
-//	while (z - 1 >= 0) { // original
-	while (z - 1 > 0) { //bug
-		state->discard[currentPlayer][state->discardCount[currentPlayer]++] =
-				temphand[z - 1]; // discard all cards in play that have been drawn
-		z = z - 1;
+      else if (state->hand[player][i] == silver)
+	{
+	  state->coins += 2;
 	}
 	return 0;
 }
