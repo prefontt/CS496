@@ -662,30 +662,84 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     nextPlayer = 0;
   }
   
-	
+
+  int adventurerFunc(struct gameState *adventurerState, int adventurerPlayer, int adventurerTreasure, int tempZ)
+  {
+	while(adventurerTreasure<2){
+	if (adventurerState->deckCount[adventurerPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+	  shuffle(adventurerPlayer, adventurerState);
+	}
+	drawCard(adventurerPlayer, adventurerState);
+	cardDrawn = adventurerState->hand[adventurerPlayer][adventurerState->handCount[adventurerPlayer]-1];//top card of hand is most recently drawn card.
+	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	  adventurerTreasure+=2;
+	else{
+	  temphand[tempZ]=cardDrawn;
+	  adventurerState->handCount[adventurerPlayer]--; //this should just remove the top card (the most recently drawn one).
+	  tempZ++;
+	}
+      }
+      while(tempZ-1>=0){
+	adventurerState->discard[adventurerPlayer][adventurerState->discardCount[adventurerPlayer]++]=temphand[tempZ-1]; // discard all cards in play that have been drawn
+	tempZ=tempZ-1;
+      }
+      return 0;
+  }
+
+  int smithyFunc(int smithyPlayer,struct gameState *smithyState, int smithyHandPos)	
+  {
+ 	//+3 Cards
+      	for (i = 0; i < 3; i++)
+	{
+	  drawCard(smithyPlayer, smithyState);
+	}		
+     	//discard card from hand
+      	discardCard(smithyHandPos, smithyPlayer, smithyState, 1);
+	return 0;
+  }
+
+  int villageFunc(int villagePlayer, struct gameState *villageState, int villageHandPos)
+{
+      //+1 Card
+      drawCard(villagePlayer, villageState);
+			
+      //+2 Actions
+      state->numActions = state->numActions + 2;
+      state->numActions = state->numActions + 2;			
+      //discard played card from hand
+      discardCard(villageHandPos, villagePlayer, villageState, 0);
+      return 0;
+}
+
+int great_hallFunc(int great_hallPlayer, struct gameState *great_hallState, int great_hallHandPos)
+{
+      //+1 Card
+      drawCard(great_hallPlayer, great_hallState);
+			
+      //+1 Actions
+      great_hallState->numActions++;
+			
+      //discard card from hand
+      discardCard(great_hallHandPos, great_hallState->numActions, great_hallState, 0);
+      return 0;
+}
+
+int outpostFunc(struct gameState *outpostState, int outpostHandPos, int outpostPlayer)
+{
+ //set outpost flag
+   outpostState->outpostPlayed++;
+			
+ //discard card
+   discardCard(outpostHandPos, outpostPlayer, outpostState, 0);
+   return 0;
+}
+
   //uses switch to select card and perform actions
   switch( card ) 
     {
     case adventurer:
-      while(drawntreasure<2){
-	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
-	  shuffle(currentPlayer, state);
-	}
-	drawCard(currentPlayer, state);
-	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
-	  drawntreasure++;
-	else{
-	  temphand[z]=cardDrawn;
-	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-	  z++;
-	}
-      }
-      while(z-1>=0){
-	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
-	z=z-1;
-      }
-      return 0;
+       adventurerFunc(state, currentPlayer, drawntreasure, z);
+       return 0;
 			
     case council_room:
       //+4 Cards
@@ -829,25 +883,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+       smithyFunc(currentPlayer, state, handPos);
+       return 0;
 		
     case village:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+2 Actions
-      state->numActions = state->numActions + 2;
-			
-      //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      villageFunc(currentPlayer, state, handPos);
       return 0;
 		
     case baron:
@@ -902,14 +942,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+     great_hallFunc(currentPlayer, state, handPos);
       return 0;
 		
     case minion:
@@ -1156,11 +1189,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case outpost:
-      //set outpost flag
-      state->outpostPlayed++;
-			
-      //discard card
-      discardCard(handPos, currentPlayer, state, 0);
+      outpostFunc(state, handPos, currentPlayer);
       return 0;
 		
     case salvager:
