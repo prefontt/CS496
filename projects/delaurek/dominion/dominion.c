@@ -1277,6 +1277,7 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 int playAdventurer(struct gameState *state, int currentPlayer){
+  int z;
   int drawntreasure=0;
   int temphand[MAX_HAND];// moved above the if statement
   int cardDrawn;
@@ -1303,6 +1304,7 @@ int playAdventurer(struct gameState *state, int currentPlayer){
 }
 
 int playSmithy(struct gameState *state, int handPos, int currentPlayer){
+  int i;
   //+3 Cards
   for (i = 0; i <= 3; i++)
   {
@@ -1315,6 +1317,7 @@ int playSmithy(struct gameState *state, int handPos, int currentPlayer){
 }
 
 int playCouncil_Room(struct gameState *state, int handPos, int currentPlayer){
+  int i;
   //+4 Cards
   for (i = 0; i <= 4; i++)
   {
