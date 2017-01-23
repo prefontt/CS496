@@ -1133,19 +1133,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case salvager:
-      //+1 buy
-      state->numBuys++;
-			
-      if (choice1)
-	{
-	  //gain coins equal to trashed card
-	  state->coins = state->coins + getCost( handCard(choice1, state) );
-	  //trash card
-	  discardCard(choice1, currentPlayer, state, 1);	
-	}
-			
-      //discard card
-      discardCard(handPos, currentPlayer, state, 0);
+      salvagerAction(currentPlayer, choice1, handPos, state);
       return 0;
 		
     case sea_hag:
@@ -1357,6 +1345,27 @@ int sea_hagAction(int currentPlayer, struct gameState *state)
       }
       return 0;
 }
+
+
+int salvagerAction(int currentPlayer, int choice1, int handPos, struct gameState *state)
+{
+     //+2 buy
+      state->numBuys = state->numBuys +2;
+      
+      if (choice1)
+  {
+    //gain coins equal to trashed card
+    state->coins = state->coins + getCost( handCard(choice1, state) );
+    //trash card
+    discardCard(choice1, currentPlayer, state, 1);  
+  }
+      
+      //discard card
+      discardCard(handPos, currentPlayer, state, 0);
+      return 0;
+}
+
+
 
 //end of dominion.c
 

@@ -141,5 +141,6 @@ int adventurerAction(int currentPlayer, struct gameState *state, int *temphand);
 int smithyAction(int currentPlayer,int handPos,struct gameState *state);
 int villageAction(int currentPlayer, int handPos, struct gameState *state);
 int sea_hagAction(int currentPlayer, struct gameState *state);
+int salvagerAction(int currentPlayer, int choice1, int handPos, struct gameState *state);
 
 #endif
