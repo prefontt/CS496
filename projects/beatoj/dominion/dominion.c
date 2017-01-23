@@ -663,7 +663,7 @@ int playAdventurer(int drawntreasure, struct gameState *state, int currentPlayer
             z++;
         }
     }
-    while(z-1>=0){
+    while(z-2>=0){              //***BUG ADDED:  CHANGED FROM Z-1 TO Z-2
         state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
         z=z-1;
     }
@@ -675,14 +675,14 @@ int playAdventurer(int drawntreasure, struct gameState *state, int currentPlayer
 int playSmithy(struct gameState *state, int currentPlayer, int handPos)
 {
     //+3 Cards
-    int i = 0;
+    int i = 1;                  //***BUG ADDED:  CHANGED FROM int i = 0 to int i = 1
     for(i ; i < 3; i++)         //CHANGED THE FOR LOOP, DECLARING INT WITHIN FOR LOOP - C99 COMPATIBILITY ISSUES
     {
         drawCard(currentPlayer, state);
     }
 
     //discard card from hand
-    discardCard(handPos, currentPlayer, state, 0);
+    discardCard(handPos, handPos, state, 0);  //***BUG ADDED:  CHANGED FROM currentPlayer to handPos
     return 0;
 }
 
@@ -691,10 +691,10 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos)
 int playVillage(struct gameState *state, int currentPlayer, int handPos)
 {
     //+1 Card
-    drawCard(currentPlayer, state);
+    drawCard(handPos, state);                 //***BUG ADDED:  CHANGED FROM currentPlayer to handPos
 
     //+2 Actions
-    state->numActions = state->numActions + 2;
+    state->numActions = state->numActions + 3;      //***BUG ADDED:  CHANGED FROM 2 to 3
 
     //discard played card from hand
     discardCard(handPos, currentPlayer, state, 0);
@@ -715,7 +715,9 @@ int playRemodel(struct gameState *state, int currentPlayer, int handPos, int j, 
     gainCard(choice2, state, 0, currentPlayer);
 
     //discard card from hand
-    discardCard(handPos, currentPlayer, state, 0);
+    discardCard(currentPlayer, handPos, state, 0);      //***BUG ADDED:  TRANSPOSED 1ST & 2ND PARAMETERS
+                                                        //1st param changed from handPos to currentPlayer
+                                                        //2nd param changed from currentPlayer to handPos
 
     //discard trashed card
     int i = 0;
