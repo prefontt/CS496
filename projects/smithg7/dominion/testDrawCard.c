@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
 #include "rngs.h"
 
 #define DEBUG 0
@@ -37,6 +38,7 @@ int checkDrawCard(int p, struct gameState *post) {
   assert (r == 0);
 
   assert(memcmp(&pre, post, sizeof(struct gameState)) == 0);
+  return 0;
 }
 
 int main () {
@@ -68,7 +70,7 @@ int main () {
 
   printf ("ALL TESTS OK\n");
 
-  exit(0);
+  return(0);
 
   printf ("SIMPLE FIXED TESTS.\n");
   for (p = 0; p < 2; p++) {
