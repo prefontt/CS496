@@ -136,7 +136,8 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
 int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card);
 int playVillage(struct gameState *state, int currentPlayer, int handPos, int card);
 int playSteward(struct gameState *state, int currentPlayer, int choice1, int choice2, int choice3, int handPos, int card);
-int playMinion(struct gameState *state, int handPos);
+int playSalvager(struct gameState *state, int currentPlayer, int choice1, int handPos, int card);
+int inHand(struct gameState *state, int currentPlayer, int choice1);
 
 
 #endif
