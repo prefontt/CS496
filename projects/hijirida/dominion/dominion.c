@@ -1,5 +1,6 @@
 #include "dominion.h"
 #include "dominion_helpers.h"
+#include "dominion_refactorwk2.h"
 #include "rngs.h"
 #include <stdio.h>
 #include <math.h>
@@ -655,7 +656,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
+  // int drawntreasure=0; removed due to code refactor wk2
   int cardDrawn;
   int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
@@ -668,9 +669,15 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     {
 
     // ***************************		
-		// ******** adventurer **********
+		// ******** ADVENTURER *******
 		// ***************************		
     case adventurer:
+      
+      // add refactored adventurer action here
+      AdventurerAction (currentPlayer, state, handPos);
+      return 0;
+      
+/*** Comment out original code before refactor      
       while(drawntreasure<2){
 	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(currentPlayer, state);
@@ -689,9 +696,18 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 	z=z-1;
       }
-      return 0;
+***/
+
+
+    // *****************************
+		// ******** Council Room *******
+		// *****************************
 			
     case council_room:
+		  CouncilRoomAction (currentPlayer, state, handPos);
+	    return 0;
+	
+/*** commented out to refactor in separate function
       //+4 Cards
       for (i = 0; i < 4; i++)
 	{
@@ -712,9 +728,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //put played card in played card pile
       discardCard(handPos, currentPlayer, state, 0);
-			
-      return 0;
-			
+***/			
+  			
     // ***************************		
 		// ********  **********
 		// ***************************		
@@ -813,7 +828,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 			
     // ***************************		
-		// ********  **********
+		// ******** remodel **********
 		// ***************************		
     case remodel:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
@@ -842,9 +857,23 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     // ***************************		
-		// ******** smithy  **********
+		// ******** SMITHY **********
 		// ***************************		
     case smithy:
+    
+      // debug: print number of cards before call    
+      printf ("\nDebug: number cards in hand before: ");
+      printf ("%i\n", state->handCount[currentPlayer]);
+      
+      // add refactored smithy action here
+      SmithyAction (currentPlayer, state, handPos);
+
+      // debug: print number of cards after call
+      printf ("\nDebug: number cards in hand after: ");
+      printf ("%i\n", state->handCount[currentPlayer]);
+      return 0;
+
+ /****     
       //+3 Cards
       for (i = 0; i < 3; i++)
 	{
@@ -853,12 +882,17 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-		
+  ***/
+ 		
     // ***************************		
-		// ********  **********
+		// ******** VILLAGE **********
 		// ***************************		
     case village:
+    
+      VillageAction (currentPlayer, state, handPos);
+      return 0;
+      
+   /****   
       //+1 Card
       drawCard(currentPlayer, state);
 			
@@ -867,7 +901,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+    ***/
 		
     // ***************************		
 		// ********  **********
@@ -991,6 +1025,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	}
       return 0;
 		
+		//*********************
+    //*********************
+    //*********************
+    
     case steward:
       if (choice1 == 1)
 	{
@@ -1139,11 +1177,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 
     // ***************************		
-		// ********  **********
+		// ******** CUT PURSE **********
 		// ***************************		
 
     case cutpurse:
+      
+      // Refactored code in separate function
+      CutPurseAction (currentPlayer, state, handPos);
+      return 0;
 
+/*** commented out and moved code to separate function
       updateCoins(currentPlayer, state, 2);
       for (i = 0; i < state->numPlayers; i++)
 	{
@@ -1170,14 +1213,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	    }
 				
 	}				
-
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);			
-
-      return 0;
+***/
 
     // ***************************		
-		// ********  **********
+		// ******** embargo **********
 		// ***************************				
     case embargo: 
       //+2 Coins
@@ -1379,6 +1420,122 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
+//***************************************
+//***** REFACTORED CODE Week2 ***********
+//***************************************
+
+int SmithyAction (int currentPlayer, struct gameState *state, int handPos) {
+  int i;
+  printf ("\nDebug: Smithy Action refactor code\n");
+  //+3 Cards
+  for (i = 0; i < 3; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}	
+  //discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
+
+
+int AdventurerAction (int currentPlayer, struct gameState *state, int handPos) {
+  int drawntreasure=0;
+  int z = 0; // for temp hand counter
+  int cardDrawn;
+  int temphand[MAX_HAND];
+  
+  printf ("\nDebug: Adventurer Action refactor code\n");
+  
+  while(drawntreasure<2){
+	  if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+	  shuffle(currentPlayer, state);
+	  }
+	  drawCard(currentPlayer, state);
+	  cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+	  if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	    drawntreasure++;
+	  else {
+	    temphand[z]=cardDrawn;
+	    state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+	    z++;
+	  }
+  }
+  while(z-1>=0){
+	  state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+	  z=z-1;
+  }
+  return 0;
+}
+
+int VillageAction (int currentPlayer, struct gameState *state, int handPos) {
+  printf ("\nDebug: Village Action refactor code\n");
+  //+1 Card
+  drawCard(currentPlayer, state);
+			
+  //+2 Actions
+  state->numActions = state->numActions + 2;
+			
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  
+  return 0;
+}
+
+
+
+
+
+int CouncilRoomAction (int currentPlayer, struct gameState *state, int handPos) {
+  int i;
+  printf ("\nDebug: Council Room Action refactor code\n");
+  //+4 Cards
+  for (i = 0; i < 4; i++) {
+	  drawCard(currentPlayer, state);
+	}
+	//+1 Buy
+  state->numBuys++;
+			
+  //Each other player draws a card
+  for (i = 0; i < state->numPlayers; i++) {
+	  if ( i != currentPlayer ) {
+	      drawCard(i, state);
+	  }
+	}
+	//put played card in played card pile
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
+
+
+
+int CutPurseAction (int currentPlayer, struct gameState *state, int handPos) {
+  int i, j, k;
+  printf ("\nDebug: Cut Purse Action refactor code\n");
+  
+  updateCoins(currentPlayer, state, 2);
+  for (i = 0; i < state->numPlayers; i++) {
+	  if (i != currentPlayer) {
+	    for (j = 0; j < state->handCount[i]; j++) {
+		    if (state->hand[i][j] == copper) {
+		      discardCard(j, i, state, 0);
+		      break;
+		    }
+		    if (j == state->handCount[i]) {
+		      for (k = 0; k < state->handCount[i]; k++) {
+			      if (DEBUG)
+			      printf("Player %d reveals card number %d\n", i, state->hand[i][k]);
+			    }	
+		      break;
+		    }		
+		  }		
+	  }		
+	}				
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);			
+  return 0;
+}
 
 //end of dominion.c
 
