@@ -812,14 +812,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      smithyAction(currentPlayer, handPos, state);
       return 0;
 		
     case village:
@@ -1336,6 +1329,19 @@ int adventurerAction(int currentPlayer, struct gameState *state, int *temphand)
   state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
   z=z-1;
       }
+      return 0;
+}
+
+
+int smithyAction(int currentPlayer,int handPos,struct gameState *state)
+{
+     for (int i = 0; i < 3; i++)
+  {
+    drawCard(currentPlayer, state);
+  }
+      
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
       return 0;
 }
 
