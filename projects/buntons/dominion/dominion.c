@@ -1241,7 +1241,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
-//doesnt shuffle if deck runs out of cards
 int playAdventurer(struct gameState *state){
     int drawntreasure = 0;
     int currentPlayer = whoseTurn(state);
@@ -1266,7 +1265,6 @@ int playAdventurer(struct gameState *state){
     }
 }
 
-//tries to discards the card before it as well
 int playSmithy(struct gameState *state, int handPos){
     int currentPlayer = whoseTurn(state);
     int i;
@@ -1284,12 +1282,11 @@ int playSmithy(struct gameState *state, int handPos){
     return 0;
 }
 
-//trashes the remodel card
 int playRemodel(struct gameState *state, int handPos, int choice1, int choice2){
     int currentPlayer = whoseTurn(state);
     int j, i;
 
-    j = state->hand[currentPlayer][choice1];  //store card we will trash
+    j = state->hand[currentPlayer][choice1];  
 
     if ( (getCost(state->hand[currentPlayer][choice1]) + 2) > getCost(choice2) )
 	{
@@ -1315,7 +1312,6 @@ int playRemodel(struct gameState *state, int handPos, int choice1, int choice2){
     return 0;
 }
 
-//first player always gains the card
 int playMine(struct gameState *state, int handPos, int choice1, int choice2){
     int currentPlayer = whoseTurn(state);
     int j, i;
