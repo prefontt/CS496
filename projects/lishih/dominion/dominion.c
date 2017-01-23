@@ -711,7 +711,7 @@ int playMarket(struct gameState *state, int currentPlayer, int handPos)
 
 
 //******************************************************
-// *function playVillage  
+// **function playVillage  
 // *****************************************************
 int playVillage(struct gameState *state, int currentPlayer, int handPos)
 {
