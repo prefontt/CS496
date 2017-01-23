@@ -139,5 +139,6 @@ int playCouncil_Room(struct gameState *state, int handPos);
 //DM --Added refactored functions
 int adventurerAction(int currentPlayer, struct gameState *state, int *temphand);
 int smithyAction(int currentPlayer,int handPos,struct gameState *state);
+int villageAction(int currentPlayer, int handPos, struct gameState *state);
 
 #endif
