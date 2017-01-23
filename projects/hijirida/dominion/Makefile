@@ -1,5 +1,7 @@
 CFLAGS = -Wall -fpic -coverage -lm
 
+
+
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 	$(info ******** testing all *******)
   
@@ -46,5 +48,5 @@ player: player.c interface.o
 	$(info ******** compiling player *******)
 
 clean:
-	#rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
-	$(info ******** clean is off now *******)
+	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
+	$(info ******** clean2 is on *******)
