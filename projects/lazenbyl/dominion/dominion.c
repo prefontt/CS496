@@ -702,7 +702,7 @@ int performVillageAction(int currentPlayer,struct gameState *state,int handPos){
 
 }
 
-int performGreatHallKingdom(int currentPlayer,struct gameState *state,int handPos){
+int performGreatHallAction(int currentPlayer,struct gameState *state,int handPos){
 
       //+1 Card
       drawCard(currentPlayer, state);
@@ -714,6 +714,33 @@ int performGreatHallKingdom(int currentPlayer,struct gameState *state,int handPo
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
   }
+
+int performStewardAction(int currentPlayer,struct gameState *state,int handPos,int choice1, int choice2, int choice3){
+      if (choice1 == 1)
+  {
+    //+2 cards
+    drawCard(currentPlayer, state);
+    drawCard(currentPlayer, state);
+  }
+      else if (choice1 == 2)
+  {
+    //+2 coins
+    state->coins = state->coins + 2;
+  }
+      else
+  {
+    //trash 3 cards in hand
+    discardCard(choice2, currentPlayer, state, 1);
+    discardCard(choice3, currentPlayer, state, 2);
+
+  }
+      
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+
+
+  return 0;
+}
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
@@ -950,7 +977,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		
     case great_hall:
     
-    performGreatHallKingdom(currentPlayer,state,handPos);
+    performGreatHallAction(currentPlayer,state,handPos);
 		
     case minion:
       //+1 action
@@ -1004,27 +1031,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case steward:
-      if (choice1 == 1)
-	{
-	  //+2 cards
-	  drawCard(currentPlayer, state);
-	  drawCard(currentPlayer, state);
-	}
-      else if (choice1 == 2)
-	{
-	  //+2 coins
-	  state->coins = state->coins + 2;
-	}
-      else
-	{
-	  //trash 2 cards in hand
-	  discardCard(choice2, currentPlayer, state, 1);
-	  discardCard(choice3, currentPlayer, state, 1);
-	}
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+
+      performStewardAction(currentPlayer,state,handPos,choice1,choice2,choice3);
 		
     case tribute:
       if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
