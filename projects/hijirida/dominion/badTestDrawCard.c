@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <math.h>
+#include <stdlib.h>
 #include "rngs.h"
 
 #define DEBUG 0
@@ -12,14 +14,16 @@ int checkDrawCard(int p, struct gameState *post) {
   int r;
     
   r = drawCard (p, post);
+  return 0; // hijiridd: added return 0 to turn off compile warning
 }
 
 int main () {
 
-  int i, n, r, p, deckCount, discardCount, handCount;
+  int i, n, p; // removed r, handCount, discardCount, deckCount compile warning
 
-  int k[10] = {adventurer, council_room, feast, gardens, mine,
-	       remodel, smithy, village, baron, great_hall};
+  // hijiridd: commented out variable not used in compile warning
+  //int k[10] = {adventurer, council_room, feast, gardens, mine,
+	//       remodel, smithy, village, baron, great_hall};
 
   struct gameState G;
 
