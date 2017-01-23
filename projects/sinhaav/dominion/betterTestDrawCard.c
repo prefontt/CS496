@@ -3,42 +3,17 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include <math.h>
 #include "rngs.h"
 
 #define DEBUG 0
 #define NOISY_TEST 1
 
 int checkDrawCard(int p, struct gameState *post) {
-  struct gameState pre;
-  memcpy (&pre, post, sizeof(struct gameState));
-
   int r;
-  //  printf ("drawCard PRE: p %d HC %d DeC %d DiC %d\n",
-  //	  p, pre.handCount[p], pre.deckCount[p], pre.discardCount[p]);
     
   r = drawCard (p, post);
 
-  //printf ("drawCard POST: p %d HC %d DeC %d DiC %d\n",
-  //      p, post->handCount[p], post->deckCount[p], post->discardCount[p]);
-
-  if (pre.deckCount[p] > 0) {
-    pre.handCount[p]++;
-    pre.hand[p][pre.handCount[p]-1] = pre.deck[p][pre.deckCount[p]-1];
-    pre.deckCount[p]--;
-  } else if (pre.discardCount[p] > 0) {
-    memcpy(pre.deck[p], post->deck[p], sizeof(int) * pre.discardCount[p]);
-    memcpy(pre.discard[p], post->discard[p], sizeof(int)*pre.discardCount[p]);
-    pre.hand[p][post->handCount[p]-1] = post->hand[p][post->handCount[p]-1];
-    pre.handCount[p]++;
-    pre.deckCount[p] = pre.discardCount[p]-1;
-    pre.discardCount[p] = 0;
-  }
-
   assert (r == 0);
-
-  assert(memcmp(&pre, post, sizeof(struct gameState)) == 0);
-  return 0;
 }
 
 int main () {
@@ -70,7 +45,7 @@ int main () {
 
   printf ("ALL TESTS OK\n");
 
-  return(0);
+  exit(0);
 
   printf ("SIMPLE FIXED TESTS.\n");
   for (p = 0; p < 2; p++) {
