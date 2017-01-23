@@ -1426,12 +1426,22 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
 int SmithyAction (int currentPlayer, struct gameState *state, int handPos) {
   int i;
-  printf ("\nDebug: Smithy Action refactor code\n");
+  // printf ("\nDebug: Smithy Action refactor code\n");
+
+/** Original Smithy action without bugs
   //+3 Cards
   for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
 	}	
+**/ 
+
+  // *** ADDING BUG +4 Cards (instead of +3 cards!!)
+  for (i = 0; i < 4; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}	
+	
   //discard card from hand
   discardCard(handPos, currentPlayer, state, 0);
   return 0;
@@ -1446,14 +1456,20 @@ int AdventurerAction (int currentPlayer, struct gameState *state, int handPos) {
   int temphand[MAX_HAND];
   
   printf ("\nDebug: Adventurer Action refactor code\n");
-  
+
   while(drawntreasure<2){
 	  if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(currentPlayer, state);
 	  }
 	  drawCard(currentPlayer, state);
 	  cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+
+/***  Original Adventurer action without bugs
 	  if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+***/
+    // *** ADDING BUG if statement does not check for gold, just copper and silver
+	  if (cardDrawn == copper || cardDrawn == silver)
+
 	    drawntreasure++;
 	  else {
 	    temphand[z]=cardDrawn;
@@ -1468,14 +1484,22 @@ int AdventurerAction (int currentPlayer, struct gameState *state, int handPos) {
   return 0;
 }
 
+
+
+
+
 int VillageAction (int currentPlayer, struct gameState *state, int handPos) {
   printf ("\nDebug: Village Action refactor code\n");
   //+1 Card
   drawCard(currentPlayer, state);
-			
+
+/***  Original Village Action action without bugs			
   //+2 Actions
   state->numActions = state->numActions + 2;
-			
+***/
+	// *** ADDING BUG if statement does not check for gold, just copper and silver
+  state->numActions = state->numActions + 3;  
+  
   //discard played card from hand
   discardCard(handPos, currentPlayer, state, 0);
   
@@ -1495,9 +1519,13 @@ int CouncilRoomAction (int currentPlayer, struct gameState *state, int handPos) 
 	}
 	//+1 Buy
   state->numBuys++;
-			
+
+/***  Original Council Room action without bugs			
   //Each other player draws a card
   for (i = 0; i < state->numPlayers; i++) {
+***/
+  // *** ADDING BUG reducing the other players that need to draw card by 1
+  for (i = 0; i < (state->numPlayers-1); i++) {
 	  if ( i != currentPlayer ) {
 	      drawCard(i, state);
 	  }
@@ -1518,7 +1546,12 @@ int CutPurseAction (int currentPlayer, struct gameState *state, int handPos) {
   for (i = 0; i < state->numPlayers; i++) {
 	  if (i != currentPlayer) {
 	    for (j = 0; j < state->handCount[i]; j++) {
+	    
+	    /***  Original Council Room action without bugs		
 		    if (state->hand[i][j] == copper) {
+		  ***/
+        // *** ADDING BUG other players discard silver INSTEAD of copper
+		    if (state->hand[i][j] == silver) {		    
 		      discardCard(j, i, state, 0);
 		      break;
 		    }
