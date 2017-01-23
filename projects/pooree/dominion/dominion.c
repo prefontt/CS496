@@ -1302,8 +1302,9 @@ int playAdventurer(int drawntreasure, int *temphand, int z, int cardDrawn, int c
 
 
 int playCouncil_Room(int handPos, int currentPlayer, struct gameState *state) {
+  int i;
   //+4 Cards
-  for (int i = 0; i < 4; i++) {
+  for (i = 0; i < 4; i++) {
     drawCard(currentPlayer, state);
   }
       
@@ -1311,7 +1312,7 @@ int playCouncil_Room(int handPos, int currentPlayer, struct gameState *state) {
   state->numBuys++;
       
   //Each other player draws a card
-  for (int i = 0; i < state->numPlayers; i++) {
+  for (i = 0; i < state->numPlayers; i++) {
     drawCard(i, state);
   }
       
@@ -1322,6 +1323,7 @@ int playCouncil_Room(int handPos, int currentPlayer, struct gameState *state) {
 }
 
 int playMine(int handPos, int currentPlayer, int choice1, int choice2, struct gameState *state) {
+  int i;
   int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
   if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold) {
@@ -1338,7 +1340,7 @@ int playMine(int handPos, int currentPlayer, int choice1, int choice2, struct ga
   discardCard(handPos, currentPlayer, state, 0);
 
   //discard trashed card
-  for (int i = 0; i < state->handCount[currentPlayer]; i++) {
+  for (i = 0; i < state->handCount[currentPlayer]; i++) {
     if (state->hand[currentPlayer][i] == j) {
       // Shouldn't this be getting trashed i.e. trashFlag = 1??
       discardCard(i, currentPlayer, state, 0);      
@@ -1351,7 +1353,8 @@ int playMine(int handPos, int currentPlayer, int choice1, int choice2, struct ga
 
 //Adds 3 cards to player's hand
 int playSmithy(int handPos, int currentPlayer, struct gameState *state) {
-  for (int i = 0; i < 3; i++) {
+  int i;
+  for (i = 0; i < 3; i++) {
     drawCard(currentPlayer+1, state);
   }
            
