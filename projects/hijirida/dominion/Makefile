@@ -47,4 +47,4 @@ player: player.c interface.o
 
 clean:
 	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
-	$(info ******** clean is off now *******)
+	$(info ******** clean2 is on *******)
