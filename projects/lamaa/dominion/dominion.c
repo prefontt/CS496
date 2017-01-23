@@ -643,6 +643,88 @@ int getCost(int cardNumber)
   return -1;
 }
 
+/* Week 2: Assignment 2 Refactor Functions */
+int refacAdventurer(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int temphand[MAX_HAND], int z)
+{
+      while(drawntreasure<=2){
+	if (state->deckCount[currentPlayer] <1){
+	  shuffle(currentPlayer, state);
+	}
+	drawCard(currentPlayer, state);
+	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];
+	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	  drawntreasure++;
+	else{
+	  temphand[z]=cardDrawn;
+	  state->handCount[currentPlayer]++; 
+	  z++;
+	}
+      }
+      while(z-1>=0){
+	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1];
+	z=z-1;
+      }
+      return 0;
+}
+
+int refacSmithy(int handPos, int currentPlayer, struct gameState *state)
+{
+	int i;
+
+	for (i = 0; i <= 3; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}
+	    		  				
+
+	discardCard(handPos, currentPlayer, state, 0);
+	return 0;
+}
+
+int refacVillage(int currentPlayer, struct gameState *state, int handPos)
+{
+
+	drawCard(currentPlayer, state);
+	drawCard(currentPlayer,state);
+
+	state->numActions = state->numActions + 3;
+	
+
+   	discardCard(handPos, currentPlayer, state, 0);
+      	return 0;
+}
+
+int refacGreatHall(int currentPlayer, struct gameState *state, int handPos)
+{
+	state->numActions++;
+	
+	//discard card from hand
+      	discardCard(handPos, currentPlayer, state, 0);
+      	return 0;
+}	
+
+int refacCouncilRoom(int currentPlayer, struct gameState *state)
+{
+	int i;
+
+      	for (i = 0; i < 3; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}
+
+	state->numBuys;
+
+	for(i = 0; i < state->numPlayers; i++)
+	{
+	  if ( i != currentPlayer )
+	    {
+	      drawCard(i, state);
+	    }
+	}
+}
+
+/* ------------------------ Assignment 2 Refactor End -------------------------*/
+
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
   int i;
@@ -661,12 +743,13 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
-  
-	
+  		
   //uses switch to select card and perform actions
   switch( card ) 
     {
     case adventurer:
+	refacAdventurer(drawntreasure, state, currentPlayer, cardDrawn, temphand, z);
+/*
       while(drawntreasure<2){
 	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(currentPlayer, state);
@@ -686,8 +769,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	z=z-1;
       }
       return 0;
-			
+*/
+				
     case council_room:
+	refacCouncilRoom(currentPlayer, state);
+/*
       //+4 Cards
       for (i = 0; i < 4; i++)
 	{
@@ -710,7 +796,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       discardCard(handPos, currentPlayer, state, 0);
 			
       return 0;
-			
+*/			
     case feast:
       //gain card with cost up to 5
       //Backup hand
@@ -829,7 +915,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case smithy:
-      //+3 Cards
+	refacSmithy(handPos, currentPlayer, state);
+/*    
+	//+3 Cards
       for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
@@ -838,8 +926,10 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
-		
+*/		
     case village:
+	refacVillage(currentPlayer, state, handPos);	
+/*
       //+1 Card
       drawCard(currentPlayer, state);
 			
@@ -849,7 +939,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
-		
+*/		
     case baron:
       state->numBuys++;//Increase buys by 1!
       if (choice1 > 0){//Boolean true or going to discard an estate
@@ -902,6 +992,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
+	refacGreatHall(currentPlayer, state, handPos);
+/*
       //+1 Card
       drawCard(currentPlayer, state);
 			
@@ -911,7 +1003,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
       return 0;
-		
+*/		
     case minion:
       //+1 action
       state->numActions++;
