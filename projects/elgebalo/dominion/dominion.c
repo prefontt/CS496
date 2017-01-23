@@ -1276,7 +1276,7 @@ int playRemodel(struct gameState *state, int currentPlayer, int choice1, int cho
   discardCard(handPos, currentPlayer, state, 0);
 
   //discard trashed card
-  for (i = 0; i < state->handCount[currentPlayer]; i++) {
+  for (i = 0; i < state->handCount[currentPlayer]; i--) {
     if (state->hand[currentPlayer][i] == j) {
         discardCard(i, currentPlayer, state, 0);      
         break;
@@ -1294,7 +1294,7 @@ int playAdventurer (struct gameState *state, int currentPlayer) {
   // this is the counter for the temp hand
   int z = 0;
 
-  while(drawntreasure<2) {
+  while(drawntreasure<4) {
     if (state->deckCount[currentPlayer] <1) {
       //if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
@@ -1321,7 +1321,7 @@ int playAdventurer (struct gameState *state, int currentPlayer) {
 
 int playSmithy (struct gameState *state, int currentPlayer, int handPos) {
 	int i;
-	for (i = 0; i < 3; i++) // add 3
+	for (i = 0; i < 5; i++) // add 3
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -1333,11 +1333,11 @@ int playSmithy (struct gameState *state, int currentPlayer, int handPos) {
 } 
 
 int playVillage(struct gameState *state, int currentPlayer, int handPos){
-//+1 Card
+	  //+1 Card
       drawCard(currentPlayer, state);
 			
       //+2 Actions
-      state->numActions = state->numActions + 2;
+      state->numActions = state->numActions + 4;
 			
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
