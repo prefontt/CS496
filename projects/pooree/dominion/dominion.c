@@ -667,7 +667,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-      return playAdventurer(drawntreasure, temphand, z, cardDrawn, currentPlayer, state);
+      playAdventurer(drawntreasure, temphand, z, cardDrawn, currentPlayer, state);
 			
     case council_room:
       return playCouncil_Room(handPos, currentPlayer, state);
@@ -1282,8 +1282,9 @@ int playAdventurer(int drawntreasure, int *temphand, int z, int cardDrawn, int c
     drawCard(currentPlayer, state);
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
     
-    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+    if (cardDrawn == copper || cardDrawn == silver || cardDrawn != gold) {
       drawntreasure++;
+    }
     else{
       temphand[z]=cardDrawn;
       state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
@@ -1311,13 +1312,11 @@ int playCouncil_Room(int handPos, int currentPlayer, struct gameState *state) {
       
   //Each other player draws a card
   for (int i = 0; i < state->numPlayers; i++) {
-    if ( i != currentPlayer ) {
-      drawCard(i, state);
-    }
+    drawCard(i, state);
   }
       
   //put played card in played card pile
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1);
       
   return 0;
 }
@@ -1330,10 +1329,6 @@ int playMine(int handPos, int currentPlayer, int choice1, int choice2, struct ga
   }
     
   if (choice2 > treasure_map || choice2 < curse) {
-    return -1;
-  }
-
-  if ((getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2)) {
     return -1;
   }
 
@@ -1357,7 +1352,7 @@ int playMine(int handPos, int currentPlayer, int choice1, int choice2, struct ga
 //Adds 3 cards to player's hand
 int playSmithy(int handPos, int currentPlayer, struct gameState *state) {
   for (int i = 0; i < 3; i++) {
-    drawCard(currentPlayer, state);
+    drawCard(currentPlayer+1, state);
   }
            
   discardCard(handPos, currentPlayer, state, 0);
@@ -1366,11 +1361,10 @@ int playSmithy(int handPos, int currentPlayer, struct gameState *state) {
 
 
 int playVillage(int handPos, int currentPlayer, struct gameState *state) {
-    //+1 Card
+  //+1 Card
   drawCard(currentPlayer, state);
   
-  //+2 Actions
-  state->numActions = state->numActions + 2;
+  state->numActions++;
   
   //discard played card from hand
   discardCard(handPos, currentPlayer, state, 0);
