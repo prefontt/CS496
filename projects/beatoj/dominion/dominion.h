@@ -130,11 +130,28 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
-int playAdventurer(struct gameState *state);
-int playSmithy(struct gameState *state, int handPos);
-int playVillage(struct gameState *state, int handPos);
+//*************************METHODS CHANGED/ADDED***************************
+
+//ADDED REVISED ADVENTURER METHOD
+int playAdventurer(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int *temphand, int z);
+//int playAdventurer(struct gameState *state);                  //CHANGED - DID NOT USE
+
+//ADDED REVISED SMITHY METHOD
+int playSmithy(struct gameState *state, int currentPlayer, int handPos);
+//int playSmithy(struct gameState *state, int handPos);         //CHANGED - DID NOT USE
+
+//ADDED REVISED VILLAGE METHOD
+int playVillage(struct gameState *state, int currentPlayer, int handPos);
+//int playVillage(struct gameState *state, int handPos);        //CHANGED - DID NOT USE
+
+//ADDED REMODEL METHOD
+int playRemodel(struct gameState *state, int currentPlayer, int handPos, int j, int choice1, int choice2);
+
 int playFeast(struct gameState *state, int choice1);
-int playCouncil_Room(struct gameState *state, int handPos);
+
+//ADDED REVISED COUNCIL_ROOM METHOD
+int playCouncil_Room(struct gameState *state, int currentPlayer, int handPos);
+//int playCouncil_Room(struct gameState *state, int handPos);   //CHANGED - DID NOT USE
 
 
 #endif
