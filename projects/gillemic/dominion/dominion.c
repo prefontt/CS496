@@ -647,8 +647,8 @@ int getCost(int cardNumber)
 
 int playSmithy(int currentPlayer, struct gameState *state,  int handPos)
 {
-   int i;
-   for (i = 0; i < 3; i++)
+   int i; //introduced bug
+   for (i = 0; i < 5; i++)
    {
       drawCard(currentPlayer, state);
    }
@@ -656,15 +656,15 @@ int playSmithy(int currentPlayer, struct gameState *state,  int handPos)
    discardCard(handPos, currentPlayer, state, 0);
 }
 
-int playAdventurer(struct gameState *state, int currentPlayer, int drawntreasure, int cardDrawn, int *temphand, int z)
+int playAdventurer(struct gameState *state, int currentPlayer, int drawntreasure, int cardDrawn, int temphand[], int z)
 {
-   while (drawntreasure < 2) {
+   while (drawntreasure < 2) { //introduced bug
       if (state->deckCount[currentPlayer] < 1) { //if the deck is empty, shuffle it
 	 shuffle(currentPlayer, state);
       }
       drawCard(currentPlayer, state);
       cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn
-      if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+      if (cardDrawn == copper || cardDrawn == silver)
 	 drawntreasure++;
       else {
 	 temphand[z] = cardDrawn;
@@ -681,6 +681,7 @@ int playAdventurer(struct gameState *state, int currentPlayer, int drawntreasure
 
 int playGreat_Hall(int currentPlayer, struct gameState *state, int handPos)
 {
+   //introduced bug
    //+1 card
    drawCard(currentPlayer, state);
 
@@ -688,15 +689,19 @@ int playGreat_Hall(int currentPlayer, struct gameState *state, int handPos)
    state->numActions++;
 
    //discard
-   discardCard(handPos, currentPlayer, state, 0);
+   discardCard(handPos, currentPlayer, state, 1);
 
    return 0;
 }
 
 int playSalvager(int currentPlayer, struct gameState *state, int handPos, int choice1)
 {
+   //added bug
+
    //+1 buy
    state->numBuys++;
+   //+1 action
+   state->numActions++;
 
    if (choice1)
    {
@@ -714,6 +719,7 @@ int playSalvager(int currentPlayer, struct gameState *state, int handPos, int ch
 
 int playCouncil_Room(int currentPlayer, struct gameState *state, int handPos)
 {
+  //introduced bug
   //+4 cards
   int i;
   for (i = 0; i < 4; i++)
@@ -727,7 +733,7 @@ int playCouncil_Room(int currentPlayer, struct gameState *state, int handPos)
   //everyone else draws a card
   for (i = 0; i < state->numPlayers; i++)
   {
-     if (i != currentPlayer)
+     if (i == currentPlayer)
      {
 	drawCard(i, state);
      }
@@ -761,7 +767,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   //NEW FUNCTIONS FOR ASSIGNMENT 2
   
   if (card == adventurer) {
-     playAdventurer(drawntreasure, state, currentPlayer, cardDrawn, temphand, z);
+     playAdventurer(state, currentPlayer, drawntreasure, cardDrawn, temphand, z);
   }
   else if (card == smithy) {
      playSmithy(currentPlayer, state, handPos);
