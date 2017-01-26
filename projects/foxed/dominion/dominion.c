@@ -661,37 +661,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     nextPlayer = 0;
   }
   
-	
   //uses switch to select card and perform actions
   switch( card ) 
     {
     case adventurer:
-  
-		return playAdventurer(state, currentPlayer);
+		playAdventurer(state, currentPlayer);
+		return 0;
 			
     case council_room:
-      //+4 Cards
-      for (i = 0; i < 4; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-			
-      //+1 Buy
-      state->numBuys++;
-			
-      //Each other player draws a card
-      for (i = 0; i < state->numPlayers; i++)
-	{
-	  if ( i != currentPlayer )
-	    {
-	      drawCard(i, state);
-	    }
-	}
-			
-      //put played card in played card pile
-      discardCard(handPos, currentPlayer, state, 0);
-			
-      return 0;
+		playCouncil_Room(state, currentPlayer, handPos);
+		return 0;
 			
     case feast:
       //gain card with cost up to 5
@@ -708,7 +687,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       while( x == 1) {//Buy one card
 	if (supplyCount(choice1, state) <= 0){
 	  if (DEBUG)
-	    printf("None of that card left, sorry!\n");
+	    printf("None of that card left, sorrygr!\n");
 
 	  if (DEBUG){
 	    printf("Cards Left: %d\n", supplyCount(choice1, state));
@@ -751,7 +730,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
     case mine:
       
-		return playMine(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos);
+		playMine(state, choice1, choice2, currentPlayer, handPos);
+		return 0;
 			
     case remodel:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
@@ -781,7 +761,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 		
     case smithy:
   
-	  return playSmithy(struct gameState *state, int currentPlayer, int handPos);
+	  playSmithy(state, currentPlayer, handPos);
+	  return 0;
 		
     case baron:
       state->numBuys++;//Increase buys by 1!
@@ -835,15 +816,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+1 Actions
-      state->numActions++;
-			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+		playGreat_Hall(state, currentPlayer, handPos);
+		return 0;
 		
     case minion:
       //+1 action
@@ -1269,7 +1243,7 @@ int playAdventurer(struct gameState *state, int currentPlayer)
 	int z = 0;// this is the counter for the temp hand
 
 	while (drawntreasure<2) {
-		if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+		if (state->deckCount[currentPlayer] > 1) {//if the deck is empty we need to shuffle discard and add to deck
 			shuffle(currentPlayer, state);
 		}
 		drawCard(currentPlayer, state);
@@ -1286,21 +1260,16 @@ int playAdventurer(struct gameState *state, int currentPlayer)
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
 		z = z - 1;
 	}
+
+	return 0;
 }
-
-{
-
-}
-
 
 int playSmithy(struct gameState *state, int currentPlayer, int handPos)
 {
 	//+3 Cards
-	for (i = 0; i < 3; i++)
+	for (i = 0; i <= 3; ++i)
 	{
 		drawCard(currentPlayer, state);
-
-
 	}
 
 	//discard card from hand
@@ -1310,9 +1279,13 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos)
 
 int playMine(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos)
 {
+	int i;
+	int j;
+	int currentPlayer = currentPlayer;
+
 	j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+	if (state->hand[currentPlayer][choice1] < copper && state->hand[currentPlayer][choice1] > gold)
 	{
 		return -1;
 	}
@@ -1341,6 +1314,46 @@ int playMine(struct gameState *state, int choice1, int choice2, int currentPlaye
 			break;
 		}
 	}
+}
+
+int playGreat_Hall(struct gameState *state, int currentPlayer, int handPos)
+{
+	//+1 Card
+	drawCard(currentPlayer, state);
+
+	//+1 Actions
+	state->numActions++;
+
+	//discard card from hand
+	discardCard(handPos, currentPlayer, state, 0);
+
+	return 0;
+}
+
+int playCouncil_Room(struct gameState *state, int currentPlayer, int handPos)
+{
+	//+4 Cards
+	for (i = 0; i < 4; i++)
+	{
+		drawCard(currentPlayer, state);
+	}
+
+	//+1 Buya
+	state->numBuys++;
+
+	//Each other player draws a card
+	for (i = 0; i < state->numPlayers; i++)
+	{
+		if (i == currentPlayer)
+		{
+			drawCard(i, state);
+		}
+	}
+
+	//put played card in played card pile
+	discardCard(handPos, currentPlayer, state, 0);
+
+	return 0;
 }
 
 //end of dominion.c
