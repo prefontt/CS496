@@ -663,21 +663,21 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   }
   
   //uses switch to select card and perform actions
-  switch( card ) 
-    {
+  switch( card ) {
+
     case adventurer:
       return playAdventurer(state);
 			
-  case council_room:
-    return playCouncil_Room(state, handPos);
+    case council_room:
+      return playCouncil_Room(state, handPos);
 			
-  case feast:
-    return playFeast(state, choice1);
+    case feast:
+      return playFeast(state, choice1);
 			
-  case gardens:
+    case gardens:
       return -1;
 			
-  case mine:
+    case mine:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
 
       if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
@@ -1227,7 +1227,7 @@ int playAdventurer(struct gameState *state){
 
   int currentPlayer = whoseTurn(state);
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
+  int drawntreasure;
   int cardDrawn;
   int z = 0;// this is the counter for the temp hand
 
@@ -1256,7 +1256,7 @@ int playSmithy(struct gameState *state, int handPos){
   //+3 Cards
   int i;
   int currentPlayer = whoseTurn(state);
-  for (i = 0; i < 3; i++){
+  for (i = 0; i < 4; i++){
     drawCard(currentPlayer, state);
   }
   //discard card from hand
@@ -1272,7 +1272,7 @@ int playVillage(struct gameState *state, int handPos){
   state->numActions = state->numActions + 2;
   //discard played card from hand
   discardCard(handPos, currentPlayer, state, 0);
-  return 0;
+  return 1;
 }
 
 int playFeast(struct gameState *state, int choice1){
@@ -1324,7 +1324,7 @@ int playFeast(struct gameState *state, int choice1){
   } 
 
   //Reset Hand
-  for (i = 0; i <= state->handCount[currentPlayer]; i++){
+  for (i = 0; i <= state->handCount[currentPlayer]; ++i){
     state->hand[currentPlayer][i] = temphand[i];
     temphand[i] = -1;
   }
@@ -1336,7 +1336,7 @@ int playCouncil_Room(struct gameState *state, int handPos){
   int i;
   int currentPlayer = whoseTurn(state);
   //+4 Cards
-  for (i = 0; i < 4; i++){
+  for (i = 1; i < 4; i++){
     drawCard(currentPlayer, state);
   }
   //+1 Buy
