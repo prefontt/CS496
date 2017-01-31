@@ -7,19 +7,25 @@
 #include <assert.h>
 #include "rngs.h"
 
-void assertValues(int a, int b){
-
-	if(a == b)
-		printf("TEST PASS");
-	else
-		printf("TEST FAIL");
-
-}
 int checkBuyCard(int supplyPos, struct gameState *post){
 	int passFlag = 0;
 	//Save current gamestate in pre
 	struct gameState pre;
 	memcpy (&pre, post, sizeof(gameState));
+	
+	//get player turn
+	int player = post->whoseTurn;
+	
+	//Test call with bad input
+	int r;
+	r=buyCard(-100, post);
+	if(r == 0)
+		printf("TEST FAIL. buyCard returned successfully with nonexistent card index\n");
+	else
+		if(memcmp(&pre, post, sizeof(struct gameState)) == 0)
+			printf("TEST PASS. Call failed with bad input and gamestate was unchanged\n");
+		else
+			printf("TEST FAIL. Call failed and returned %d, but gamestate was altered\n", r);
 
 	//Test buying with no buys
 	post->numBuys = 0;
@@ -49,11 +55,41 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 	//reset supply total before performing next test
 	post->supplyCount[supplyPos] = pre->supplyCount[supplyPos];
 
-	//Test buying a card that's too expensive
-	
-	//Standard call that should return correctly so we can test results
+	//Test buying a card that's too expensive (smithy)
+	post->coins = 3;
+	int q;
+	q = buyCard(supplyPos, post);
+	if(q != -1){
+		printf("TEST FAIL. buyCard did not return -1 when attempting to buy card that was too expensive\n");
+		passFlag++;
+		}
+	else
+		printf("TEST PASS. buyCard returned -1 when attempting to buy card that was too expensive\n");
 
-	//Test that after call, player has one more card, x fewer coins, card in hand, and correct # of buys
+	//set coins so next call will pass
+	post->coins = 4;
+
+	//Standard call that should return correctly so we can test results
+	buyCard(supplyPos, post);
+
+	//Test that after call, player has one more card, 4 fewer coins (since we're buying a smithy card), card in discard, and correct # of buys
+	if(post->discardCount[player] == (pre->discardCount[player] + 1))
+		printf("TEST PASS. Player has one more card after buy\n");
+	else
+		printf("TEST FAIL. Player does not have one more card after buy\n");
+	
+	if(post->coins == 0)
+		printf("TEST PASS. Player had correct number of coins deducted after buy\n");
+	else
+		printf("TEST FAIL. Player did not have correct number of coins deducted after buy\n");
+	if(post->discard[player][state->discardCount[player]] == supplyPos)
+		printf("TEST PASS. Player had correct card added to discard\n");
+	else
+		printf("TEST FAIL. Player did not have correct card added to discard\n");
+	if(post->numBuys == (pre->numBuys - 1))
+		printf("TEST PASS. Correct number of buys left after call\n");
+	else
+		printf("TEST FAIL. Incorrect number of buys left after call\n");
 
 	//Test that after call, all other player discard numbers are the same
 	
@@ -61,7 +97,7 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 		if(i == post->whoseTurn)
 			printf("It was player %d's turn, card total should differ. Before call, it was %d. After call it is %d.\n", i, pre->discardCount[i], post->discardCount[i]);
 		else{
-			if(pre->discardCount[i] != post->discardCount[i]
+			if(pre->discardCount[i] != post->discardCount[i])
 				printf("TEST FAIL. Before call, player %d's total: %d. After call, total is %d.\n", i, pre->discardCount[i], post->discardCount[i]);
 			else
 				printf("TEST PASS. Before call, player %d's total: %d. After call, total is %d.\n", i, pre->discardCount[i], post->discardCount[i]);
@@ -80,4 +116,22 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 	
 	return 0;
 
+}
+
+int main(){
+	
+	int deckCount = 20;
+	int discardCount = 10;
+	int handCount = 5;
+	int supplyPos = smithy;
+
+	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall};
+
+	struct gameState G;
+	G.supplyCount[smithy] = 5;
+	G.coins = 5;
+	G.numBuys = 1;
+
+	checkBuyCard(smithy, &G);
+	return 0;
 }
