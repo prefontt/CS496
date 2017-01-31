@@ -22,7 +22,7 @@ char *inputString()
   char * inString = (char *)malloc((MAX_LENGTH) * sizeof(char));
   char letters[5] = {'r', 'e', 's', 't', '\0'}; //array of letters that we want
   for (i = 0; i < MAX_LENGTH; i++){
-    randNum = rand() % 5; //getting a random letter from letters array
+    //randNum = rand() % 5; //getting a random letter from letters array
     memcpy(&inString[i], &letters[randNum], 1);
   }
   return inString;
@@ -31,7 +31,6 @@ char *inputString()
 void testme()
 {
   int tcCount = 0;
-  int i;
   char *s;
   char c;
   int state = 0;
