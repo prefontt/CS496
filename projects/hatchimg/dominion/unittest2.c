@@ -152,7 +152,7 @@ int main(){
 	G.coins = 5;
 	G.numBuys = 1;
 	G.whoseTurn = 1;
-
+	G.numPlayers = 4;
 	checkBuyCard(smithy, &G);
 	return 0;
 }
