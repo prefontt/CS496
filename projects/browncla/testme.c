@@ -20,12 +20,11 @@ char *inputString()
 {
   int i, randNum;
   char * inString = (char *)malloc((MAX_LENGTH) * sizeof(char));
-  char letters[4] = {'r', 'e', 's', 't'}; //array of letters that we want
-  for (i = 0; i < MAX_LENGTH-1; i++){
-    randNum = rand() % 4; //getting a random letter from lettes array
+  char letters[5] = {'r', 'e', 's', 't', '\0'}; //array of letters that we want
+  for (i = 0; i < MAX_LENGTH; i++){
+    randNum = rand() % 5; //getting a random letter from letters array
     memcpy(&inString[i], &letters[randNum], 1);
   }
-  memcpy(&inString[i], "\0", 1);
   return inString;
 }
 
