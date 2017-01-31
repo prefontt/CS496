@@ -15,7 +15,7 @@ char inputChar()
   return randomLetter; //returning the character
 }
 
-//Getting a 5 letter string made up of the letters r, e, s, t
+//Getting a 6 letter string made up of the characters r, e, s, t, /0
 char *inputString()
 {
   int i, randNum;
