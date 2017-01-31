@@ -57,7 +57,7 @@ string terminator resulted in early termination by the tester as the behaviour i
 having one of the required characters in the input set. Additionaly, randomly introducing '\0' with 
 the idea of randomly generating the final string terminator proved inneffective.  The test ran,
 but many strings were diplayed as "short terminated", and thus while just the right combination 
-could everntually be achieved, it's unlikely the time to do so would be satisfactory.
+could eventually be achieved, it's unlikely the time to do so would be satisfactory.
 
 Note: testme() was modified with two calls of free(s); in order to pass Valgrind memory testing.
 */
