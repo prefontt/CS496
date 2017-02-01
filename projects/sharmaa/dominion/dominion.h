@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #ifndef _DOMINION_H
 #define _DOMINION_H
 
@@ -135,6 +136,12 @@ int playSmithy(struct gameState *state, int handPos);
 int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
+
+void adventurerx(struct gameState *state, int currentPlayer, int temphand[], int cardDrawn );
+void smithyx(struct gameState *state, int currentPlayer, int handPos);
+void council_roomx(struct gameState *state, int currentPlayer, int handPos);
+void remodelx(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos);
+int gardensx();
 
 
 #endif

@@ -5,6 +5,14 @@
 #include <math.h>
 #include <stdlib.h>
 
+//new function prototypes
+
+int play_adventurer(struct gameState* state);
+int play_smithy(struct gameState* state, int handPos);
+int play_great_hall(struct gameState* state, int handPos);
+int play_village(struct gameState* state, int handPos);
+int play_outpost(struct gameState* state, int handPos);
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -811,12 +819,12 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
       return 0;
 		
-    case play_smithy:
-    	smithy(state, handPos);
+    case smithy:
+    	play_smithy(state, handPos);
           return 0;
 		
-    case play_village:
-    	village(state, handPos);
+    case village:
+    	play_village(state, handPos);
            return 0;
 		
     case baron:
@@ -1291,13 +1299,14 @@ int updateCoins(int player, struct gameState *state, int bonus)
 int play_adventurer(struct gameState* state){
 
   int currentPlayer = whoseTurn(state);
+  int nextPlayer = currentPlayer + 1;
   int temphand[MAX_HAND];// moved above the if statement
   int drawntreasure=0;
   int cardDrawn;
   int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
-
+}
 
 
   while(drawntreasure<=2){
