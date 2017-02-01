@@ -7,12 +7,33 @@
 #include <assert.h>
 #include "rngs.h"
 
-void assertValues(int a, int b){
+int passFlag = 0;
 
-	if(a == b)
-		printf("TEST PASS");
-	else
-		printf("TEST FAIL");
+void asserttrue(int a, int b, int testCase){
+
+	if(a == b){
+
+		printf("TEST PASS\n");
+	}
+	else{
+		printf("TEST FAIL. ");
+		passFlag++;
+		switch(testCase){
+			case 1:
+				printf("Deck size was changed or did not shuffle\n");
+				break;
+			case 2:
+				printf("Shuffle returned successfully despite bad deckcount\n");
+				break;
+			case 3:
+				printf("One or more of the other players' decks were affected by shuffle\n");
+				break;
+			case 4:
+				printf("Shuffle returned successfully with bad input\n");
+				break;
+		}
+	}
+
 
 }
 int checkShuffle(int player, struct gameState *post){
@@ -21,26 +42,87 @@ int checkShuffle(int player, struct gameState *post){
 	struct gameState pre;
 	memcpy (&pre, post, sizeof(gameState));
 
-	//ensure that after call to shuffle(), deck size is unchanged but order is different
+
+	//test that deck is same size and actually shuffled, function worked as intended
 	shuffle(player, post);
-	assert(post->deckCount[player] == pre->deckCount[player]);
-	
-	for(int i = 0; i < post->deckCount[player]; i++){
-		if(post->deck[player][i] == pre->deck[player][i])
-			if(i == (post->deckCount[player] - 1))
-				printf("TEST FAIL");
-		else
-			printf("TEST PASS");
-	}
+	int diffFlag = 0;
+	if(post->deckCount[player] == pre.deckCount[player]){
+		int i;
+		for(i = 0; i < post->deckCount[player]; i++){
+			if(post->deck[player][i] != pre.deck[player][i])
+				diffFlag++;
 
-	//check that 
+		}
+	else
+		diffFlag++;
 
-	//test that shuffle fails and returns -1 if deckcount of player > 1
+	asserttrue(1, diffFlag, 1);
+
+	//test return with bad deckcount
 	int x;
 	post->deckCount[player] = 0;
 	x = shuffle(player, post);
-	assert(x == -1);
+	asserttrue(-1, x, 2);
+	post->deckCount[player] = pre.deckCount[player];
 
+	//test that other player decks are the same (count, order) post shuffle
+	shuffle(player, post);
+	int i;
+	int j;
+	int deckFlag = 0;
+	for(i = 0; i < post->numPlayers; i++){
+		if(post->deckCount[i] != pre.deckCount[i])
+			deckFlag++;
+		for(j=0; j < post->deckCount[i]; j++){
+			if(post->deck[i][j] != pre.deck[i][j])
+				deckFlag++;
 
+		}
 
+	}
+	asserttrue(0, deckFlag, 3)
+
+	//test shuffling with bad input values
+	int badInput = 0;
+	badInput= (-100, post);
+	asserttrue(-1, badInput);
+
+	if(passFlag == 0)
+		printf("ALL TESTS SUCCESSFUL\n");
+	
+	return 0;
+}
+
+int main(){
+
+	struct gameState G;
+	G.numPlayers = 4;
+	G.whoseTurn = 1;
+	int deckSize = 20;
+
+	int i;
+	int j;
+
+//initialize four players' decks, each of size 20 with four different types of cards in them
+
+	for(i = 0; i < G.numPlayers; i++){
+		G.deckCount[i] = deckSize;
+		for(j = 0; j < 5; j++){ 
+			G.deck[i][j] = smithy;
+		}
+		for(j = 5; j < 10; j++){ 
+			G.deck[i][j] = adventurer;
+		}
+		for(j = 10; j < 15; j++){ 
+			G.deck[i][j] = estate;
+		}
+		for(j = 15; j < 20; j++){ 
+			G.deck[i][j] = copper;
+		}
+
+	}
+
+	checkShuffle(G.whoseTurn, &G);
+
+	return 0;
 }
