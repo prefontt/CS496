@@ -45,9 +45,12 @@ int asserttrue(int a, int b, int testCase){
 				printf("Incorrect number of buys left after call\n");
 				break;
 			case 10:
-				printf("Discard count changed for player other than the one who bought card\n");
+				printf("Discard count of player who just bought card did not increase by one\n");
 				break;
 			case 11:
+				printf("Discard count changed for player other than the one who bought card\n");
+				break;
+			case 12:
 				printf("Incorrect number of supply remaining post call\n");
 				break;
 
@@ -119,15 +122,15 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 	int i;
 	for(i = 0; i < pre.numPlayers; i++){
 		if(i == post->whoseTurn)
-			printf("It was player %d's turn, card total should differ. Before call, it was %d. After call it is %d.\n", i, pre.discardCount[i], post->discardCount[i]);
+			asserttrue((pre.discardCount[i]+1), post->discardCount[i], 10);
 		else{
-			asserttrue(pre.discardCount[i], post->discardCount[i], 10);
+			asserttrue(pre.discardCount[i], post->discardCount[i], 11);
 		}
 	}
 
 	//Test that after call, supply count of card bought is one fewer
 
-	asserttrue(post->supplyCount[supplyPos], (pre.supplyCount[supplyPos] - 1), 11);
+	asserttrue(post->supplyCount[supplyPos], (pre.supplyCount[supplyPos] - 1), 12);
 
 	if(passFlag == 0)
 		printf("ALL TESTS OK \n");
