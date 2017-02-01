@@ -40,7 +40,7 @@ int checkShuffle(int player, struct gameState *post){
 
 	//Save current gamestate in pre
 	struct gameState pre;
-	memcpy (&pre, post, sizeof(gameState));
+	memcpy (&pre, post, sizeof(struct gameState));
 
 
 	//test that deck is same size and actually shuffled, function worked as intended
@@ -53,6 +53,7 @@ int checkShuffle(int player, struct gameState *post){
 				diffFlag++;
 
 		}
+	}
 	else
 		diffFlag++;
 
@@ -80,12 +81,12 @@ int checkShuffle(int player, struct gameState *post){
 		}
 
 	}
-	asserttrue(0, deckFlag, 3)
+	asserttrue(0, deckFlag, 3);
 
 	//test shuffling with bad input values
 	int badInput = 0;
-	badInput= (-100, post);
-	asserttrue(-1, badInput);
+	badInput = shuffle(-100, post);
+	asserttrue(-1, badInput, 4);
 
 	if(passFlag == 0)
 		printf("ALL TESTS SUCCESSFUL\n");
