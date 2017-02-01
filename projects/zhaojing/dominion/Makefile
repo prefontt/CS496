@@ -20,6 +20,89 @@ testBuyCard: testDrawCard.c dominion.o rngs.o
 
 testAll: dominion.o testSuite.c
 	gcc -o testSuite testSuite.c -g  dominion.o rngs.o $(CFLAGS)
+	
+unittest1:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o unittest1 -g unittest1.c dominion.h dominion.c rngs.h rngs.c
+	
+unittest2:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o unittest2 -g unittest2.c dominion.h dominion.c rngs.h rngs.c
+
+unittest3:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o unittest3 -g unittest3.c dominion.h dominion.c rngs.h rngs.c
+	
+unittest4:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o unittest4 -g unittest4.c dominion.h dominion.c rngs.h rngs.c
+
+cardtest1:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o cardtest1 -g cardtest1.c dominion.h dominion.c rngs.h rngs.c
+	
+cardtest2:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o cardtest2 -g cardtest2.c dominion.h dominion.c rngs.h rngs.c
+
+cardtest3:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o cardtest3 -g cardtest3.c dominion.h dominion.c rngs.h rngs.c
+
+cardtest4:
+	gcc -fprofile-arcs -fpic -coverage -lm -std=c99 -o cardtest4 -g cardtest4.c dominion.h dominion.c rngs.h rngs.c
+
+unittestresults.out:
+	rm -f unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make unittest1
+	./unittest1 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make unittest2
+	./unittest2 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make unittest3
+	./unittest3 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make unittest4
+	./unittest4 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	#Omitting cardtest1 due to segmentation fault error (see Assignment-3.pdf for details)
+	#make clean
+	#make rngs.o
+	#make dominion.o
+	#make cardtest1
+	#./cardtest1 >> unittestresults.out
+	#gcov -f -b dominion.c >> unittestresults.out
+	echo 
+	make clean
+	make rngs.o
+	make dominion.o
+	make cardtest2
+	./cardtest2 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make cardtest3
+	./cardtest3 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	make clean
+	make rngs.o
+	make dominion.o
+	make cardtest4
+	./cardtest4 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
+	
+coverage:
+	make clean
+	make unit1
+	./unittest1
+	gcov dominion.c &> coverage.out
 
 interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
@@ -29,11 +112,10 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
-
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 all: playdom player testDrawCard testBuyCard badTestDrawCard
 
 clean:
-	rm -f *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
+	rm -f *.o playdom.exe playdom test.exe test player player.exe unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2 cardtest3 cardtest4 testInit testInit.exe *.gcov *.gcda *.gcno *.so

@@ -22,6 +22,7 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 	if(r == 0){
 		printf("TEST FAIL. buyCard returned successfully with nonexistent card index\n");
 		passFlag++;
+		}
 	else{
 		if(memcmp(&pre, post, sizeof(struct gameState)) == 0)
 			printf("TEST PASS. Call failed with bad input and gamestate was unchanged\n");
@@ -106,8 +107,8 @@ int checkBuyCard(int supplyPos, struct gameState *post){
 	}
 
 	//Test that after call, all other player discard numbers are the same
-	
-	for(int i = 0; i < pre.numPlayers; i++){
+	int i;
+	for(i = 0; i < pre.numPlayers; i++){
 		if(i == post->whoseTurn)
 			printf("It was player %d's turn, card total should differ. Before call, it was %d. After call it is %d.\n", i, pre.discardCount[i], post->discardCount[i]);
 		else{
@@ -150,7 +151,8 @@ int main(){
 	G.supplyCount[smithy] = 5;
 	G.coins = 5;
 	G.numBuys = 1;
-
+	G.whoseTurn = 1;
+	G.numPlayers = 4;
 	checkBuyCard(smithy, &G);
 	return 0;
 }

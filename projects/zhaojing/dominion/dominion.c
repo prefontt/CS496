@@ -200,7 +200,6 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
 
 int shuffle(int player, struct gameState *state) {
  
-
   int newDeck[MAX_DECK];
   int newDeckPos = 0;
   int card;
@@ -644,12 +643,13 @@ int getCost(int cardNumber)
 }
 
 int smithyCard(int currentPlayer, struct gameState *state, int handPos){
-	for (int i = 0; i < 4; i++)	drawCard(currentPlayer, state);
+	int i;
+	for (i = 0; i < 4; i++)	drawCard(currentPlayer, state);
 	discardCard(handPos, currentPlayer, state, 0);		
 }
 
 int adventurerCard(int currentPlayer, struct gameState *state, int drawntreasure, int cardDrawn, int temphand){
-	int z = 0;
+	int **z = 0;
 	while(drawntreasure < 2){
 		if(state->deckCount[currentPlayer] < 1)
 			shuffle(currentPlayer, state);
@@ -670,11 +670,12 @@ int adventurerCard(int currentPlayer, struct gameState *state, int drawntreasure
 }
 
 int remodelCard(int currentPlayer, int choice1, int choice2, struct gameState *state, int handPos){
-	int j = state->hand[currentPlayer[choice1];
-	if((getCost(state->hand[currentPlayer][choice1] + 2) > getCost(choice2)) return -1;
+	int i, j;
+	j = state->hand[currentPlayer][choice1];
+	if((getCost(state->hand[currentPlayer][choice1] + 2) > getCost(choice2))) return -1;
 	gainCard(choice2, state, 0, currentPlayer);
 	discardCard(handPos, currentPlayer, state, 0);
-	for(int i = 0; i < j; i++){
+	for(i = 0; i < j; i++){
 		if(state->hand[currentPlayer][i] == j){
 			discardCard(j, currentPlayer, state, 0);
 			break;
@@ -689,20 +690,21 @@ int villageCard(int currentPlayer, struct gameState *state, int handPos){
 }
 
 int minionCard(int currentPlayer, struct gameState *state, int choice1, int choice2, int handPos){
+	int i, j;
 	state->numActions++;
 	discardCard(handPos,currentPlayer, state, 0);
 	if(choice1){
 		while(numHandCards(state) > 0)
-			discardCard(handPos, currentPlayer, state, 0)
+			discardCard(handPos, currentPlayer, state, 0);
 	}
 	else if(choice2) state->coins = state-> coins + 3;
-	for(int i = 0; i < state->numPlayers; i++){
+	for(i = 0; i < state->numPlayers; i++){
 		if(i != currentPlayer){
 			if(state->handCount[i] > 3){
 				while(state->handCount[i] > 1)
 					discardCard(handPos, i, state, 0);
 			}
-			for(int j = 0; j < 3; j++) drawCard(i, state);
+			for(j = 0; j < 3; j++) drawCard(i, state);
 		}
 	}
 }
@@ -731,7 +733,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
   switch( card ) 
     {
     case adventurer:
-		adventurerCard(currentPlayer, state, drawntreasure, cardDrawn, temphand)
+		adventurerCard(currentPlayer, state, drawntreasure, cardDrawn, temphand);
 		return 0;
 /**      while(drawntreasure<2){
 	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
@@ -898,7 +900,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 **/
 		
     case smithy:
-		smithyCard(currentPlayer, state, handPos)
+		smithyCard(currentPlayer, state, handPos);
 		return 0;
 /**      //+3 Cards
       for (i = 0; i < 3; i++)
