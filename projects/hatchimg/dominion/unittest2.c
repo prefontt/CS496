@@ -147,7 +147,7 @@ int main(){
 	G.numPlayers = 4;
 	
 	int i;
-	for(i = 0; i < numPlayers; i++){
+	for(i = 0; i < G.numPlayers; i++){
 		G.deckCount[i] = 20;
 		G.discardCount[i] = 10;
 		G.handCount[i] = 5;
