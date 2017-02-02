@@ -90,6 +90,40 @@ int placePlayerHand(int player, int card, int position, struct gameState *state)
   return 1;
 }
 
+int fillPlayerDeck(int player, int card, int count, struct gameState *state) {
+  int i;
+
+  for (i = 0; i < count; i++) {
+    state->deck[player][i] = card;
+  }
+
+  state->deckCount[player] = count;
+
+  return 1;
+}
+
+int placePlayerDeck(int player, int card, int position, struct gameState *state) {
+  state->deck[player][position] = card;
+  return 1;
+}
+
+int fillPlayerDiscard(int player, int card, int count, struct gameState *state) {
+  int i;
+
+  for (i = 0; i < count; i++) {
+    state->discard[player][i] = card;
+  }
+
+  state->discardCount[player] = count;
+
+  return 1;
+}
+
+int placePlayerDiscard(int player, int card, int position, struct gameState *state) {
+  state->discard[player][position] = card;
+  return 1;
+}
+
 int assertTest(int result, int expected, int testNumber) {
   if (result == expected) {
     printf("TEST %d SUCCESSFULLY COMPLETED\n",testNumber);
@@ -99,3 +133,4 @@ int assertTest(int result, int expected, int testNumber) {
     return 0;
   }
 }
+
