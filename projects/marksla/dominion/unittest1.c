@@ -2,11 +2,12 @@
  * Author: Lance Marks marksla
  * Date: 20170205
  * Class: CS362 Software Development II
- * Description: This is a unit test for the function
+ * Description: This is a unit test for the function updateCoins()
  * **********************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include "dominion.h"
+#include "dominion_helpers.h"
 #include "rngs.h"
 #include "testhelperfunctions.h"
 
@@ -14,13 +15,12 @@ int main (int argc, char** argv) {
 
   //initialize gameState for testing of functions
   struct gameState testGame;
-  struct gameState beforeFunction;
   int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
            sea_hag, tribute, smithy};
 
   initializeGame(2, k, 7, &testGame);
 
-  int i, j, result, expected;
+  int result, expected;
 
 /* ----   Test 1 - No Money Cards ---- */
   

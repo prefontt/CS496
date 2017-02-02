@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dominion.h"
-#include "dominion.c"
 #include "rngs.h"
-#include "rngs.c"
 
 void aborttest(char * msg)
 {
@@ -40,5 +38,19 @@ if(current.coins != 0)
 updateCoins(1, &current, 5); //bonus test
 if(current.coins != 5)
 	aborttest("Bonus didn't work unittest1");
+
+current.handCount[2] = 6; //garbage test
+current.hand[2][0] = 11111; //all values are for garbage cards
+current.hand[2][1] = 22222;
+current.hand[2][2] = 33333;
+current.hand[2][3] = 44444;
+current.hand[2][4] = 55555;
+current.hand[2][5] = 66666;
+updateCoins(2, &current, 0);
+if(current.coins != 0)
+	aborttest("Garbage has money unittest1");
+
+
+
 return 0;
 }
