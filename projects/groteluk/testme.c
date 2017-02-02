@@ -3,16 +3,39 @@
 #include<stdlib.h>
 #include<time.h>
 
-char inputChar()
+char inputChar(int state)
 {
-    // TODO: rewrite this function
-    return ' ';
+   char c;
+
+   if(state < 9)
+   {
+      // generate random characters with ascii range of 32 to 125
+      c = (random() % 94) + 32;
+   } else {
+      // generate random characters with ascii range of 101 to 116
+      c = (random() % 16) + 101;
+   }
+   return c;
 }
 
-char *inputString()
+char *inputString(int state)
 {
-    // TODO: rewrite this function
-    return "";
+   char c;
+   char *str;
+   int i;
+
+   str = malloc(6);
+
+   // generate a random string of 5 characters using the inputChar function
+   for(i=0; i<5; i++)
+   {
+      str[i] = inputChar(state);
+   }
+
+   //insert end of line character into character array 
+   str[5] = '\0';
+
+   return str;
 }
 
 void testme()
@@ -24,14 +47,14 @@ void testme()
     while (1)
     {
         tcCount++;
-        c = inputChar();
-        s = inputString();
+        c = inputChar(state);
+        s = inputString(state);
         printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
         
         if (c == '[' && state == 0) state = 1;
         if (c == '(' && state == 1) state = 2;
         if (c == '{' && state == 2) state = 3;
-        if (c == ' '&& state == 3) state = 4;
+        if (c == ' ' && state == 3) state = 4;
         if (c == 'a' && state == 4) state = 5;
         if (c == 'x' && state == 5) state = 6;
         if (c == '}' && state == 6) state = 7;
