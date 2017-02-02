@@ -1,4 +1,4 @@
-CFLAGS = -Wall -fpic -coverage -lm
+CFLAGS = -Wall -fpic -fprofile-arcs -coverage -lm
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -50,14 +50,21 @@ unittestresults.out: cardtests unittests
 	./unittest2
 	./unittest3
 	./unittest4
-	gcov -b cardtest1.c > unittestresults.out
-	gcov -b cardtest2.c >> unittestresults.out
-	gcov -b cardtest3.c >> unittestresults.out
-	gcov -b cardtest4.c >> unittestresults.out
-	gcov -b unittest1.c >> unittestresults.out
-	gcov -b unittest2.c >> unittestresults.out
-	gcov -b unittest3.c >> unittestresults.out
-	gcov -b unittest4.c >> unittestresults.out
+	gcov -b -f cardtest1.c > unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest2.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest3.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest4.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest1.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest2.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest3.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest4.c >> unittestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
