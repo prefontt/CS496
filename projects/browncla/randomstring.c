@@ -2,6 +2,15 @@
 CS 362
 Random Testing Quiz
 
+
+COMPILE WITH: 
+	gcc testme.c -o testme
+
+RUN WITH:
+	testme
+
+
+
 To develop my ranom tester, I first spent some time reading through the testme function.
 I noticed that the if statements cascade in a way where the first one has to be true to 
 change the state which will in turn allow the next one to be true in a different iteration
