@@ -14,13 +14,12 @@ int main() {
     /*
      * Testing: int buyCard(int supplyPos, struct gameState *state)
      */
+    printf("Unit Test 1: Testing that buyCard is correct for all cards\n");
 
     struct gameState G;
     int i;
     int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
                  sea_hag, tribute, smithy};
-
-    printf ("Starting game.\n");
 
     initializeGame(2, k, 2, &G);
 

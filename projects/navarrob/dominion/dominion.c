@@ -1268,7 +1268,8 @@ int playVillage(struct gameState *state, int handPos) {
     discardCard(handPos, currentPlayer, state, 0);
 
     return 0;
-};
+}
+
 int playFeast(struct gameState *state, int choice1) {
     int i;
     int x;
