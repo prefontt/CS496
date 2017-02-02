@@ -71,14 +71,12 @@ unittestresults.out:
 	make unittest4
 	./unittest4 >> unittestresults.out
 	gcov -f -b dominion.c >> unittestresults.out
-	#Omitting cardtest1 due to segmentation fault error (see Assignment-3.pdf for details)
-	#make clean
-	#make rngs.o
-	#make dominion.o
-	#make cardtest1
-	#./cardtest1 >> unittestresults.out
-	#gcov -f -b dominion.c >> unittestresults.out
-	echo 
+	make clean
+	make rngs.o
+	make dominion.o
+	make cardtest1
+	./cardtest1 >> unittestresults.out
+	gcov -f -b dominion.c >> unittestresults.out
 	make clean
 	make rngs.o
 	make dominion.o
