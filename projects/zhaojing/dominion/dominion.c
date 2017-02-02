@@ -690,12 +690,26 @@ int remodelCard(int currentPlayer, int choice1, int choice2, struct gameState *s
 			break;
 		}
 	}
+	return 0;
 }
 
 int villageCard(int currentPlayer, struct gameState *state, int handPos){
 	drawCard(currentPlayer, state);
 	state->numActions = state->numActions + 1;
 	discardCard(handPos, currentPlayer, state, 0);
+}
+
+int great_hallCard(int currentPlayer, struct gameState *state, int handPos){
+	//+1 Card
+    drawCard(currentPlayer, state);
+	
+	//+1 Actions
+    state->numActions++;
+			
+    //discard card from hand
+    discardCard(handPos, currentPlayer, state, 0);
+	
+    return 0;
 }
 
 int minionCard(int currentPlayer, struct gameState *state, int choice1, int choice2, int handPos){
@@ -716,6 +730,7 @@ int minionCard(int currentPlayer, struct gameState *state, int choice1, int choi
 			for(j = 0; j < 3; j++) drawCard(i, state);
 		}
 	}
+	return 0;
 }
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
@@ -992,7 +1007,9 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
 		
     case great_hall:
-      //+1 Card
+		great_hallCard(currentPlayer, state, handPos);
+		return 0;
+ /**     //+1 Card
       drawCard(currentPlayer, state);
 			
       //+1 Actions
@@ -1000,7 +1017,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return 0;**/
 		
     case minion:
  		minionCard(currentPlayer, state, choice1, choice2, handPos);

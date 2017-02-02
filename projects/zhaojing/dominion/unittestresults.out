@@ -25,16 +25,21 @@ Taken at least once:0.00% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:0.00% of 196
+Lines executed:0.00% of 194
 Branches executed:0.00% of 161
 Taken at least once:0.00% of 161
-Calls executed:0.00% of 52
+Calls executed:0.00% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -162,10 +167,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:16.10% of 559
+Lines executed:16.01% of 562
 Branches executed:15.90% of 415
 Taken at least once:13.25% of 415
-Calls executed:7.37% of 95
+Calls executed:7.29% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on isGameOver()******
@@ -197,16 +202,21 @@ Taken at least once:0.00% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:0.00% of 196
+Lines executed:0.00% of 194
 Branches executed:0.00% of 161
 Taken at least once:0.00% of 161
-Calls executed:0.00% of 52
+Calls executed:0.00% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -334,10 +344,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:17.35% of 559
+Lines executed:17.26% of 562
 Branches executed:17.83% of 415
 Taken at least once:14.46% of 415
-Calls executed:7.37% of 95
+Calls executed:7.29% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on buyCard()******
@@ -370,16 +380,21 @@ Taken at least once:0.00% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:0.00% of 196
+Lines executed:0.00% of 194
 Branches executed:0.00% of 161
 Taken at least once:0.00% of 161
-Calls executed:0.00% of 52
+Calls executed:0.00% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -507,10 +522,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:20.39% of 559
+Lines executed:20.28% of 562
 Branches executed:25.54% of 415
 Taken at least once:15.18% of 415
-Calls executed:12.63% of 95
+Calls executed:12.50% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on whoseTurn()******
@@ -544,16 +559,21 @@ Taken at least once:0.00% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:0.00% of 196
+Lines executed:0.00% of 194
 Branches executed:0.00% of 161
 Taken at least once:0.00% of 161
-Calls executed:0.00% of 52
+Calls executed:0.00% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -681,10 +701,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:16.28% of 559
+Lines executed:16.19% of 562
 Branches executed:15.90% of 415
 Taken at least once:13.01% of 415
-Calls executed:7.37% of 95
+Calls executed:7.29% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on adventurer card******
@@ -870,16 +890,21 @@ Taken at least once:33.33% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:8.67% of 196
+Lines executed:8.76% of 194
 Branches executed:18.01% of 161
 Taken at least once:4.97% of 161
-Calls executed:9.62% of 52
+Calls executed:9.80% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -1007,10 +1032,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:27.37% of 559
+Lines executed:27.22% of 562
 Branches executed:29.16% of 415
 Taken at least once:19.04% of 415
-Calls executed:21.05% of 95
+Calls executed:20.83% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on smithy card******
@@ -1075,16 +1100,21 @@ Taken at least once:50.00% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:5.10% of 196
+Lines executed:5.15% of 194
 Branches executed:14.29% of 161
 Taken at least once:1.24% of 161
-Calls executed:3.85% of 52
+Calls executed:3.92% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -1212,10 +1242,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:23.26% of 559
+Lines executed:23.13% of 562
 Branches executed:25.78% of 415
 Taken at least once:16.14% of 415
-Calls executed:15.79% of 95
+Calls executed:15.63% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on great_hall card******
@@ -1301,16 +1331,21 @@ Taken at least once:66.67% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:6.12% of 196
+Lines executed:5.15% of 194
 Branches executed:14.29% of 161
 Taken at least once:1.24% of 161
-Calls executed:5.77% of 52
+Calls executed:3.92% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:100.00% of 5
+No branches
+Calls executed:100.00% of 2
 
 Function 'villageCard'
 Lines executed:0.00% of 5
@@ -1438,10 +1473,10 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:24.69% of 559
+Lines executed:25.09% of 562
 Branches executed:26.27% of 415
 Taken at least once:16.63% of 415
-Calls executed:15.79% of 95
+Calls executed:16.67% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on village card******
@@ -1519,16 +1554,21 @@ Taken at least once:66.67% of 6
 No calls
 
 Function 'cardEffect'
-Lines executed:5.10% of 196
+Lines executed:5.15% of 194
 Branches executed:14.29% of 161
 Taken at least once:1.24% of 161
-Calls executed:3.85% of 52
+Calls executed:3.92% of 51
 
 Function 'minionCard'
 Lines executed:0.00% of 14
 Branches executed:0.00% of 16
 Taken at least once:0.00% of 16
 Calls executed:0.00% of 5
+
+Function 'great_hallCard'
+Lines executed:0.00% of 5
+No branches
+Calls executed:0.00% of 2
 
 Function 'villageCard'
 Lines executed:100.00% of 5
@@ -1656,9 +1696,9 @@ Taken at least once:75.00% of 4
 No calls
 
 File 'dominion.c'
-Lines executed:25.22% of 559
+Lines executed:25.09% of 562
 Branches executed:26.27% of 415
 Taken at least once:16.63% of 415
-Calls executed:16.84% of 95
+Calls executed:16.67% of 96
 Creating 'dominion.c.gcov'
 
