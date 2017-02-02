@@ -16,8 +16,8 @@ int main()
 {
 int x = 12;
 int y = 13;
-char[5] a;
-char[5] b;
+char a[5];
+char b[5];
 	
 if(compare(&x, &y) != -1)
 	aborttest("Compare didn't compare ints right, unittest4");

@@ -5,28 +5,89 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-int main(int argc, char** argv){
-	struct gameState GSvar;			//initialize gameState
-	//manually set game variables for testing
-	GSvar.whoseTurn = 0;
-	GSvar.numActions = 1;
-	GSvar.handCount[0] = 1;
-	GSvar.hand[0][0] = smithy;
-	GSvar.deckCount[0] = 3;
-	GSvar.deck[0][0] = copper;  
-	GSvar.deck[0][1] = copper;  
-	GSvar.deck[0][2] = copper;  
-	GSvar.discardCount[0] = 0;
+int main(int argc, char **argv) {
+	printf("******begin unit test on smithy card******\n");
+		
+	//initialize game
+	struct gameState G;
+	int result, randomVar = 0;
+	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall};
+	randomVar = rand() % 10;
+	result = initializeGame(2, k, randomVar, &G);
+	int whoseTurn = G.whoseTurn;
 	
-	//play smithy card for testing and print results 
-	playCard(0,0,0,0,&GSvar);				//play smithy card
-	asserttrue(GSvar.handCount[0] == 3);	//testing hand count
-	asserttrue(GSvar.deckCount[0] == 0);	//testing deck count 
-	//testing each card in hand
-	asserttrue(GSvar.hand[0][0] == copper);
-	asserttrue(GSvar.hand[0][1] == copper);
-	asserttrue(GSvar.hand[0][2] == copper);
-	asserttrue(GSvar.numActions == 0);		//testing action count
+	//test smithy when there are enough cards in deck
+	printf("testing player 1 playing smithy when there are enough cards in deck");
+	//manually set decks for both players
+	G.handCount[whoseTurn] = 1;
+	G.hand[whoseTurn][0] = smithy;
+	G.handCount[1] = 2;
+	G.deckCount[whoseTurn] = 7;
+	G.deckCount[1] = 8;
+	G.supplyCount[curse] = 4;
+	G.supplyCount[estate] = 4;
+	G.supplyCount[duchy] = 4;
+	G.supplyCount[province] = 4;
 	
+	//test
+	result = playCard(0, 0, 0, 0, &G);
+	printf("testing whether card correctly plays \n");
+	asserttrue(result == 0);
+	printf("testing whether the turn still belongs to the same player\n");
+	asserttrue(whoseTurn == G.whoseTurn);
+	printf("testing player1 hand count\n");
+	asserttrue(G.handCount[whoseTurn] == 3);
+	printf("testing player2 hand count\n");
+	asserttrue(G.handCount[1] == 2);
+	printf("testing player1 deck count\n");
+	asserttrue(G.deckCount[whoseTurn] == 4);
+	printf("testing player2 deck count\n");
+	asserttrue(G.deckCount[1] == 8);
+	printf("testing supply count on curse cards\n");
+	asserttrue(G.supplyCount[curse] == 4);
+	printf("testing supply count on estate cards\n");
+	asserttrue(G.supplyCount[estate] == 4);
+	printf("testing supply count on duchy cards\n");
+	asserttrue(G.supplyCount[duchy] == 4);
+	printf("testing supply count on province cards\n");
+	asserttrue(G.supplyCount[province] == 4);
+	
+	//test smithy when there are not enough cards in deck
+	printf("testing player 1 playing smithy when there are not enough cards in deck\n");
+	//manually set decks for both players
+	G.handCount[whoseTurn] = 1;
+	G.hand[whoseTurn][0] = smithy;
+	G.handCount[1] = 2;
+	G.deckCount[whoseTurn] = 2;
+	G.deckCount[1] = 8;
+	G.supplyCount[curse] = 4;
+	G.supplyCount[estate] = 4;
+	G.supplyCount[duchy] = 4;
+	G.supplyCount[province] = 4;
+	
+	//test
+	result = playCard(0, 0, 0, 0, &G);
+	printf("testing whether card correctly plays \n");
+	asserttrue(result == -1);
+	printf("testing whether the turn still belongs to the same player\n");
+	asserttrue(whoseTurn == G.whoseTurn);
+	printf("testing player1 hand count\n");
+	asserttrue(G.handCount[whoseTurn] == 1);
+	printf("testing player2 hand count\n");
+	asserttrue(G.handCount[1] == 2);
+	printf("testing player1 deck count\n");
+	asserttrue(G.deckCount[whoseTurn] == 2);
+	printf("testing player2 deck count\n");
+	asserttrue(G.deckCount[1] == 8);
+	printf("testing supply count on curse cards\n");
+	asserttrue(G.supplyCount[curse] == 4);
+	printf("testing supply count on estate cards\n");
+	asserttrue(G.supplyCount[estate] == 4);
+	printf("testing supply count on duchy cards\n");
+	asserttrue(G.supplyCount[duchy] == 4);
+	printf("testing supply count on province cards\n");
+	asserttrue(G.supplyCount[province] == 4);
+	
+	printf("******begin unit test on smithy card******\n");
 	return 0;
 }

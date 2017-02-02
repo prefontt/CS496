@@ -1,4 +1,4 @@
-CFLAGS = -Wall -fpic -coverage -lm
+CFLAGS = -Wall -fpic -fprofile-arcs -coverage -lm
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -34,6 +34,37 @@ unittests: unittest1.c unittest2.c unittest3.c unittest4.c dominion.c dominion.h
 	gcc -o unittest2 unittest2.c dominion.c rngs.c $(CFLAGS)
 	gcc -o unittest3 unittest3.c dominion.c rngs.c $(CFLAGS)
 	gcc -o unittest4 unittest4.c dominion.c rngs.c $(CFLAGS)
+
+cardtests: cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.c dominion.h
+	gcc -o cardtest1 -g cardtest1.c dominion.c rngs.c $(CFLAGS)
+	gcc -o cardtest2 -g cardtest2.c dominion.c rngs.c $(CFLAGS)
+	gcc -o cardtest3 -g cardtest3.c dominion.c rngs.c $(CFLAGS)
+	gcc -o cardtest4 -g cardtest4.c dominion.c rngs.c $(CFLAGS)
+
+unittestresults.out: cardtests unittests
+	./cardtest1
+	./cardtest2
+	./cardtest3
+	./cardtest4
+	./unittest1
+	./unittest2
+	./unittest3
+	./unittest4
+	gcov -b -f cardtest1.c > unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest2.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest3.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f cardtest4.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest1.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest2.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest3.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f unittest4.c >> unittestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
