@@ -9,9 +9,8 @@
 #include <stdlib.h>
 
 int main() {
-    printf("Card Test 1: Smithy\n");
+    printf("\n*** Card Test 1: Smithy ***\n");
     struct gameState G;
-    int i;
     int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
                  sea_hag, tribute, smithy};
     initializeGame(2, k, 2, &G);
@@ -32,6 +31,10 @@ int main() {
     printf("Confirming that deck initially contains 5 cards.\n");
     customAssert(G.deckCount[0] == 5);
 
+    printf("Confirming that number of actions is 1\n");
+    customAssert(G.numActions == 1);
+
+    printf("*** Playing the smithy card\n");
     playCard(0, 0, 0, 0, &G);
 
     printf("Test that hand count is now 3\n");
@@ -48,6 +51,8 @@ int main() {
     customAssert(G.playedCardCount == 1);
     printf("Test that card in played cards pile is smithy\n");
     customAssert(G.playedCards[0] == smithy);
+    printf("Test that the number of actions is now 0\n");
+    customAssert(G.numActions == 0);
 
 }
 

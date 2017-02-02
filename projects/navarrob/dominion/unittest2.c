@@ -16,7 +16,7 @@ int main() {
                  sea_hag, tribute, smithy};
     initializeGame(2, k, 2, &G);
 
-    printf("Unit test 2: Testing numHandCards\n");
+    printf("\n*** Unit test 2: Testing numHandCards ***\n");
     printf("Testing with player 1 as the player\n");
 
     printf("Confirm that initial cards in hand is 5.\n");
@@ -41,6 +41,5 @@ int main() {
     printf("Confirm that the number of cards doesn't go negative if the hand is empty\n");
     discardCard(0, 0, &G, 0);
     customAssert(numHandCards(&G) == 0);
-    printf("%d\n", numHandCards(&G));
 
 }

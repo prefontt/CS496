@@ -24,7 +24,7 @@ int main() {
                  sea_hag, tribute, smithy};
     initializeGame(2, k, 2, &G);
     G.whoseTurn = 0;
-    printf("Unit Test 3: Testing updateCoins\n");
+    printf("\n*** Unit Test 3: Testing updateCoins ***\n");
 
     //Set player 0 hand to be all copper
     setHand(G.whoseTurn, &G, copper);

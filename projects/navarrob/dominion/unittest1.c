@@ -14,7 +14,7 @@ int main() {
     /*
      * Testing: int buyCard(int supplyPos, struct gameState *state)
      */
-    printf("Unit Test 1: Testing that buyCard is correct for all cards\n");
+    printf("\n*** Unit Test 1: Testing buyCard ***\n");
 
     struct gameState G;
     int i;
