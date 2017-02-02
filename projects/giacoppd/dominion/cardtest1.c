@@ -23,7 +23,7 @@ int handSize = current->handCount[0];
 printf("Current # of cards for player 0: %d\n", (*current).handCount[0]);
 cardEffect(smithy, 0,0,0, current, 3, 0);
 printf("Current # of cards for player 0 after smithy: %d\n", current->handCount[0]);
-if(handSize != current->handCount[0]+2) //+3 for smithy -1 after discarding smithy so +2 overall
+if(handSize+2 != current->handCount[0]) //+3 for smithy -1 after discarding smithy so +2 overall
 	aborttest("Number of cards for smithy is wrong, cardtest1\n"); 
 return 0;
 }
