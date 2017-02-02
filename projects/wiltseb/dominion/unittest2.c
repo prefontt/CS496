@@ -94,13 +94,8 @@ int main(){
 	assertTrue((p1InitDeckCt + 1 == p1CurrDeckCt), "Player1 deck count", p1CurrDeckCt, p1InitDeckCt + 1, &testFlag);
 	assertTrue((p1InitDiscardCt + 1 == p1CurrDiscardCt), "Player1 discard count", p1CurrDiscardCt, p1InitDiscardCt + 1, &testFlag);
 
-	if (testFlag == 0){
-		printf("ALL TESTS IN TEST 1 PASSED\n");
-	}
-	else{
-		printf("TESTS IN TEST 1 NOT PASSED\n");
-	}
-	
+	checkTest(testFlag, 1);
+
 	printf("INITIATING TEST 2...\n");
 	/*
 	 * TEST 2: CHECK MOST RECENT CARD IN EACH PILE IS CORRECT
@@ -110,12 +105,7 @@ int main(){
 	assertTrue(TestGame1.deck[player1][p1CurrDeckCt-1] == smithy, "Last card added to hand is adventurer", TestGame1.deck[player1][p1CurrDeckCt-1], smithy, &testFlag);
 	assertTrue(TestGame1.hand[player1][p1CurrHandCt-1] == adventurer, "Last card added to hand is adventurer", TestGame1.hand[player1][p1CurrHandCt-1], adventurer, &testFlag);
 
-	if (testFlag == 0){
-		printf("ALL TESTS IN TEST 2 PASSED\n");
-	}
-	else{
-		printf("TESTS IN TEST 2 NOT PASSED\n");
-	}
+	checkTest(testFlag, 2);
 	
 	printf("INITIATING TEST 3...\n");
 	/*
@@ -126,13 +116,7 @@ int main(){
 	assertTrue(TestGame1.supplyCount[smithy] == initSupplyCt[smithy]-1, "Smithy supply has decreased", TestGame1.supplyCount[smithy], initSupplyCt[smithy]-1, &testFlag);
 	assertTrue(TestGame1.supplyCount[adventurer] == initSupplyCt[adventurer]-1, "Mine supply has decreased", TestGame1.supplyCount[adventurer], initSupplyCt[adventurer]-1, &testFlag);
 
-	
-	if (testFlag == 0){
-		printf("ALL TESTS IN TEST 3 PASSED\n");
-	}
-	else{
-		printf("TESTS IN TEST 3 NOT PASSED\n");
-	}
+	checkTest(testFlag, 3);
 	
 	printf("INITIATING TEST 4...\n");
 	/*
@@ -148,12 +132,7 @@ int main(){
 	assertTrue((p2InitDeckCt == p2CurrDeckCt), "Player1 deck count", p2CurrDeckCt, p2InitDeckCt, &testFlag);
 	assertTrue((p2InitDiscardCt == p2CurrDiscardCt), "Player1 discard count", p2CurrDiscardCt, p2InitDiscardCt, &testFlag);
 
-	if (testFlag == 0){
-		printf("ALL TESTS IN TEST 4 PASSED\n");
-	}
-	else{
-		printf("TESTS IN TEST 4 NOT PASSED\n");
-	}
+	checkTest(testFlag, 4);
 
 	return 0;
 }
