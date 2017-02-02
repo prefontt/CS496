@@ -25,7 +25,7 @@ int actions = current->numActions;
 int handnum = current->handCount[0];
 cardEffect(village, 0,0,0, current, 3, 0);
 printf("Current # of cards for player 0 after village: %d\n", current->handCount[0]);
-if(handNum != current->handCount[0]) //discards the village card and draws 1, so no net change
+if(handnum != current->handCount[0]) //discards the village card and draws 1, so no net change
 	aborttest("Cards wrong, cardtest4\n");
 printf("Current # of actions for player 0 after village: %d\n", (*current).numActions);
 if(actions+1 != current->numActions) //playing village used 1 action, so you net gain 1
