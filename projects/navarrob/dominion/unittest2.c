@@ -42,4 +42,5 @@ int main() {
     discardCard(0, 0, &G, 0);
     customAssert(numHandCards(&G) == 0);
 
+    return 0;
 }

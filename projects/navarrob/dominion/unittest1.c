@@ -58,7 +58,5 @@ int main() {
     printf("Testing that buyCard fails if estate supply count is set to 0 and we attempt to buy.\n");
     customAssert(buyCard(estate, &G) == -1);
 
-
-
-
+    return 0;
 }

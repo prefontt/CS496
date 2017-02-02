@@ -32,7 +32,7 @@ int main() {
     printf("Confirming that deck initially contains 5 cards.\n");
     customAssert(G.deckCount[0] == 5);
 
-    printf("Confirming that initial number of actions is 1");
+    printf("Confirming that initial number of actions is 1\n");
     customAssert(G.numActions == 1);
 
     printf("*** Playing adventurer card\n");
@@ -53,4 +53,5 @@ int main() {
     printf("Confirm that number of actions is now 0.\n");
     customAssert(G.numActions == 0);
 
+    return 0;
 }

@@ -50,4 +50,5 @@ int main() {
     printf("Test that the top card in the played cards pile is village\n");
     customAssert(G.playedCards[0] == village);
 
+    return 0;
 }

@@ -54,7 +54,7 @@ int main() {
     printf("***Playing the council_room card.\n");
     playCard(0, 0, 0, 0, &G);
 
-    printf("\nChecking player 1 attributes after card was played.\n");
+    printf("***Checking player 1 attributes after card was played.\n");
     printf("Test that hand count for player 1 is now 4.\n");
     customAssert(G.handCount[0] == 4);
     printf("Test that deck count for player 1 is now 1.\n");
@@ -74,13 +74,15 @@ int main() {
     printf("Test that the top card in the played cards pile is council_room.\n");
     customAssert(G.playedCards[0] == council_room);
 
-    printf("\nTesting player 2 attributes after card was played.");
+    printf("***Testing player 2 attributes after card was played.");
     printf("Test that hand count for player 2 is now 1.\n");
     customAssert(G.handCount[1] = 1);
     printf("Test that first card in hand for player 2 is silver.\n");
     customAssert(G.hand[1][0] == silver);
     printf("Test that player 2 deck now contains only 1 card.\n");
     customAssert(G.deckCount[1] == 1);
+
+    return 0;
 }
 
 

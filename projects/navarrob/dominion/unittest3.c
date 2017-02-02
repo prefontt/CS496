@@ -58,4 +58,5 @@ int main() {
     updateCoins(0, &G, 0);
     customAssert(G.coins == 6);
 
+    return 0;
 }

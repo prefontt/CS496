@@ -54,6 +54,7 @@ int main() {
     printf("Test that the number of actions is now 0\n");
     customAssert(G.numActions == 0);
 
+    return 0;
 }
 
 

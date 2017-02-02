@@ -96,4 +96,6 @@ int main() {
 
     printf("Testing that index outside of range returns -1\n");
     customAssert(getCost(27) == -1);
+
+    return 0;
 }
