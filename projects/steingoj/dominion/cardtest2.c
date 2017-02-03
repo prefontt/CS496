@@ -33,41 +33,42 @@ int main () {
 	
 	pre.whoseTurn = 0;
 
-	pre.deck[0][0] = copper;
-	pre.deck[0][1] = copper;
-	pre.deck[0][2] = copper;
-	pre.deck[0][3] = copper;
+	post.deck[0][0] = copper;
+	post.deck[0][1] = copper;
+	post.deck[0][2] = copper;
+	post.deck[0][3] = copper;
 	
 	pre.handCount[0] = 1;
 	pre.deckCount[0] = 4;
-	memcpy (&pre, &post, sizeof(struct gameState));
-
+	post.handCount[0] = 1;
+	post.deckCount[0] = 4;
+	
 	playAdventurer(&post);
 	
-
 	a = pre.handCount[0];
 	b = post.handCount[0];
-
-	printf("Pre: %d\n", a);	
-	printf("Post: %d\n", b);
-
 
 	assertTrue(a+2==b, "Hand count did not increase properly for copper");
 
 	/***********************************
 	//Test adventurer with all silver
 	***********************************/	
-	pre.deck[0][0] = silver;
-	pre.deck[0][1] = silver;
-	pre.deck[0][2] = silver;
-	pre.deck[0][3] = silver;
-	
-	pre.handCount[0] = 0;	
-	pre.deckCount[0] = 4;
 	memcpy (&pre, &post, sizeof(struct gameState));
 
-	playAdventurer(&post);
+	pre.whoseTurn = 0;
 
+	post.deck[0][0] = silver;
+	post.deck[0][1] = silver;
+	post.deck[0][2] = silver;
+	post.deck[0][3] = silver;
+	
+	pre.handCount[0] = 1;
+	pre.deckCount[0] = 4;
+	post.handCount[0] = 1;
+	post.deckCount[0] = 4;
+	
+	playAdventurer(&post);
+	
 	a = pre.handCount[0];
 	b = post.handCount[0];
 
@@ -76,38 +77,46 @@ int main () {
 	/***********************************
 	//Test adventurer with all gold
 	***********************************/	
-	pre.deck[0][0] = gold;
-	pre.deck[0][1] = gold;
-	pre.deck[0][2] = gold;
-	pre.deck[0][3] = gold;
-	pre.discardCount[0] = 0;
-	pre.handCount[0] = 0;	
-	pre.deckCount[0] = 4;
 	memcpy (&pre, &post, sizeof(struct gameState));
 
-	playAdventurer(&post);
+	pre.whoseTurn = 0;
 
+	post.deck[0][0] = gold;
+	post.deck[0][1] = gold;
+	post.deck[0][2] = gold;
+	post.deck[0][3] = gold;
+	
+	pre.handCount[0] = 1;
+	pre.deckCount[0] = 6;
+	post.handCount[0] = 1;
+	post.deckCount[0] = 6;
+	
+	playAdventurer(&post);
+	
 	a = pre.handCount[0];
 	b = post.handCount[0];
 
-	//NOTE: RUNS IN AN INFINITE LOOP
-	//assertTrue(a+2==b, "Hand count did not increase properly for gold");
+	assertTrue(a+2==b, "Hand count did not increase properly for gold");
+
 
 
 	/****************************************
 	//Test that cards not taken are discarded
 	*******************************************/
-	pre.deck[0][1] = smithy;
-	pre.deck[0][2] = smithy;
-	pre.deck[0][3] = copper;
-	pre.deck[0][4] = copper;
-	pre.deck[0][5] = copper;
-	pre.deck[0][6] = copper;
+	memcpy (&pre, &post, sizeof(struct gameState));
+	
+	post.deck[0][0] = smithy;
+	post.deck[0][1] = smithy;
+	post.deck[0][2] = copper;
+	post.deck[0][3] = copper;
+	post.deck[0][4] = smithy;
+	post.deck[0][5] = smithy;
 
 	
-	pre.handCount[0] = 0;	
-	pre.deckCount[0] = 4;
-	memcpy (&pre, &post, sizeof(struct gameState));
+	pre.handCount[0] = 1;	
+	pre.deckCount[0] = 6;
+	post.handCount[0] = 1;
+	post.deckCount[0] = 6;
 
 	playAdventurer(&post);
 
@@ -116,7 +125,7 @@ int main () {
 	
 	//printf("Pre: %d\n", a);	
 	//printf("Post: %d\n", b);
-	assertTrue(a!=b, "Cards not discarded properly");
+	assertTrue(a+2==b, "Cards not discarded properly");
 
 
 	return 0;
