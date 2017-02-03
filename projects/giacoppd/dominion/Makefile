@@ -69,7 +69,7 @@ unittestresults.out: cardtests unittests
 	gcov -b -f dominion.c >> unittestresults.out
 	echo ---------- >> unittestresults.out
 	gcov -b -f dominion.c >> unittestresults.out
-	cat dominion.c.gcov >> unittestresult.out 
+	cat dominion.c.gcov >> unittestresults.out 
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
