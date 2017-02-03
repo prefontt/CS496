@@ -1196,7 +1196,7 @@ int villageCard(struct gameState *state, int handPos, int currentPlayer){
       state->numActions = state->numActions + 1;
 			
       //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      discardCard(handPos - 1, currentPlayer, state, 0);
       return 0;
 }
 int stewardCard(struct gameState *state, int handPos, int currentPlayer, int choice1, int choice2, int choice3){
@@ -1207,7 +1207,7 @@ int stewardCard(struct gameState *state, int handPos, int currentPlayer, int cho
 	  	drawCard(currentPlayer, state);
 	  	drawCard(currentPlayer, state);
 	}
-    else if (choice1 == 2)
+  if (choice1 == 2)
 	{
 	  	//+2 coins
 	  	state->coins = state->coins + 2;
