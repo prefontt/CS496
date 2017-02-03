@@ -6,7 +6,7 @@
 // rand() % (max_number + 1 - minimum_number) + minimum_number
 
 char inputChar() {
-    char availChars = ['[', '(', '{', ' ', 'a', 'x', '}', ')', ']'];
+  char availChars[9] = {'[', '(', '{', ' ', 'a', 'x', '}', ')', ']'};
 	char randomChar;
 	int randomInt = 0;
 	//  Generate random integer from 0-8
@@ -18,17 +18,17 @@ char inputChar() {
 char *inputString() {
 	//  Generate a random lowercase letter using the ASCII integer
 	//  ASCII 97 to 122 = a to z
-	int randInt = 0;
+	int randomInt = 0;
 	int stringLen = 5;
 	char *randString = malloc((stringLen + 1)*sizeof(char));
 	for (int i = 0; i < stringLen; i++) {
-		
-		randomInt = rand() % (122 + 1 - 97) + 97
-		randString[i] = randint;
+
+		randomInt = rand() % (122 + 1 - 97) + 97;
+		randString[i] = randomInt;
 	}
 	// Append the /0 to the end of the randString[5]
-	randString[stringLen] = '/0';
-	
+	randString[stringLen] = '\0';
+
     return randString;
 }
 
