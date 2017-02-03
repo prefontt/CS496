@@ -5,32 +5,24 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-int supplycounttest(){
-    int testevaluation = -1;	//initialize test evaluation status where -1 is fail and 0 is pass
-    struct gameState GSvar;		//initialize gamestate
-    
-	//manually set GSvar for testing
-	GSvar.supplyCount[copper] = 2;
-	//call supplyCount for testing
-    testevaluation = supplyCount(copper, &GSvar);
-    asserttrue (testevaluation == 2);
-	testevaluation = 0;
-
-	//manually set GSvar for testing
-	GSvar.supplyCount[silver] = 4;
-	//call supplyCount for testing
-    testevaluation = supplyCount(silver, &GSvar);
-    asserttrue (testevaluation == 4);
-	testevaluation = 0;
-
-	//manually set GSvar for testing
-	GSvar.supplyCount[gold] = 6;
-	//call supplyCount for testing
-	testevaluation = supplyCount(gold, &GSvar);
-    asserttrue (testevaluation == 6);			//print results
-	testevaluation = 0;
+int main(){
+	printf("******begin unit test on whoseTurn()******\n");
 	
-    return testevaluation;
+	//initialize game
+	struct gameState G;
+	int result, randomVar = 0;
+	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall};
+	randomVar = rand() % 10;
+	result = initializeGame(2, k, randomVar, &G);
+	int turn = 0;
+	
+	//testing for successful turns
+	for (int i = 0; i < 10; i++){
+		G.whoseTurn = turn;
+		result = whoseTurn(&G);
+		asserttrue(result == turn);
+		turn++;
+	}
+	printf("******end unit test on whoseTurn()******\n");
+	return 0;
 }
-
-int main(){return supplycounttest();}

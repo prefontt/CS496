@@ -25,10 +25,39 @@ interface.o: interface.h interface.c
 	gcc -c interface.c -g  $(CFLAGS)
 
 runtests: testDrawCard 
-	./testDrawCard &> unittestresult.out
+	./testDrawCard >> unittestresult.out
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+# card4:
+	# gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest4.c rngs.c -o cardtest4 -lm -g
+	# ./cardtest4 >> unittestresult.out
+	# gcov dominion.c >> unittestresult.out
+	# cat dominion.c.gcov >> unittestresult.out
+	
+card4:
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest4.c rngs.c -o cardtest4 -lm -g
+	./cardtest4 >> unittestresult.out
+	gcov dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+
+card3:
+	gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtest3.c rngs.c -o cardtest3 -lm -g
+	./cardtest3 >> unittestresult.out
+	gcov dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
+	
+# card3:
+	# gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtestgreathall.c rngs.c -o cardtestgreathall -lm -g
+	# ./cardtestgreathall >> unittestresult.out
+	# gcov dominion.c >> unittestresult.out
+	# cat dominion.c.gcov >> unittestresult.out
+	
+# card3:
+	# gcc -fprofile-arcs -ftest-coverage -Wall -std=c99 dominion.c cardtestgreathall.c rngs.c -o cardtestgreathall -lm -g
+	# ./cardtestgreathall >> unittestresult.out
+	# gcov dominion.c >> unittestresult.out
+	# cat dominion.c.gcov >> unittestresult.out	
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

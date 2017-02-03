@@ -16,11 +16,18 @@ int main()
 {
 int x = 12;
 int y = 13;
-char[5] a;
-char[5] b;
+char a[5];
+char b[5];
 	
 if(compare(&x, &y) != -1)
-	aborttest("Compare didn't compare ints right, unittest4");
+	aborttest("Compare didn't compare ints right 1, unittest4");
+if(compare(&y, &x) != 1)
+	aborttest("Compare didn't compare ints right 2, unittest4");
+x = y;
+if(compare(&x, &y) != 0)
+	aborttest("Compare didn't compare ints right 3, unittest4");
+strcpy(a, "hat");
+strcpy(a, "hat");
 strcpy(a, "hat");
 strcpy(b, "bat");
 if(compare(a, b) != 1)

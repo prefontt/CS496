@@ -5,27 +5,37 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-int shuffletest(){
-    int testevaluation = -1;			//initialize test evaluation status where -1 is fail and 0 is pass
-    int playervar = 0;					//initialize player variable
-    struct gameState GSvar;				//initialize gamestate
-
-	//test shuffle() with deckCount of 3
-    GSvar.deckCount[playervar] = 3;		//Manually adjust GSvar for testing
-    GSvar.deck[playervar][0] = copper;		//Manually adjust GSvar for testing
-    GSvar.deck[playervar][1] = silver;		//Manually adjust GSvar for testing
-    GSvar.deck[playervar][2] = gold;		//Manually adjust GSvar for testing
-    testevaluation = shuffle(playervar, &GSvar);	//call shuffle() function for testing
-    if (testevaluation < 0) return testevaluation;
-
-    //test shuffle() with deck of 0
-    int testDeck[MAX_DECK] = {0};				//initialize deck
-    int i;
-    //For each of the cards we had, set cardSet's index of that card to 1
-    for (i=0 ; i<3 ; i++) testDeck[GSvar.deck[playervar][i]] = 1;		//iterate through cards and set index to 1
-    asserttrue(testDeck[copper] && testDeck[silver] && testDeck[gold]);	//check if all the cards in testDeck are set to 1 and print results
-    testevaluation = 0;
-    return testevaluation;
+int main(int argc, char ** argv){
+	printf("******begin unit test on shuffle()******\n");
+	
+	//initialize game
+	struct gameState G;
+	int result, randomVar = 0;
+	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall};
+	randomVar = rand() % 10;
+	result = initializeGame(2, k, randomVar, &G);
+	
+	//test deck count < 1 condition
+	printf("testing shuffle() with deck count < 1 \n");
+	G.deckCount[1] = -10;
+	result = shuffle(1, &G);
+	asserttrue(result == -1);
+	
+	G.deckCount[1] = 0;
+	result = shuffle(1, &G);
+	asserttrue(result == -1);
+	
+	//test deck count > 0 condition
+	printf("testing shuffle() with deck count > 0 \n");
+	G.deckCount[1] = 1;
+	result = shuffle(1, &G);
+	asserttrue(result == 0);
+	
+	G.deckCount[1] = 3;
+	result = shuffle(1, &G);
+	asserttrue (result == 0);
+		
+	printf("******end unit test on shuffle()******\n");
+	return 0;
 }
-
-int main(){return shuffletest();}
+	
