@@ -15,6 +15,10 @@
       <in>testDrawCard.c</in>
       <in>testInit.c</in>
       <in>testShuffle.c</in>
+      <in>testingtools.c</in>
+      <in>testingtools.h</in>
+      <in>unittest1.c</in>
+      <in>unittest2.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -44,7 +48,7 @@
       <makefileType>
         <makeTool>
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f Makefile all</buildCommand>
+          <buildCommand>${MAKE} -f Makefile unittestresults.out</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
           <cTool>
@@ -85,6 +89,14 @@
       <item path="testInit.c" ex="false" tool="0" flavor2="2">
       </item>
       <item path="testShuffle.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="testingtools.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="testingtools.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="unittest1.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="unittest2.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

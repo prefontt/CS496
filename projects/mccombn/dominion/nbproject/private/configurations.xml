@@ -19,6 +19,10 @@
       <in>testDrawCard.c</in>
       <in>testInit.c</in>
       <in>testShuffle.c</in>
+      <in>testingtools.c</in>
+      <in>testingtools.h</in>
+      <in>unittest1.c</in>
+      <in>unittest2.c</in>
     </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
