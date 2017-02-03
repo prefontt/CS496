@@ -1039,7 +1039,8 @@ Calls executed:20.83% of 96
 Creating 'dominion.c.gcov'
 
 ******begin unit test on smithy card******
-testing player 1 playing smithy when there are enough cards in decktesting whether card correctly plays 
+testing player 1 playing smithy when there are enough cards in deck
+testing whether card correctly plays 
 TEST SUCCESSFULLY COMPLETED.
 testing whether the turn still belongs to the same player
 TEST SUCCESSFULLY COMPLETED.
@@ -1270,7 +1271,7 @@ testing player1 victory points
 TEST FAILED.
 testing player2 victory points
 TEST FAILED.
-testing player1 number of actions count
+testing number of actions count
 TEST FAILED.
 testing supply count on curse cards
 TEST SUCCESSFULLY COMPLETED.
@@ -1280,7 +1281,7 @@ testing supply count on duchy cards
 TEST SUCCESSFULLY COMPLETED.
 testing supply count on province cards
 TEST SUCCESSFULLY COMPLETED.
-testing player1 playing great_hall with empty deck
+testing player1 playing great_hall with non-empty deck
 testing whether card correctly plays 
 TEST SUCCESSFULLY COMPLETED.
 testing whether the turn still belongs to the same player
@@ -1301,7 +1302,7 @@ testing player1 victory points
 TEST FAILED.
 testing player2 victory points
 TEST FAILED.
-testing player1 number of actions count
+testing number of actions count
 TEST FAILED.
 testing supply count on curse cards
 TEST SUCCESSFULLY COMPLETED.
@@ -1497,7 +1498,7 @@ testing player1 discard count
 TEST SUCCESSFULLY COMPLETED.
 testing player2 discard count
 TEST SUCCESSFULLY COMPLETED.
-testing player1 number of actions count
+testing number of actions count
 TEST FAILED.
 testing supply count on curse cards
 TEST SUCCESSFULLY COMPLETED.
@@ -1524,7 +1525,7 @@ testing player1 discard count
 TEST SUCCESSFULLY COMPLETED.
 testing player2 discard count
 TEST SUCCESSFULLY COMPLETED.
-testing player1 number of actions count
+testing number of actions count
 TEST FAILED.
 testing supply count on curse cards
 TEST SUCCESSFULLY COMPLETED.
