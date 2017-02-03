@@ -102,6 +102,9 @@ int main(){
 	int * kCards;
 	int hand[5];
 
+
+	printf("cardtest4.c\n");
+	
 	// initialize game
 	G = newGame();
 	GCopy = newGame();

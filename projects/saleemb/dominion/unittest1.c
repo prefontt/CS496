@@ -20,6 +20,7 @@ void assert(bool j){
 } 
 
 int main() {
+	printf("unittest1.c\n");
 	/*************** TEST ONE ******************
  	* The function shouldn't return null value
  	********************************************/
