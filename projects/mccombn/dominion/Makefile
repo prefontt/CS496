@@ -1,4 +1,4 @@
-CFLAGS = -fpic -coverage -lm -Wunused-but-set-variable -Wunused-variable -std=c99 -ftest-coverage -fprofile-arcs
+CFLAGS = -fpic -coverage -lm -std=c99 -ftest-coverage -fprofile-arcs
 
 rngs.o: rngs.h rngs.c
 	gcc -c rngs.c -g  $(CFLAGS)
@@ -46,6 +46,9 @@ unittestresults.out: dominion.o rngs.o unittest1.o unittest2.o testingtools.o
 	cat dominion.c.gcov >> unittestresults.out
 	gcc -o test.run -g dominion.o rngs.o unittest2.o testingtools.o $(CFLAGS)
 	./test.run 1234
+	./test.run 1234 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	cat dominion.c.gcov >> unittestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
