@@ -168,7 +168,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
       //draw 5 cards
       // for (j = 0; j < 5; j++)
       //	{
-      //	  drawCard(i, state);
+      	//  drawCard(i, state);
       //	}
     }
   
