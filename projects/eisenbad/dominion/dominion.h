@@ -137,6 +137,8 @@ int smithy_refact(struct gameState *state, int handPos);
 int village_refact(struct gameState *state, int handPos);
 int council_room_refact(struct gameState *state, int handPos);
 int great_hall_refact(struct gameState *state, int handPos);
+//HELPER FUNCTIONS
+void testAssert(int testNum, int *pass_count, int cmp);
 
 
 #endif
