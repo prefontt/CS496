@@ -14,19 +14,26 @@
 int main (int argc, char** argv) {
 
   //initialize gameState for testing of functions
-  struct gameState testGame;
-  int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
-           sea_hag, tribute, smithy};
+  struct gameState *testGame;
+  testGame = newGame();
+  int *k;
+  k = kingdomCards(adventurer, gardens, embargo, village, minion, mine, cutpurse,
+           sea_hag, tribute, smithy);
 
-  initializeGame(2, k, 7, &testGame);
+  initializeGame(2, k, 7, testGame);
 
-  int result, expected;
+  int result, expected, oppHandCount, oppDeckCount, oppDiscardCount;
+
+  //Save Opponent Game State
+  oppHandCount = testGame->handCount[1];
+  oppDeckCount = testGame->deckCount[1];
+  oppDiscardCount = testGame->discardCount[1];
 
   //Place card in player hand
-  placePlayerHand(0, smithy, 0, &testGame);
+  placePlayerHand(0, smithy, 0, testGame);
 
   //Play Smithy
-  playCard(0, -1, -1, -1, &testGame);
+  playCard(0, -1, -1, -1, testGame);
   printf("**Test Card Functionality - Smithy\n");
 
 /* ----   Test 1 - 7 Cards In Hand  ---- */
@@ -35,7 +42,7 @@ int main (int argc, char** argv) {
   expected = 7;
 
   //Set result to number of hand cards
-  result = numHandCards(&testGame);
+  result = numHandCards(testGame);
 
   assertTest(result, expected, 1);
 
@@ -45,7 +52,7 @@ int main (int argc, char** argv) {
   expected = 0;
 
   //Set result to number of actions
-  result = testGame.numActions;
+  result = testGame->numActions;
 
   assertTest(result, expected, 2);
 
@@ -54,8 +61,8 @@ int main (int argc, char** argv) {
 
   expected = 1;
 
-  //Set result to number of actions
-  result = testGame.playedCardCount;
+  //Set result to cards in Played Pile
+  result = testGame->playedCardCount;
 
   assertTest(result, expected, 3);
 
@@ -67,8 +74,8 @@ int main (int argc, char** argv) {
   //Set result to 1 if Smithy in Played Pile
   result = 0;
   int i;
-  for (i = 0; i < testGame.playedCardCount; i++) {
-    if (testGame.playedCards[i] == smithy) {
+  for (i = 0; i < testGame->playedCardCount; i++) {
+    if (testGame->playedCards[i] == smithy) {
       result = 1;
     } 
   }
@@ -81,7 +88,7 @@ int main (int argc, char** argv) {
   expected = 2;
 
   //Set result to number of cards in draw pile
-  result = testGame.deckCount[whoseTurn(&testGame)];
+  result = testGame->deckCount[whoseTurn(testGame)];
 
   assertTest(result, expected, 5);
 
@@ -95,7 +102,54 @@ int main (int argc, char** argv) {
 
   assertTest(result, expected, 6);
 
-  printf("** Testing Complete\n");
+/* ----   Test 7 - Player Has 1 Buy ---- */
+  printf("*Test 7 - Player Has 1 Buy\n");
+
+  expected = 1;
+
+  //Set result to player numBuys
+  result = testGame->numBuys;
+
+  assertTest(result, expected, 7);
+
+/* ----   Test 8 - Opponent Has Same Hand Count ---- */
+  printf("*Test 8 - Opponent Has Same Hand Count\n");
+
+  expected = 0;
+
+  //Set result to change in Opponent Hand Count
+  result = testGame->handCount[1];
+  result = result - oppHandCount;
+
+
+  assertTest(result, expected, 8);
+
+/* ----   Test 9 - Opponent Has Same Deck Count ---- */
+  printf("*Test 9 - Opponent Has Same Deck Count\n");
+
+  expected = 0;
+
+  //Set result to change in Opponent Deck Count
+  result = testGame->deckCount[1];
+  result = result - oppDeckCount;
+
+
+  assertTest(result, expected, 9);
+
+/* ----   Test 10 - Opponent Has Same Discard Count ---- */
+  printf("*Test 10 - Opponent Has Same Discard Count\n");
+
+  expected = 0;
+
+  //Set result to change in Opponent Discard Count
+  result = testGame->discardCount[1];
+  result = result - oppDiscardCount;
+
+
+  assertTest(result, expected, 10);
+
+  printf("** Testing Complete\n\n");
+
   return 0;
 
 }

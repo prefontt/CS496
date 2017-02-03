@@ -14,7 +14,7 @@ int main() {
     /*
      * Testing: int buyCard(int supplyPos, struct gameState *state)
      */
-    printf("Unit Test 1: Testing that buyCard is correct for all cards\n");
+    printf("\n*** Unit Test 1: Testing buyCard ***\n");
 
     struct gameState G;
     int i;
@@ -58,7 +58,5 @@ int main() {
     printf("Testing that buyCard fails if estate supply count is set to 0 and we attempt to buy.\n");
     customAssert(buyCard(estate, &G) == -1);
 
-
-
-
+    return 0;
 }

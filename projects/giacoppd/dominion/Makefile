@@ -42,15 +42,15 @@ cardtests: cardtest1.c cardtest2.c cardtest3.c cardtest4.c dominion.c dominion.h
 	gcc -o cardtest4 -g cardtest4.c dominion.c rngs.c $(CFLAGS)
 
 unittestresults.out: cardtests unittests
-	./cardtest1
-	./cardtest2
-	./cardtest3
-	./cardtest4
-	./unittest1
-	./unittest2
-	./unittest3
-	./unittest4
-	gcov -b -f cardtest1.c > unittestresults.out
+	./cardtest1 > unittestresults.out
+	./cardtest2 >> unittestresults.out
+	./cardtest3 >> unittestresults.out
+	./cardtest4 >> unittestresults.out
+	./unittest1 >> unittestresults.out
+	./unittest2 >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	gcov -b -f cardtest1.c >> unittestresults.out
 	echo ---------- >> unittestresults.out
 	gcov -b -f cardtest2.c >> unittestresults.out
 	echo ---------- >> unittestresults.out
@@ -65,6 +65,11 @@ unittestresults.out: cardtests unittests
 	gcov -b -f unittest3.c >> unittestresults.out
 	echo ---------- >> unittestresults.out
 	gcov -b -f unittest4.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f dominion.c >> unittestresults.out
+	echo ---------- >> unittestresults.out
+	gcov -b -f dominion.c >> unittestresults.out
+	cat dominion.c.gcov >> unittestresults.out 
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

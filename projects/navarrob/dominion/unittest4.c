@@ -8,7 +8,7 @@
 
 //Testing int getCost(int cardNumber)
 int main() {
-    printf("Unit Test 4: Testing that getCost is correct for all cards\n");
+    printf("\n*** Unit Test 4: Testing getCost ***\n");
 
     printf("Testing cost for Curse\n");
     customAssert(getCost(curse) == 0);
@@ -90,4 +90,12 @@ int main() {
 
     printf("Testing cost for Treasure Map\n");
     customAssert(getCost(treasure_map) == 4);
+
+    printf("Testing that invalid negaitve value returns -1\n");
+    customAssert(getCost(-1) == -1);
+
+    printf("Testing that index outside of range returns -1\n");
+    customAssert(getCost(27) == -1);
+
+    return 0;
 }
