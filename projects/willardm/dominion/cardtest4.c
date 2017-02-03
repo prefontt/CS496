@@ -47,12 +47,12 @@ int main(int argc, char **argv) {
   //  Check Postconditions
   printf("\n >>>>> Postcondition Check <<<<<\n");
   //  Card was drawn, actions +2
-  printf(" hand count:  %d\n", G.deckCount[0]);
+  printf(" hand count:  %d\n", G.handCount[0]);
   asserttrue((G.handCount[0] == (handCountPre)), "Same Hand Count?  ");
   printf(" deck count:  %d\n", G.deckCount[0]);
   asserttrue((G.deckCount[0] == (deckCountPre - 1)), "1 less cards deck?  ");
   printf(" Action Count:  %d\n", G.numActions);
-  asserttrue((G.numActions == (numActionsPre + 1)), "+2 Actions?  ");
+  asserttrue((G.numActions == (numActionsPre + 2)), "+2 Actions?  ");
   printf(" played card count:  %d\n", G.playedCardCount);
   asserttrue((G.playedCardCount == (playedCardCountPre + 1)), "Played Count");
 
