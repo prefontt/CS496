@@ -3,21 +3,21 @@
 #include "domtests.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <string.h>
 
+/*
+TESTS updateCoins()
+*/
 
 int main(){
 	struct gameState TestGame1;
 	int numPlayers = 2;
 	int seed = 10;
 	int cards[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
-	int p1InitCoins, p2InitCoins, p1CurrCoins, p2CurrCoins;
+	int p1CurrCoins, p2CurrCoins;
 	int testFlag = 0;
 	int player1 = 0;
 	int player2 = 1;
 	int i;
-	int c;
 	int numCardsAdded;
 	int initP1HandCt, currP1HandCt;
 	
@@ -27,11 +27,23 @@ int main(){
 	
 	//store initial coin count for both players
 	updateCoins(player1, &TestGame1, 0);
-	p1InitCoins = p1CurrCoins = TestGame1.coins;
+	p1CurrCoins = TestGame1.coins;
 	
+	
+/*
+ * TEST 0: PRECONDITIONS - PLAYERS START WITH NONNEGATIVE COINS
+ */
+	printf("INITIALIZING TEST 0...\n");
+	testFlag = 0;
 	//Get initial coins for p2
 	updateCoins(player2, &TestGame1, 0);
-	p2InitCoins = p2CurrCoins = TestGame1.coins;
+	p2CurrCoins = TestGame1.coins;
+	
+	//NOTE: "ACTUAL" CAN BE ANY INT GREATER THAN OR EQUAL TO 0
+	assertTrue(p1CurrCoins == 4, "P1 initial coin count", p1CurrCoins, 4, &testFlag);
+	assertTrue(p2CurrCoins == 0, "P1 initial coin count", p2CurrCoins, 0, &testFlag);
+	
+	checkTest(testFlag, 0);
 	
 	/*
 	 * TEST 1: ENSURE UPDATE COINS CORRECTLY ADDS NEW TREASURE CARDS TO COIN COUNT TO PLAYER 1
@@ -44,19 +56,19 @@ int main(){
 	gainCard(gold, &TestGame1, 2, 0);
 	updateCoins(player1, &TestGame1, 0);
 	p1CurrCoins = TestGame1.coins;
-	assertTrue(p1CurrCoins == p1InitCoins + 3, "Player 1 added 1 gold (3 coins)", p1CurrCoins, p1InitCoins + 3, &testFlag);
+	assertTrue(p1CurrCoins == 7, "Player 1 added 1 gold (3 coins)", p1CurrCoins, 7, &testFlag);
 	
 	//Adds 1 copper to p1
 	gainCard(silver, &TestGame1, 2, 0);
 	updateCoins(player1, &TestGame1, 0);
 	p1CurrCoins = TestGame1.coins;
-	assertTrue(p1CurrCoins == p1InitCoins + 5, "Player 1 added 1 silver (2 coins)", p1CurrCoins, p1InitCoins + 5, &testFlag);
+	assertTrue(p1CurrCoins == 9, "Player 1 added 1 silver (2 coins)", p1CurrCoins, 9, &testFlag);
 	
 	//Adds 1 copper to p1
 	gainCard(copper, &TestGame1, 2, 0);
 	updateCoins(player1, &TestGame1, 0);
 	p1CurrCoins = TestGame1.coins;
-	assertTrue(p1CurrCoins == p1InitCoins + 6, "Player 1 added 1 copper (1 coin)", p1CurrCoins, p1InitCoins + 6, &testFlag);
+	assertTrue(p1CurrCoins == 10, "Player 1 added 1 copper (1 coin)", p1CurrCoins, 10, &testFlag);
 
 	checkTest(testFlag, 1);
 	
@@ -70,14 +82,14 @@ int main(){
 	
 	//Get initial coin values and set current coins accordingly
 	updateCoins(player1, &TestGame1, 0);
-	p1InitCoins = p1CurrCoins = TestGame1.coins;
+	p1CurrCoins = TestGame1.coins;
 	updateCoins(player2, &TestGame1, 0);
-	p2InitCoins = p2CurrCoins = TestGame1.coins;
+	p2CurrCoins = TestGame1.coins;
 	
 	//Update coins for player 1 with 2 bonus coins
 	updateCoins(player1, &TestGame1, 2);
 	p1CurrCoins = TestGame1.coins;
-	assertTrue(p1CurrCoins == p1InitCoins + 2, "Player 1 gets 2 bonus coins", p1CurrCoins, p1InitCoins + 2, &testFlag);
+	assertTrue(p1CurrCoins == 12, "Player 1 gets 2 bonus coins", p1CurrCoins, 12, &testFlag);
 
 	checkTest(testFlag, 2);
 	
@@ -90,7 +102,7 @@ int main(){
 	//Update coins for both players
 	updateCoins(player2, &TestGame1, 0);
 	p2CurrCoins = TestGame1.coins;
-	assertTrue(p2InitCoins == p2CurrCoins, "Player 2's coin count should not change", p2CurrCoins, p2InitCoins, &testFlag);
+	assertTrue(p2CurrCoins == 0, "Player 2's coin count should not change", p2CurrCoins, 0, &testFlag);
 	
 	checkTest(testFlag, 3);
 
@@ -102,7 +114,7 @@ int main(){
 	
 	//establish initial coint count
 	updateCoins(player1, &TestGame1, 0);
-	p1InitCoins = TestGame1.coins;
+	p1CurrCoins = TestGame1.coins;
 	
 	//Add one of each possible non-treasure card to hand
 	initP1HandCt = TestGame1.handCount[player1];
@@ -122,7 +134,8 @@ int main(){
 	//update coins after all non-treasure cards are added
 	updateCoins(player1, &TestGame1, 0);
 	p1CurrCoins = TestGame1.coins;
-	assertTrue(p1InitCoins == p1CurrCoins, "Adding non treasure cards does not affect coin count", p1CurrCoins, p1InitCoins, &testFlag);
+	//Note 2 bonus coins no longer in p1's current coin count -- back to 10 coins
+	assertTrue(p1CurrCoins == 10, "Adding non treasure cards does not affect coin count", p1CurrCoins, 10, &testFlag);
 	
 	
 	checkTest(testFlag, 4);

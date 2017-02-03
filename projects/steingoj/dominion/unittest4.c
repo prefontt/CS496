@@ -27,7 +27,7 @@ int main () {
 
 	
 	
-	//buyCard(curse, &post); 
+	 
 
 	/**********************************************************
 	//Test to see when number of buys is 0

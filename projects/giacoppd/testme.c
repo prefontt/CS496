@@ -11,7 +11,7 @@ char rando[] = {'[', '(', '{', ' ', 'a', 'x', '}', ')', ']', '<', '>', '?', 'r',
 
 char *inputString()
 {
-  char stringy[6];
+  char * stringy = malloc(sizeof(char)*6);
   int i = 0;
   for(; i < 5; i++)
     stringy[i] = inputChar();
@@ -49,6 +49,7 @@ void testme()
       printf("error ");
       exit(200);
     }
+    free(s);
   }
 }
 

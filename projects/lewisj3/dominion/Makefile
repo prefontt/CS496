@@ -27,9 +27,17 @@ interface.o: interface.h interface.c
 unittest%: unittest%.c dominion.o rngs.o
 	gcc -o $@ -g  $@.c dominion.o rngs.o $(CFLAGS)
 
-unittestresults.out: unittest1 unittest2 unittest3 unittest4
+cardtest%: cardtest%.c dominion.o rngs.o
+	gcc -o $@ -g  $@.c dominion.o rngs.o $(CFLAGS)
+
+unittestresults.out: unittest1 unittest2 unittest3 unittest4 cardtest1 \
+	cardtest2
 	touch unittestresults.out
-	find -name "unittest?" -exec sh -c '{} &>> unittestresults.out' ';'
+	find \( -name "unittest?" -o -name "cardtest?" \) -exec sh -c '{} &>> unittestresults.out' ';'
+	wait $!
+	wait $!
+	wait $!
+	wait $!
 	gcov dominion.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
 
@@ -40,4 +48,6 @@ all: playdom player testDrawCard testBuyCard badTestDrawCard unittest1 \
 	unittest2 unittest3 unittest4
 
 clean:
-	rm -f *.out *.o playdom.exe playdom test.exe test player player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so
+	rm -f *.out *.o playdom.exe playdom test.exe test player \
+		player.exe testInit testInit.exe *.gcov *.gcda *.gcno *.so \
+		unittest1 unittest2 unittest3 unittest4 cardtest1 cardtest2
