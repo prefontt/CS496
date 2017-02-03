@@ -527,10 +527,10 @@
     #####:  522:  return 0;
         -:  523:}
         -:  524:
-        6:  525:int drawCard(int player, struct gameState *state)
+        7:  525:int drawCard(int player, struct gameState *state)
         -:  526:{	int count;
         -:  527:  int deckCounter;
-        6:  528:  if (state->deckCount[player] <= 0){//Deck is empty
+        7:  528:  if (state->deckCount[player] <= 0){//Deck is empty
         -:  529:    
         -:  530:    //Step 1 Shuffle the discard pile back into a deck
         -:  531:    int i;
@@ -570,19 +570,19 @@
         -:  565:  }
         -:  566:
         -:  567:  else{
-        6:  568:    int count = state->handCount[player];//Get current hand count for player
+        7:  568:    int count = state->handCount[player];//Get current hand count for player
         -:  569:    int deckCounter;
         -:  570:    if (DEBUG){//Debug statements
         -:  571:      printf("Current hand count: %d\n", count);
         -:  572:    }
         -:  573:
-        6:  574:    deckCounter = state->deckCount[player];//Create holder for the deck count
-        6:  575:    state->hand[player][count] = state->deck[player][deckCounter - 1];//Add card to the hand
-        6:  576:    state->deckCount[player]--;
-        6:  577:    state->handCount[player]++;//Increment hand count
+        7:  574:    deckCounter = state->deckCount[player];//Create holder for the deck count
+        7:  575:    state->hand[player][count] = state->deck[player][deckCounter - 1];//Add card to the hand
+        7:  576:    state->deckCount[player]--;
+        7:  577:    state->handCount[player]++;//Increment hand count
         -:  578:  }
         -:  579:
-        6:  580:  return 0;
+        7:  580:  return 0;
         -:  581:}
         -:  582:
     #####:  583:int getCost(int cardNumber)
@@ -862,21 +862,21 @@
         -:  857:		
         -:  858:    case great_hall:
         -:  859:     
-        1:  860:		playGreatHall(state, currentPlayer, handPos);
+    #####:  860:		playGreatHall(state, currentPlayer, handPos);
         -:  861:	 
         -:  862:    case minion:
         -:  863:      //+1 action
-        1:  864:      state->numActions++;
+    #####:  864:      state->numActions++;
         -:  865:			
         -:  866:      //discard card from hand
-        1:  867:      discardCard(handPos, currentPlayer, state, 0);
+    #####:  867:      discardCard(handPos, currentPlayer, state, 0);
         -:  868:			
-        1:  869:      if (choice1)		//+2 coins
+    #####:  869:      if (choice1)		//+2 coins
         -:  870:	{
     #####:  871:	  state->coins = state->coins + 2;
         -:  872:	}
         -:  873:			
-        1:  874:      else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+    #####:  874:      else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
         -:  875:	{
         -:  876:	  //discard hand
     #####:  877:	  while(numHandCards(state) > 0)
@@ -913,14 +913,14 @@
         -:  908:	    }
         -:  909:				
         -:  910:	}
-        1:  911:      return 0;
+    #####:  911:      return 0;
         -:  912:		
         -:  913:    case steward:
-    #####:  914:      if (choice1 == 1)
+        1:  914:      if (choice1 == 1)
         -:  915:	{
         -:  916:	  //+2 cards
-    #####:  917:	  drawCard(currentPlayer, state);
-    #####:  918:	  drawCard(currentPlayer, state);
+        1:  917:	  drawCard(currentPlayer, state);
+        1:  918:	  drawCard(currentPlayer, state);
         -:  919:	}
     #####:  920:      else if (choice1 == 2)
         -:  921:	{
@@ -935,8 +935,8 @@
         -:  930:	}
         -:  931:			
         -:  932:      //discard card from hand
-    #####:  933:      discardCard(handPos, currentPlayer, state, 0);
-    #####:  934:      return 0;
+        1:  933:      discardCard(handPos, currentPlayer, state, 0);
+        1:  934:      return 0;
         -:  935:		
         -:  936:    case tribute:
     #####:  937:      if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1){
@@ -1175,27 +1175,27 @@
     #####: 1170:  return -1;
         -: 1171:}
         -: 1172:
-        2: 1173:int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
+        1: 1173:int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
         -: 1174:{
         -: 1175:	
         -: 1176:  //if card is not trashed, added to Played pile 
-        2: 1177:  if (trashFlag < 1)
+        1: 1177:  if (trashFlag < 1)
         -: 1178:    {
         -: 1179:      //add card to played pile
-        2: 1180:      state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
-        2: 1181:      state->playedCardCount++;
+        1: 1180:      state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
+        1: 1181:      state->playedCardCount++;
         -: 1182:    }
         -: 1183:	
         -: 1184:  //set played card to -1
-        2: 1185:  state->hand[currentPlayer][handPos] = -1;
+        1: 1185:  state->hand[currentPlayer][handPos] = -1;
         -: 1186:	
         -: 1187:  //remove card from player's hand
-        2: 1188:  if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
+        1: 1188:  if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
         -: 1189:    {
         -: 1190:      //reduce number of cards in hand
     #####: 1191:      state->handCount[currentPlayer]--;
         -: 1192:    }
-        2: 1193:  else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
+        1: 1193:  else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
         -: 1194:    {
         -: 1195:      //reduce number of cards in hand
     #####: 1196:      state->handCount[currentPlayer]--;
@@ -1203,14 +1203,14 @@
         -: 1198:  else 	
         -: 1199:    {
         -: 1200:      //replace discarded card with last card in hand
-        2: 1201:      state->hand[currentPlayer][handPos] = state->hand[currentPlayer][ (state->handCount[currentPlayer] - 1)];
+        1: 1201:      state->hand[currentPlayer][handPos] = state->hand[currentPlayer][ (state->handCount[currentPlayer] - 1)];
         -: 1202:      //set last card to -1
-        2: 1203:      state->hand[currentPlayer][state->handCount[currentPlayer] - 1] = -1;
+        1: 1203:      state->hand[currentPlayer][state->handCount[currentPlayer] - 1] = -1;
         -: 1204:      //reduce number of cards in hand
-        2: 1205:      state->handCount[currentPlayer]--;
+        1: 1205:      state->handCount[currentPlayer]--;
         -: 1206:    }
         -: 1207:	
-        2: 1208:  return 0;
+        1: 1208:  return 0;
         -: 1209:}
         -: 1210:
     #####: 1211:int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
@@ -1336,17 +1336,17 @@
     #####: 1331:      return 0;
         -: 1332:}
         -: 1333:
-        1: 1334:int playGreatHall(struct gameState *state, int currentPlayer, int handPos) {
+    #####: 1334:int playGreatHall(struct gameState *state, int currentPlayer, int handPos) {
         -: 1335: 
         -: 1336:	 //+1 Card
-        1: 1337:      drawCard(currentPlayer, state);
+    #####: 1337:      drawCard(currentPlayer, state);
         -: 1338:			 
         -: 1339:     //+2 Actions
-        1: 1340:      state->numActions+2;
+    #####: 1340:      state->numActions+2;
         -: 1341:			
         -: 1342:      //discard card from hand
-        1: 1343:      discardCard(handPos, currentPlayer, state, 0);
-        1: 1344:      return 0;
+    #####: 1343:      discardCard(handPos, currentPlayer, state, 0);
+    #####: 1344:      return 0;
         -: 1345:}
         -: 1346:
         -: 1347:
