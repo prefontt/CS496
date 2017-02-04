@@ -19,6 +19,8 @@ int LAST_ENUM_VALUE = treasure_map;
 int MAXHAND = 5;
 int DECK1[] = {baron, copper, council_room, copper};
 int DECK2[] = {silver, gold, village, feast, baron};
+int DECK3[] = {baron, council_room, feast};
+int DECK4[] = {baron, council_room, feast, copper};
 
 void fillDeck(int *cards, int size, int player, struct gameState *state)
 {
@@ -32,6 +34,7 @@ void fillDeck(int *cards, int size, int player, struct gameState *state)
 void reset(struct gameState *state, int player)
 {
 	int i;
+	state->whoseTurn = player;
 	//Empty hand
 	for(i = 0; i < state->handCount[player]; i++){
 		state->hand[player][i] = -1;
@@ -48,7 +51,14 @@ void reset(struct gameState *state, int player)
 	}
 	state->discardCount[player] = 0;
 	
-	state->whoseTurn = player;
+	//Empty played cards
+	for(i = 0; i < state->playedCardCount; i++){
+		state->playedCards[i] = 0;
+	}
+	state->playedCardCount = 0;
+	
+	state->hand[player][0] = adventurer;
+	state->handCount[player] = 1;
 }
 
 static void handler(int sig)
@@ -62,8 +72,28 @@ int main () {
 	int player = PLAYER;
 	int deck1Size = 5;
 	int deck2Size = 5;
+	int deck3Size = 3;
+	int deck4Size = 4;
 	struct gameState *state = malloc(sizeof(struct gameState));
 	signal(SIGSEGV, handler);
+	
+	reset(state, player);
+	
+	//No coins in deck + discard
+	fillDeck(DECK3, deck3Size, player, state);
+	returnVal = playAdventurer(state);
+	assert(returnVal == -1);
+	assert(state->handCount[player] == 1);
+	assert(state->playedCardCount == 0);
+	
+	reset(state, player);
+	
+	//1 coin in deck + discard
+	fillDeck(DECK4, deck4Size, player, state);
+	returnVal = playAdventurer(state);
+	assert(returnVal == -1);
+	assert(state->handCount[player] == 1);
+	assert(state->playedCardCount == 0);
 	
 	reset(state, player);
 	
@@ -72,8 +102,8 @@ int main () {
 	returnVal = playAdventurer(state);
 	assert(returnVal == 0);
 	assert(state->handCount[player] == 2);
-	assert(state->discardCount[player] == 1);
-	assert(state->discard[player][0] == council_room);
+	assert(state->playedCardCount == 1);
+	assert(state->playedCards[0] == adventurer);
 	
 	reset(state, player);
 	
@@ -82,6 +112,8 @@ int main () {
 	returnVal = playAdventurer(state);
 	assert(state->discardCount[player] == 3);
 	assert(state->handCount[player] == 2);
+	assert(state->playedCardCount == 1);
+	assert(state->playedCards[0] == adventurer);
 	
 	free(state);
 	
