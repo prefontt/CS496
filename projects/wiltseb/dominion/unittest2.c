@@ -7,16 +7,18 @@
 #include <string.h>
 
 
-
+/*
+TESTS gainCard() 
+*/
 
 int main(){
-	struct gameState TestGame1, TestGame2, TestGame3;
+	struct gameState TestGame1;
 	int numPlayers = 2;
 	int seed = 10;
 	int cards[10] = {adventurer, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy, council_room};
-	int p1InitHandCt, p2InitHandCt, p1CurrHandCt, p2CurrHandCt;
-	int p1InitDiscardCt, p2InitDiscardCt, p1CurrDiscardCt, p2CurrDiscardCt;
-	int p1InitDeckCt, p2InitDeckCt, p1CurrDeckCt, p2CurrDeckCt;
+	int p1CurrHandCt, p2CurrHandCt;
+	int p1CurrDiscardCt, p2CurrDiscardCt;
+	int p1CurrDeckCt, p2CurrDeckCt;
 	int testFlag = 0;
 	int player1 = 0;
 	int player2 = 1;
@@ -25,22 +27,31 @@ int main(){
 	
 	//initialize games
 	initializeGame(numPlayers, cards, seed, &TestGame1);
-	memcpy(&TestGame2, &TestGame1, sizeof(struct gameState));
-	memcpy(&TestGame3, &TestGame1, sizeof(struct gameState));
 	
 	
 	//Get initial count of hand, discard, deck
-	p1InitHandCt = p1CurrHandCt = TestGame1.handCount[player1];
-	p2InitHandCt = p2CurrHandCt = TestGame1.handCount[1];
-	p1InitDiscardCt = p1CurrDiscardCt = TestGame1.discardCount[player1];
-	p2InitDiscardCt = p2CurrDiscardCt = TestGame1.discardCount[1];
-	p1InitDeckCt = p1CurrDeckCt = TestGame1.deckCount[player1];
-	p2InitDeckCt = p2CurrDeckCt = TestGame1.deckCount[1];
+	p1CurrHandCt = TestGame1.handCount[player1];
+	p2CurrHandCt = TestGame1.handCount[1];
+	p1CurrDiscardCt = TestGame1.discardCount[player1];
+	p2CurrDiscardCt = TestGame1.discardCount[1];
+	p1CurrDeckCt = TestGame1.deckCount[player1];
+	p2CurrDeckCt = TestGame1.deckCount[1];
 	
 	//Copy initial supply count
 	for (i = 0; i < treasure_map+1; i++){
 		initSupplyCt[i] = TestGame1.supplyCount[i];
 	}
+	
+	printf("INITIATING TEST 0...\n");
+	/*
+	TEST 0: PRECONDITIONS - PLAYED CARD COUNT SHOULD BE INITIALIZED TO 0, HANDCOUNT IS 5, DECK IS 5, DISCARD IS 0
+	*/
+	testFlag = 0;
+	assertTrue(p1CurrHandCt == 5, "hand count is 5", p1CurrHandCt, 5, &testFlag);
+	assertTrue(p1CurrDeckCt == 5, "Deck count is 5", p1CurrDeckCt, 5, &testFlag);
+	assertTrue(p1CurrDiscardCt == 0, "discard pile is empty", p1CurrDiscardCt, 0, &testFlag);
+	
+	checkTest(testFlag, 0);
 	
 	printf("INITIATING TEST 1...\n");
 	/*
@@ -61,10 +72,9 @@ int main(){
 	p1CurrDeckCt = TestGame1.deckCount[player1];
 	p1CurrDiscardCt = TestGame1.discardCount[player1];
 	
-	printf("Gaining one mine to discard pile----------------\n");
-	assertTrue((p1InitHandCt == p1CurrHandCt), "Player1 hand count", p1CurrHandCt, p1InitHandCt, &testFlag);
-	assertTrue((p1InitDeckCt == p1CurrDeckCt), "Player1 deck count", p1CurrDeckCt, p1InitDeckCt, &testFlag);
-	assertTrue((p1InitDiscardCt + 1 == p1CurrDiscardCt), "Player1 discard count", p1CurrDiscardCt, p1InitDiscardCt + 1, &testFlag);
+	assertTrue((p1CurrHandCt == 5), "Player1 hand count", p1CurrHandCt, 5, &testFlag);
+	assertTrue((p1CurrDeckCt == 5), "Player1 deck count", p1CurrDeckCt, 5, &testFlag);
+	assertTrue((p1CurrDiscardCt == 1), "Player1 discard count", p1CurrDiscardCt, 1, &testFlag);
 	
 	//Player 1 gains a smithy to his deck
 	gainCard(smithy, &TestGame1, 1, player1);
@@ -75,10 +85,9 @@ int main(){
 	p1CurrDiscardCt = TestGame1.discardCount[player1];
 	
 	//deck and discard pile should have 1 more card in them
-	printf("Gaining one smithy to deck----------------\n");
-	assertTrue((p1InitHandCt == p1CurrHandCt), "Player1 hand count", p1CurrHandCt, p1InitHandCt, &testFlag);
-	assertTrue((p1InitDeckCt + 1 == p1CurrDeckCt), "Player1 deck count", p1CurrDeckCt, p1InitDeckCt + 1, &testFlag);
-	assertTrue((p1InitDiscardCt + 1 == p1CurrDiscardCt), "Player1 discard count", p1CurrDiscardCt, p1InitDiscardCt + 1, &testFlag);
+	assertTrue((p1CurrHandCt == 5), "Player1 hand count", p1CurrHandCt, 5, &testFlag);
+	assertTrue((p1CurrDeckCt == 6), "Player1 deck count", p1CurrDeckCt, 6, &testFlag);
+	assertTrue((p1CurrDiscardCt == 1), "Player1 discard count", p1CurrDiscardCt, 1, &testFlag);
 	
 	//Player 1 gains an adventurer to his hand
 	gainCard(adventurer, &TestGame1, 2, player1);
@@ -89,10 +98,9 @@ int main(){
 	p1CurrDiscardCt = TestGame1.discardCount[player1];
 	
 	//deck and discard pile should have 1 more card in them
-	printf("Gaining one adventurer to hand----------------\n");
-	assertTrue((p1InitHandCt + 1 == p1CurrHandCt), "Player1 hand count", p1CurrHandCt, p1InitHandCt + 1, &testFlag);
-	assertTrue((p1InitDeckCt + 1 == p1CurrDeckCt), "Player1 deck count", p1CurrDeckCt, p1InitDeckCt + 1, &testFlag);
-	assertTrue((p1InitDiscardCt + 1 == p1CurrDiscardCt), "Player1 discard count", p1CurrDiscardCt, p1InitDiscardCt + 1, &testFlag);
+	assertTrue((p1CurrHandCt == 6), "Player1 hand count", p1CurrHandCt, 6, &testFlag);
+	assertTrue((p1CurrDeckCt == 6), "Player1 deck count", p1CurrDeckCt, 6, &testFlag);
+	assertTrue((p1CurrDiscardCt == 1), "Player1 discard count", p1CurrDiscardCt, 1, &testFlag);
 
 	checkTest(testFlag, 1);
 
@@ -128,9 +136,9 @@ int main(){
 	p1CurrDeckCt = TestGame1.deckCount[player2];
 	p1CurrDiscardCt = TestGame1.discardCount[player2];
 	
-	assertTrue((p2InitHandCt == p2CurrHandCt), "Player1 hand count", p2CurrHandCt, p2InitHandCt, &testFlag);
-	assertTrue((p2InitDeckCt == p2CurrDeckCt), "Player1 deck count", p2CurrDeckCt, p2InitDeckCt, &testFlag);
-	assertTrue((p2InitDiscardCt == p2CurrDiscardCt), "Player1 discard count", p2CurrDiscardCt, p2InitDiscardCt, &testFlag);
+	assertTrue((p2CurrHandCt == 0), "Player2 hand count", p2CurrHandCt, 0, &testFlag);
+	assertTrue((p2CurrDeckCt == 10), "Player2 deck count", p2CurrDeckCt, 10, &testFlag);
+	assertTrue((p2CurrDiscardCt == 0), "Player2 discard count", p2CurrDiscardCt, 0, &testFlag);
 
 	checkTest(testFlag, 4);
 

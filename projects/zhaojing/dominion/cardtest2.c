@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 	int whoseTurn = G.whoseTurn;
 	
 	//test smithy when there are enough cards in deck
-	printf("testing player 1 playing smithy when there are enough cards in deck");
+	printf("testing player 1 playing smithy when there are enough cards in deck\n");
 	//manually set decks for both players
 	G.handCount[whoseTurn] = 1;
 	G.hand[whoseTurn][0] = smithy;

@@ -24,7 +24,7 @@ void assert(bool j, char * msg){
 void gameStateCompare(struct gameState * G, struct gameState * GCopy, char * msg) {
 	int i, k; 	// loop iterators
 
-	printf("%s \n", msg);
+	//printf("%s \n", msg);
 	
 	// go through all attributes of struct gameState and see if any have changed
 	assert(G->numPlayers == GCopy->numPlayers, "numPlayers changed after call");
@@ -87,6 +87,8 @@ int main(){
 	struct gameState *GCopy; 	// used to check for change of state
 	int * kCards;	// holds kingdom cards that will initilize the game
 //	int i; 		//iterator in loops
+
+	printf("unittest3.c\n");
 
 	/*************** TEST ONE *****************
  	* Should return appropriate card asked

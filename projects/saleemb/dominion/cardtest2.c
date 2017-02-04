@@ -50,6 +50,8 @@ int main() {
 	int temphand[MAX_HAND];		// holds cards temporarily while adventurer is being played
 	int correctDiscard[MAX_HAND];	// used for comparisons; holds what the discard pile should look like
 	int i, j;			// loop counter
+
+	printf("cardtest2.c\n");
 	
 	/*** initialize game without shuffling deck ***/
 	G = newGame();
@@ -141,7 +143,7 @@ int main() {
 
 	// make a copy of the game state for comparison purposes
 	memcpy(GCopy, G, sizeof(struct gameState));
-
+/*
 	// print hand and deck of player one
 	printf("Hand of player 1: \n");
 	for(i = 0; i < G->handCount[0]; ++i)
@@ -150,7 +152,7 @@ int main() {
 	printf("Deck of player 1: \n");
 	for(i = 0; i < G->deckCount[0]; ++i)
 		printf("G->deck[0][%d] == %d\n", i, G->deck[0][i]);
-
+*/
 	/***************** TEST ONE *****************************
  	* Currently, the hand of of player 1 is: copper, copper,
  	* estate, copper and estate.  The cards in the deck from
@@ -177,7 +179,7 @@ int main() {
 	// reset state of game
 	memcpy(G, GCopy, sizeof(struct gameState));
 
-
+/*
 	// print hand and deck of player one
 	printf("Hand of player 1 after reset: \n");
 	for(i = 0; i < G->handCount[0]; ++i)
@@ -187,7 +189,7 @@ int main() {
 	for(i = 0; i < G->deckCount[0]; ++i)
 		printf("G->deck[0][%d] == %d\n", i, G->deck[0][i]);
 
-		
+*/		
 	/********************* TEST TWO ****************************
  	* Currently, the hand of the player is: copper, copper, estate,
  	* copper, and estate.  After adventurer is played, the hand should

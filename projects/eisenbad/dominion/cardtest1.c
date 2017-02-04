@@ -2,13 +2,15 @@
    Author: Daniel Eisenbach
    Date: 2/2/17
 
-   Description: Tests the implementation of the dominion smithy action card. Smithy costs four coin to buy, 
-   and when played lets the player draw three additional cards from the top of their deck into their hand.
+   Description: Tests the implementation of the dominion adventurer action card. Adventurer costs six coin to buy, 
+   and when used the player will reveal cards from their deck until two treasure cards are revealed, which will
+   be placed into the players hand. The remaining revealed cards are discarded.
 
    Pass Conditions:
-     1. Current player receives exactly 3 cards.
-     2. 3 cards come from current player's own pile.
-     3. No extra coins are awarded to the current player.
+     1. Current player receives up to 2 treasure cards from their own deck
+     2. If the deck is empty the discard pile is shuffled and added to the player's deck
+     3. 
+     3. No extra coins are awarded to the current player
      4. No state change occurs to the victory card piles or kingdom card piles.
      5. No state change occurs for other players.
 */
@@ -24,7 +26,7 @@
 #define TESTCARD "smithy"
 
 int main() {
-  int test_pass_count = 0;
+  int pass_count = 0;
 
   int newCards = 3;
   int discarded = 1;
@@ -55,11 +57,7 @@ int main() {
   printf("hand count = %d, expected = %d\n", testG.handCount[currentPlayer], G.handCount[currentPlayer] + newCards - discarded);
 
   // assert test 1 passed
-  if ((testG.handCount[currentPlayer] == G.handCount[currentPlayer] + newCards - discarded)) {
-    test_pass_count++;
-    printf(" >>> TEST 1 PASSED\n");
-  }
-  else {printf(" >>> TEST 1 FAILED\n");}
+  testAssert(1, &pass_count, (testG.handCount[currentPlayer] == G.handCount[currentPlayer] + newCards - discarded));
 
   /**************************************** TEST 2 ****************************************************/
   printf("\nTEST 2: 3 cards come from current player's own pile\n");
@@ -71,14 +69,9 @@ int main() {
   printf("deck count = %d, expected = %d\n", testG.deckCount[currentPlayer], G.deckCount[currentPlayer] - newCards + shuffledCards);
 
   // assert test 2 passed
-  if (
-        (testG.handCount[currentPlayer] == G.handCount[currentPlayer] + newCards - discarded) &&
-	(testG.deckCount[currentPlayer] == G.deckCount[currentPlayer] - newCards + shuffledCards)
-  ) {
-    test_pass_count++;
-    printf(" >>> TEST 2 PASSED\n");
-  }
-  else {printf(" >>> TEST 2 FAILED\n");}
+  testAssert(2, &pass_count,
+      (testG.handCount[currentPlayer] == G.handCount[currentPlayer] + newCards - discarded) &&
+      (testG.deckCount[currentPlayer] == G.deckCount[currentPlayer] - newCards + shuffledCards));
 
   /**************************************** TEST 3 ****************************************************/
   printf("\nTEST 3: No extra coins are awarded to the current player\n");
@@ -90,11 +83,7 @@ int main() {
   printf("coins = %d, expected = %d\n", testG.coins, G.coins + xtraCoins);
 
   // assert test 3 passed
-  if (testG.coins == G.coins + xtraCoins) {
-    test_pass_count++;
-    printf(" >>> TEST 3 PASSED\n");
-  }
-  else {printf(" >>> TEST 3 FAILED\n");}
+  testAssert(3, &pass_count, (testG.coins == G.coins + xtraCoins));
 
   /**************************************** TEST 4 ****************************************************/
   printf("\nTEST 4: No state change occurs to the victory card piles or kingdom card piles\n");
@@ -121,25 +110,20 @@ int main() {
   printf("council_room count = %d, expected = %d\n", testG.supplyCount[council_room], G.supplyCount[council_room]);
 
   // assert test 4 passed
-  if ( 
-        (testG.supplyCount[estate] == G.supplyCount[estate]) &&   
-        (testG.supplyCount[duchy] == G.supplyCount[duchy]) &&
-        (testG.supplyCount[province] == G.supplyCount[province]) &&
-        (testG.supplyCount[adventurer] == G.supplyCount[adventurer]) &&
-        (testG.supplyCount[embargo] == G.supplyCount[embargo]) &&
-        (testG.supplyCount[village] == G.supplyCount[village]) &&
-        (testG.supplyCount[minion] == G.supplyCount[minion]) &&
-        (testG.supplyCount[mine] == G.supplyCount[mine]) &&
-        (testG.supplyCount[cutpurse] == G.supplyCount[cutpurse]) &&
-        (testG.supplyCount[sea_hag] == G.supplyCount[sea_hag]) &&
-        (testG.supplyCount[tribute] == G.supplyCount[tribute]) &&
-        (testG.supplyCount[smithy] == G.supplyCount[smithy]) &&
-        (testG.supplyCount[council_room] == G.supplyCount[council_room])
-  ) {
-    test_pass_count++;
-    printf(" >>> TEST 4 PASSED\n");
-  }
-  else {printf(" >>> TEST 4 FAILED\n");}
+  testAssert(4, &pass_count, 
+      (testG.supplyCount[estate] == G.supplyCount[estate]) &&   
+      (testG.supplyCount[duchy] == G.supplyCount[duchy]) &&
+      (testG.supplyCount[province] == G.supplyCount[province]) &&
+      (testG.supplyCount[adventurer] == G.supplyCount[adventurer]) &&
+      (testG.supplyCount[embargo] == G.supplyCount[embargo]) &&
+      (testG.supplyCount[village] == G.supplyCount[village]) &&
+      (testG.supplyCount[minion] == G.supplyCount[minion]) &&
+      (testG.supplyCount[mine] == G.supplyCount[mine]) &&
+      (testG.supplyCount[cutpurse] == G.supplyCount[cutpurse]) &&
+      (testG.supplyCount[sea_hag] == G.supplyCount[sea_hag]) &&
+      (testG.supplyCount[tribute] == G.supplyCount[tribute]) &&
+      (testG.supplyCount[smithy] == G.supplyCount[smithy]) &&
+      (testG.supplyCount[council_room] == G.supplyCount[council_room]));
 
   /**************************************** TEST 5 ****************************************************/
   printf("\nTEST 5: No state change occurs for other players\n");
@@ -154,20 +138,13 @@ int main() {
   printf("next player deck count = %d, expected = %d\n", testG.deckCount[nextPlayer], G.deckCount[nextPlayer] - newCards + shuffledCards);
 
   // assert test 5 passed
-  if (
-        (testG.handCount[nextPlayer] == G.handCount[nextPlayer] + newCards - discarded) &&
-	(testG.deckCount[nextPlayer] == G.deckCount[nextPlayer] - newCards + shuffledCards)
-  ) {
-    test_pass_count++;
-    printf(" >>> TEST 5 PASSED\n");
-  }
-  else {printf(" >>> TEST 5 FAILED\n");}
+  testAssert(5, &pass_count,
+      (testG.handCount[nextPlayer] == G.handCount[nextPlayer] + newCards - discarded) &&
+      (testG.deckCount[nextPlayer] == G.deckCount[nextPlayer] - newCards + shuffledCards));
 
   /**************************************** END OF TESTS ****************************************************/
-  if (test_pass_count == 5) {printf("\n >>>>> TESTS COMPLETE. SUCCESS: All %s tests passed. <<<<<\n\n", TESTCARD);}
+  if (pass_count == 5) {printf("\n >>>>> TESTS COMPLETE. SUCCESS: All %s tests passed. <<<<<\n\n", TESTCARD);}
   else {printf("\n >>>>> TESTS COMPLETE. FAILURE: Not all %s tests passed. <<<<<\n\n", TESTCARD);}
 
   return 0;
 }
-
-
