@@ -18,7 +18,7 @@ int NUM_PLAYERS = 4;
 int LAST_ENUM_VALUE = treasure_map;
 int MAXHAND = 5;
 int DECK1[] = {baron, copper, council_room, copper};
-int DECK2[] = {silver, gold};
+int DECK2[] = {baron};
 
 void fillDeck(int *cards, int size, int player, struct gameState *state)
 {
@@ -37,8 +37,8 @@ void reset(struct gameState *state, int player)
 	for(i = 0; i < state->handCount[player]; i++){
 		state->hand[player][i] = -1;
 	}
-	//add smithy to handPos 0
-	state->hand[player][0] = smithy;
+	//add village to handPos 0
+	state->hand[player][0] = village;
 	state->handCount[player] = 1;
 	//Empty deck
 	for(i = 0; i < state->deckCount[player]; i++){
@@ -49,6 +49,7 @@ void reset(struct gameState *state, int player)
 	for(i = 0; i < state->discardCount[player]; i++){
 		state->discard[player][i] = -1;
 	}
+	state->discardCount[player] = 0;
 	
 	//Empty played cards
 	for(i = 0; i < state->playedCardCount; i++){
@@ -56,13 +57,12 @@ void reset(struct gameState *state, int player)
 	}
 	state->playedCardCount = 0;
 	
-	state->discardCount[player] = 0;
-	
+	state->numActions = 1;
 }
 
 static void handler(int sig)
 {
-	printf("cardtest2 SIGSEGV\n");
+	printf("cardtest3 SIGSEGV\n");
 	exit(-1);
 }
 
@@ -70,42 +70,50 @@ int main () {
     int returnVal;
 	int player = PLAYER;
 	int deck1Size = 5;
-	int deck2Size = 5;
+	int deck2Size = 1;
 	struct gameState *state = malloc(sizeof(struct gameState));
 	signal(SIGSEGV, handler);
 	
 	reset(state, player);
 	
-	//Deck1
+	//Deck1 - multiple cards
 	fillDeck(DECK1, deck1Size, player, state);
-	returnVal = playSmithy(state, 0);
+	returnVal = playVillage(state, 0);
 	assert(returnVal == 0);
-	assert(state->handCount[player] == 3);
-	assert(state->playedCardCount == 1);
-	assert(state->playedCards[0] == smithy);
-	
-	reset(state, player);
-	
-	//Deck2 - 2 cards in deck
-	fillDeck(DECK2, deck2Size, player, state);
-	assert(returnVal == -1);
-	assert(state->playedCardCount == 0);
 	assert(state->handCount[player] == 1);
+	assert(state->hand[player][0] == copper)
+	assert(state->playedCardCount == 1);
+	assert(state->playedCards[0] == village);
+	assert(state->numActions == 3);
 	
 	reset(state, player);
+	
+	//Deck2 - 1 card
+	fillDeck(DECK2, deck2Size, player, state);
+	returnVal = playVillage(state, 0);
+	assert(returnVal == 0);
+	assert(state->handCount[player] == 1);
+	assert(state->hand[player][0] == copper)
+	assert(state->playedCardCount == 1);
+	assert(state->playedCards[0] == village);
+	assert(state->numActions == 3);
+	
+	reset(state, player);
+	
 	
 	//NoDeck
-	returnVal = playSmithy(state, 0);
+	returnVal = playVillage(state, 0);
 	assert(returnVal == -1);
-	assert(state->playedCardCount == 0);
+	assert(state->discardCount[player] == 0);
 	assert(state->handCount[player] == 1);
+	assert(state->numActions == 1);
 	
 	free(state);
 	
 	if(!ERROR){
-		printf("cardtest2 finished successfully\n");
+		printf("cardtest3 finished successfully\n");
 	} else{
-		printf("cardtest2 finished with errors\n");
+		printf("cardtest3 finished with errors\n");
 	}
     return 0;
 }
