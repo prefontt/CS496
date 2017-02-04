@@ -10,7 +10,8 @@
 
 int main()
 {
-  printf("--- TESTING isGameOver FUNCTION ---\n");
+  printf("\n--- TESTING isGameOver FUNCTION ---\n");
+  // Declare variables for pass/fail count
   int passes = 0;
   int fails = 0;
 
@@ -90,6 +91,6 @@ int main()
 
   printf("\n--RESULTS--");
   printf("\nPASSES: %d\nFAILS: %d\n", passes, fails);
-  printf("\n---DONE TESTING isGameOver FUNCTION ---\n");
+  printf("\n---DONE TESTING isGameOver FUNCTION ---\n\n");
 
 }
