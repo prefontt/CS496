@@ -73,14 +73,14 @@ int main() {
       updateCoins(p, &G, bonus);
 
 
-      if(tempCoins < G.coins){
+      if(tempCoins == G.coins+6){
         printf("adventurerCall(): PASS when testing for coins spent, initial: %d, final: %d\n", tempCoins, G.coins);
       }
       else{
         printf("adventurerCall(): FAIL when testing for coins spent, initial: %d, final: %d\n", tempCoins, G.coins);
       }
 
-      if(tempCount == G.handCount[p]-1){
+      if(((G.handCount[p] - tempCount)-1)==2){
         printf("adventurerCall(): PASS when testing for cards drawn: %d cards drawn:\n", (G.handCount[p] - tempCount)-1);
       }
       else{
