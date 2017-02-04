@@ -8,8 +8,9 @@
 
 #define DEBUG 0
 #define NOISY_TEST 1
+int ERROR = 0;
 #undef assert
-#define assert(x) if(!(x)){printf("Assertion Error!\n");}
+#define assert(x) if(!(x)){printf("Assertion Error!\n"); ERROR = 1; }
 
 int PLAYER = 0;
 int NUM_PLAYERS = 4;
@@ -107,6 +108,17 @@ int main () {
 	
 	reset(state, player);
 	
+	//Non-Empty Deck, Non-Empty Discard
+	fillDiscard(MIXED_DECK, mixedDeckSize, player, state);
+	fillDeck(adventurers, MAXHAND, player, state);
+	count = 1;
+	expectedReturn = 0;
+	testDrawCard(player, state, count, expectedReturn);
+	assert(state->handCount[player] == 1);
+	assert(state->deckCount[player] == (mixedDeckSize - 1));
+	
+	reset(state, player);
+	
 	fillDeck(adventurers, MAXHAND, player, state);
 	
 	//Draw MAXHAND cards, all adventurer
@@ -128,6 +140,12 @@ int main () {
 	
 	free(state);
 	free(adventurers);
+	
+	if(!ERROR){
+		printf("unittest3 finished successfully\n");
+	} else{
+		printf("unittest3 finished with errors\n");
+	}
 	
     return 0;
 }

@@ -23,13 +23,13 @@ void assert(bool j, char * msg){
 
 int main() {
 	int i, k; // iterator
-	int numAdv, numFeast, numGarden, numMine, numVillage;  // used in TEST THREE for determining how many decks were created for
-							       // adventurer, feast, gardens, mine, and village
+	int numAdv, numFeast, numGarden, numMine, numVillage;  // used in TEST THREE for determining how many decks were created for									       // adventurer, feast, gardens, mine, and village
+	int * kCards = 0;
 
+	printf("unittest2.c\n");
 	/************** TEST ONE *****************
  	* Should not return a null value
  	* ****************************************/
-	int * kCards = 0;
 
 	kCards = kingdomCards(adventurer, council_room, feast, gardens,
 				mine, remodel, smithy, village, baron, great_hall);

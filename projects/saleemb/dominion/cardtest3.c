@@ -110,6 +110,8 @@ int main() {
 	int hand[5];
 	int i, j;
 
+	printf("cardtest3.c\n");
+	
 	// initialize game
 	G = newGame();
 	GCopy = newGame();

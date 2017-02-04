@@ -57,7 +57,7 @@ int main(int argc, char** argv){
 	asserttrue(G.supplyCount[whoseTurn] == 6);
 	printf("testing player2 victory points\n");
 	asserttrue(G.supplyCount[1] == 5);
-	printf("testing player1 number of actions count\n");
+	printf("testing number of actions count\n");
 	asserttrue(G.numActions == 3);
 	printf("testing supply count on curse cards\n");
 	asserttrue(G.supplyCount[curse] == 4);
@@ -69,7 +69,7 @@ int main(int argc, char** argv){
 	asserttrue(G.supplyCount[province] == 4);
 	
 	//test player 1 playing great_hall when player 1 deck is not empty
-	printf("testing player1 playing great_hall with empty deck\n");
+	printf("testing player1 playing great_hall with non-empty deck\n");
 	G.handCount[whoseTurn] = 1;
 	G.handCount[1] = 2;
 	G.hand[whoseTurn][0] = great_hall;
@@ -105,7 +105,7 @@ int main(int argc, char** argv){
 	asserttrue(G.supplyCount[whoseTurn] == 6);
 	printf("testing player2 victory points\n");
 	asserttrue(G.supplyCount[1] == 5);
-	printf("testing player1 number of actions count\n");
+	printf("testing number of actions count\n");
 	asserttrue(G.numActions == 3);
 	printf("testing supply count on curse cards\n");
 	asserttrue(G.supplyCount[curse] == 4);

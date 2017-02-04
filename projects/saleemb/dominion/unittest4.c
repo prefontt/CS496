@@ -22,6 +22,8 @@ void assert(bool j, char * msg){
 }
 
 int main(){
+
+	printf("unittest4.c\n");
 	/*************** TEST ONE ***********************************
  	* Should return approriate cost for each card.
  	* All cost values used for comparison obtained

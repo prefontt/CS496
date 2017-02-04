@@ -66,8 +66,21 @@ int main () {
 	G.hand[0][4] = copper;
 
 	updateCoins(0, &G, 0);
-	assertTrue(G.coins == 5, "Coins not added correctly"); 
+	assertTrue(G.coins == 5, "Multiple copper not added correctly"); 
 	
+	
+	//Test for multiple varied treasure cards
+	G.hand[0][0] = silver;
+	G.hand[0][1] = copper;
+	G.hand[0][2] = gold;
+	G.hand[0][3] = gold;
+	G.hand[0][4] = copper;
+
+	updateCoins(0, &G, 0);
+	assertTrue(G.coins == 10, "Multiple varied not added correctly"); 
+	
+
+
 
 	/**********************************
  	//Test for added bonus with no coins

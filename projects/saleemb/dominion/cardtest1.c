@@ -25,7 +25,7 @@ void assert(bool j, char * msg){
 void gameStateCompare(struct gameState * G, struct gameState * GCopy, char * msg) {
 	int i, k; 	// loop iterators
 
-	printf("%s \n", msg);
+//	printf("%s \n", msg);
 	
 	// go through all attributes of struct gameState and see if any have changed
 	assert(G->numPlayers == GCopy->numPlayers, "numPlayers changed after call");
@@ -94,6 +94,8 @@ int main(){
 	int numPlayers = 2;
 	int playWhoseTurn = 0;		// player identfier for person who will play the card
 	int coinBonus = 0;
+
+	printf("cardtest1.c\n");
 
 	// initialize the game and make two copies of the game state
 	G = newGame();

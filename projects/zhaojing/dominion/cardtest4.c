@@ -47,7 +47,7 @@ int main(int argc, char** argv){
 	asserttrue(G.discardCount[whoseTurn] == 0);
 	printf("testing player2 discard count\n");
 	asserttrue(G.discardCount[1] == 0);
-	printf("testing player1 number of actions count\n");
+	printf("testing number of actions count\n");
 	asserttrue(G.numActions == 4);
 	printf("testing supply count on curse cards\n");
 	asserttrue(G.supplyCount[curse] == 4);
@@ -89,7 +89,7 @@ int main(int argc, char** argv){
 	asserttrue(G.discardCount[whoseTurn] == 0);
 	printf("testing player2 discard count\n");
 	asserttrue(G.discardCount[1] == 0);
-	printf("testing player1 number of actions count\n");
+	printf("testing number of actions count\n");
 	asserttrue(G.numActions == 4);
 	printf("testing supply count on curse cards\n");
 	asserttrue(G.supplyCount[curse] == 4);

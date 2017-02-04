@@ -8,8 +8,9 @@
 
 #define DEBUG 0
 #define NOISY_TEST 1
+int ERROR = 0;
 #undef assert
-#define assert(x) if(!(x)){printf("Assertion Error!\n");}
+#define assert(x) if(!(x)){printf("Assertion Error!\n"); ERROR = 1; }
 
 int PLAYER = 0;
 int NUM_PLAYERS = 4;
@@ -126,6 +127,12 @@ int main () {
 	
 	free(state);
 	free(adventurers);
+	
+	if(!ERROR){
+		printf("unittest2 finished successfully\n");
+	} else{
+		printf("unittest2 finished with errors\n");
+	}
 	
     return 0;
 }
