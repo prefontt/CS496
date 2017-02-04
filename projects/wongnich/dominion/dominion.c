@@ -718,7 +718,6 @@ int outpostCall(int currentPlayer, struct gameState *state, int handPos){
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
-  printf("value for hall: %d\n", great_hall);
 
    int i;
    int j;

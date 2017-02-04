@@ -1,0 +1,133 @@
+TESTING isGameOver():
+isGameOver(): PASS when testing 1 province cards
+isGameOver(): PASS when testing 0 province cards
+isGameOver(): PASS when testing 1 province cards
+isGameOver(): PASS when testing 0 province cards
+isGameOver(): PASS when testing 0 supply cards = 0
+isGameOver(): PASS when testing 1 supply cards = 0
+isGameOver(): PASS when testing 2 supply cards = 0
+isGameOver(): PASS when testing 3 supply cards = 0
+isGameOver(): PASS when testing 0 supply cards = 0
+isGameOver(): PASS when testing 1 supply cards = 0
+isGameOver(): PASS when testing 2 supply cards = 0
+isGameOver(): PASS when testing 3 supply cards = 0
+File 'dominion.c'
+Lines executed:18.57% of 560
+Creating 'dominion.c.gcov'
+
+TESTING gainCard():
+gainCard(): PASS when testing 0 toFlag, init discardCount: 0, final discardCount: 1
+gainCard(): PASS when testing 1 toFlag, init deckCount: 499, final deckCount: 500
+gainCard(): PASS when testing 2 toFlag, init handCount: 5, final handCount: 6
+File 'dominion.c'
+Lines executed:21.07% of 560
+Creating 'dominion.c.gcov'
+
+TESTING drawCard():
+drawCard(): FAIL when testing 0 deckCount, final deckCount: 0
+drawCard(): FAIL when testing if 1 card was drawn, initial: 5, final: 5
+drawCard(): PASS when testing 500 deckCount, final deckCount: 499
+drawCard(): PASS when testing if 1 card was drawn, initial: 5, final: 6
+drawCard(): FAIL when testing 0 deckCount, final deckCount: -2
+drawCard(): PASS when testing if 1 card was drawn, initial: 5, final: 6
+drawCard(): PASS when testing 500 deckCount, final deckCount: 499
+drawCard(): PASS when testing if 1 card was drawn, initial: 5, final: 6
+File 'dominion.c'
+Lines executed:23.75% of 560
+Creating 'dominion.c.gcov'
+
+TESTING discardCard():
+discardCard(): PASS when testing 5 initial handCount, final handCount: 4
+discardCard(): PASS when testing 4 initial handCount, final handCount: 3
+discardCard(): PASS when testing 3 initial handCount, final handCount: 2
+discardCard(): PASS when testing 2 initial handCount, final handCount: 1
+discardCard(): PASS when testing 1 initial handCount, final handCount: 0
+discardCard(): PASS when testing 1 initial handCount, final handCount: 0
+discardCard(): PASS when testing 5 initial handCount, final handCount: 4
+discardCard(): PASS when testing 4 initial handCount, final handCount: 3
+discardCard(): PASS when testing 3 initial handCount, final handCount: 2
+discardCard(): PASS when testing 2 initial handCount, final handCount: 1
+discardCard(): PASS when testing 1 initial handCount, final handCount: 0
+discardCard(): PASS when testing 1 initial handCount, final handCount: 0
+File 'dominion.c'
+Lines executed:25.54% of 560
+Creating 'dominion.c.gcov'
+
+TESTING Smithy Card():
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 1, final: 1
+smithCall(): FAIL when testing for -4 coins, initial coins: 1, final coins: 1
+smithyCall(): PASS when testing if discarded smithy card after use for player 0
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 2, final: 2
+smithCall(): FAIL when testing for -4 coins, initial coins: 2, final coins: 2
+smithyCall(): PASS when testing if discarded smithy card after use for player 0
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 3, final: 3
+smithCall(): FAIL when testing for -4 coins, initial coins: 3, final coins: 3
+smithyCall(): PASS when testing if discarded smithy card after use for player 0
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 4, final: 4
+smithCall(): FAIL when testing for -4 coins, initial coins: 4, final coins: 4
+smithyCall(): PASS when testing if discarded smithy card after use for player 0
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 5, final: 5
+smithCall(): FAIL when testing for -4 coins, initial coins: 5, final coins: 5
+smithyCall(): PASS when testing if discarded smithy card after use for player 0
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 1, final: 1
+smithCall(): FAIL when testing for -4 coins, initial coins: 1, final coins: 1
+smithyCall(): PASS when testing if discarded smithy card after use for player 1
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 2, final: 2
+smithCall(): FAIL when testing for -4 coins, initial coins: 2, final coins: 2
+smithyCall(): PASS when testing if discarded smithy card after use for player 1
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 3, final: 3
+smithCall(): FAIL when testing for -4 coins, initial coins: 3, final coins: 3
+smithyCall(): PASS when testing if discarded smithy card after use for player 1
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 4, final: 4
+smithCall(): FAIL when testing for -4 coins, initial coins: 4, final coins: 4
+smithyCall(): PASS when testing if discarded smithy card after use for player 1
+value for hall: 16
+smithyCall(): FAIL when testing for 3 cards drawn, initial cards: 5, final: 5
+smithCall(): FAIL when testing for -4 coins, initial coins: 5, final coins: 5
+smithyCall(): PASS when testing if discarded smithy card after use for player 1
+File 'dominion.c'
+Lines executed:28.93% of 560
+Creating 'dominion.c.gcov'
+
+TESTING adventurerCall():
+value for hall: 16
+adventurerCall(): PASS when testing for coins spent, initial: 5, final: 8
+adventurerCall(): FAIL when testing for cards drawn: 2 cards drawn:
+value for hall: 16
+adventurerCall(): FAIL when testing for coins spent, initial: 5, final: 5
+adventurerCall(): FAIL when testing for cards drawn: -1 cards drawn:
+File 'dominion.c'
+Lines executed:31.79% of 560
+Creating 'dominion.c.gcov'
+
+TESTING village card:():
+value for hall: 16
+villageCall(): FAIL when testing for +2 actions, initial: 1, final: 5
+villageCall(): FAIL when testing for card discarded, cards discarded: 0
+value for hall: 16
+villageCall(): FAIL when testing for +2 actions, initial: 1, final: 5
+villageCall(): FAIL when testing for card discarded, cards discarded: 0
+File 'dominion.c'
+Lines executed:33.04% of 560
+Creating 'dominion.c.gcov'
+
+TESTING greatHall():
+value for hall: 16
+villageCall(): PASS when testing for +2 actions, initial: 1, final: 2
+villageCall(): FAIL when testing for card discarded, cards discarded: 0
+value for hall: 16
+villageCall(): PASS when testing for +2 actions, initial: 1, final: 2
+villageCall(): FAIL when testing for card discarded, cards discarded: 0
+File 'dominion.c'
+Lines executed:34.11% of 560
+Creating 'dominion.c.gcov'
+
