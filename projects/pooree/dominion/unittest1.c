@@ -17,7 +17,7 @@
  #define TESTFUNCTION "discardCard()"
 
  void failedTest() {
-        printf("!!!! FAILED TEST !!!!\n");
+    printf("!!!! FAILED TEST !!!!\n");
  }
 
 int main() {
