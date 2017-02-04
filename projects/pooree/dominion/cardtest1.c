@@ -16,12 +16,8 @@
 
  #define TESTCARD "smithy"
 
- void testResult(int status) {
-    if (status == 1) {
-        printf("**** PASSED TEST ****\n");
-    } else {
-        printf("!!!! FAILED TEST !!!!\n");
-    }
+ void failedTest() {
+    printf("!!!! FAILED TEST !!!!\n");
  }
 
 
@@ -54,38 +50,28 @@ int main() {
     
     printf("hand count = %d, expected = %d\n", testG.handCount[thisPlayer], G.handCount[thisPlayer] + newCards - discarded);
     if(testG.handCount[thisPlayer] != G.handCount[thisPlayer] + newCards - discarded)
-        testResult(0);
-    else 
-        testResult(1);
+        failedTest();
     
     printf("deck count = %d, expected = %d\n", testG.deckCount[thisPlayer], G.deckCount[thisPlayer] - newCards);
     if(testG.deckCount[thisPlayer] != G.deckCount[thisPlayer] - newCards)
-        testResult(0);
-    else 
-        testResult(1);
+        failedTest();
 
     printf("-----------Check that other player's hands are not effected-------\n");
     
     printf("other player's hand count = %d, expected %d\n", testG.handCount[thisPlayer + 1], G.handCount[thisPlayer + 1]);
     if(testG.handCount[thisPlayer + 1] != G.handCount[thisPlayer + 1])
-        testResult(0);
-    else 
-        testResult(1);
+        failedTest();
 
     printf("other player's deck count = %d, expected = %d\n", testG.deckCount[thisPlayer + 1], G.deckCount[thisPlayer + 1]);
     if(testG.deckCount[thisPlayer + 1] != G.deckCount[thisPlayer + 1])
-        testResult(0);
-    else
-        testResult(1);
+        failedTest();
 
     printf("-----------Check there is no change to the supply card piles-------\n");
 
     for (i=0; i<sizeof(testG.supplyCount)/sizeof(int); i++) {
         printf("supply card count = %d, expected = %d\n", testG.supplyCount[i], G.supplyCount[i]);
         if(testG.supplyCount[i] != G.supplyCount[i]) 
-            testResult(0);
-        else 
-            testResult(1);
+            failedTest();
             
     }
 

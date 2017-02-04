@@ -1,7 +1,7 @@
 /* -----------------------------------------------------------------------
  *
  *          unittest1.c
- *          
+ *          Unit Testing discardCard()
  * 
  *      
  * -----------------------------------------------------------------------
@@ -16,12 +16,8 @@
 
  #define TESTFUNCTION "discardCard()"
 
- void testResult(int status) {
-    if (status == 1) {
-        printf("**** PASSED TEST ****\n");
-    } else {
+ void failedTest() {
         printf("!!!! FAILED TEST !!!!\n");
-    }
  }
 
 int main() {
@@ -48,16 +44,12 @@ int main() {
     int discarded = 1;
     discardCard(handpos, currentPlayer, &G, trashFlag);
     printf("hand count = %d, expected = %d\n", testG.handCount[currentPlayer] - discarded, G.handCount[currentPlayer]);
-    if(testG.handCount[currentPlayer] - discarded == G.handCount[currentPlayer])
-        testResult(1);
-    else 
-        testResult(0);
+    if(testG.handCount[currentPlayer] - discarded != G.handCount[currentPlayer])
+        failedTest();
 
     printf("played card count = %d, expected %d\n", testG.playedCardCount + discarded, G.playedCardCount);
-    if(testG.playedCardCount + discarded == G.playedCardCount)
-        testResult(1);
-    else 
-        testResult(0);
+    if(testG.playedCardCount + discarded != G.playedCardCount)
+        failedTest();
 
     printf("--Test 2: Test that current player's hand count decreases by 1 with trash flag --\n");
 
@@ -67,29 +59,21 @@ int main() {
     discardCard(handpos, currentPlayer, &G, trashFlag);
     
     printf("hand count = %d, expected = %d\n", testG.handCount[currentPlayer] - discarded, G.handCount[currentPlayer]);
-    if(testG.handCount[currentPlayer] - discarded == G.handCount[currentPlayer])
-        testResult(1);
-    else 
-        testResult(0);
+    if(testG.handCount[currentPlayer] - discarded != G.handCount[currentPlayer])
+        failedTest();
 
     printf("played card count = %d, expected %d\n", testG.playedCardCount, G.playedCardCount);
-    if(testG.playedCardCount == G.playedCardCount)
-        testResult(1);
-    else 
-        testResult(0);
+    if(testG.playedCardCount != G.playedCardCount)
+        failedTest();
 
     printf("-----Test 3: Test discarded card is replaced by last card in hand-----\n");
     printf("card at handpos = %d, expected %d\n", testG.hand[currentPlayer][testG.handCount[currentPlayer] - 1], G.hand[currentPlayer][handpos]);
-    if(testG.hand[currentPlayer][testG.handCount[currentPlayer] - 1] == G.hand[currentPlayer][handpos])
-        testResult(1);
-    else
-        testResult(0);
+    if(testG.hand[currentPlayer][testG.handCount[currentPlayer] - 1] != G.hand[currentPlayer][handpos])
+        failedTest();
 
     printf("card in discarded position = %d, expected -1\n", G.hand[currentPlayer][G.handCount[currentPlayer]]);
-    if (G.hand[currentPlayer][testG.handCount[currentPlayer]] == -1) 
-        testResult(1);
-    else
-        testResult(0);
+    if (G.hand[currentPlayer][testG.handCount[currentPlayer]] != -1) 
+        failedTest();
 
 
     printf("------------ Testing complete for: %s -----------------------\n", TESTFUNCTION);
