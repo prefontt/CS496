@@ -20,6 +20,7 @@
       <in>unittest1.c</in>
       <in>unittest2.c</in>
       <in>unittest3.c</in>
+      <in>unittest4.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -100,6 +101,8 @@
       <item path="unittest2.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="unittest3.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="unittest4.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
   </confs>

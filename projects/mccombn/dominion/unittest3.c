@@ -15,7 +15,7 @@
 
 #define D_PRINT(x)  (printf(x))  //Debug printing!
 
-#define NUM_PLAYERS 2
+#define NUM_PLAYERS MAX_PLAYERS
 
 #define BONUS_TO_TEST 100
 
@@ -51,99 +51,71 @@ int main(int argc, char** argv) {
 
     int player = 0;
     
-    printf("\nTesting updateCoins() with seed %i\n", atoi(argv[1]));
+    printf("\nTesting getCost() with seed %i\n", atoi(argv[1]));
     printf("Game Initialized! :)\n");
     
-    //For this function, we're testing the whoseTurn() function
-    //We're required to give it an initialized game.
+    //Test all of the test implementations in the getCost function.
+    //These values were all taken from http://wiki.dominionstrategy.com/index.php/Main_Page,
+    //NOT copied from the dominion.c file
     
-    //After init, it should be equal to zero
-    //So we check for all players (by default 2)
-    for(i = 0; i < NUM_PLAYERS; ++i){
-      countErrors += asserttrue(updateCoins(i, &G, 0) == 0);
-    //  printf("initial updateCoins for p%i: %i\n", i, updateCoins(i, &G, 0));
-    }
-   
+    //100% statement coverage follows:
     
-    //We want to test the bonus functionality while we still have a blank game
-    //We'll test 100 values of bonus (because it'll never reasonably go over 100)
-    //Using the 2nd player because they don't have anything in their hand
-    for(j = 0; j < BONUS_TO_TEST; ++j){
-        updateCoins(1, &G, j);  //Update the coin counts
-        countErrors += asserttrue(G.coins == j);  //Check the coun counts
-    }
+    countErrors += asserttrue(getCost(curse) == 0);
     
-    for(i = 0; i < NUM_PLAYERS; ++i){
-    //  printf("Handcount p%i: %i \n", i, G.handCount[i]);
-    }
+    countErrors += asserttrue(getCost(estate) == 2);
     
+    countErrors += asserttrue(getCost(duchy) == 5);
     
-    //TEST COPPER
-    for(j = 0; j < BONUS_TO_TEST; ++j){
-        //Set hand to all coppers
-        for(i = 0; i < G.handCount[player]; ++i){
-            G.hand[player][i] = copper;
-        }
+    countErrors += asserttrue(getCost(province) == 8);
+    
+    countErrors += asserttrue(getCost(copper) == 0);
+    
+    countErrors += asserttrue(getCost(silver) == 3);
+    
+    countErrors += asserttrue(getCost(gold) == 6);
+    
+    countErrors += asserttrue(getCost(adventurer) == 6);
+    
+    countErrors += asserttrue(getCost(council_room) == 5);
+    
+    countErrors += asserttrue(getCost(feast) == 4);
+    
+    countErrors += asserttrue(getCost(gardens) == 4);
+    
+    countErrors += asserttrue(getCost(mine) == 5);
+    
+    countErrors += asserttrue(getCost(remodel) == 4);
+    
+    countErrors += asserttrue(getCost(smithy) == 4);
+    
+    countErrors += asserttrue(getCost(village) == 3);
+    
+    countErrors += asserttrue(getCost(baron) == 4);
+    
+    countErrors += asserttrue(getCost(great_hall) == 3);
+    
+    countErrors += asserttrue(getCost(minion) == 5);
+    
+    countErrors += asserttrue(getCost(steward) == 3);
 
-        //Output hand contents
-        player = 0;
-        //printf("Hand contents of p%i:", player);
-        for(i = 0; i < G.handCount[player]; ++i){
-        //    printf(" c: %i", G. hand[player][i]);
-        }
-
-        //update player with no bonus
-        updateCoins(player, &G, j);
-        //printf("\nHand should sum to copper*5 + %i: %i\n", j, G.coins);
-        countErrors += asserttrue(G.coins == (1*5 + j));
-        
-        //printf("\n");
-    }
+    countErrors += asserttrue(getCost(tribute) == 5);
     
-    //TEST SILVER
-    for(j = 0; j < BONUS_TO_TEST; ++j){
-        //Set hand to all silver
-        for(i = 0; i < G.handCount[player]; ++i){
-            G.hand[player][i] = silver;
-        }
-
-        //Output hand contents
-        player = 0;
-        //printf("Hand contents of p%i:", player);
-        for(i = 0; i < G.handCount[player]; ++i){
-        //    printf(" c: %i", G. hand[player][i]);
-        }
-
-        //update player with no bonus
-        updateCoins(player, &G, j);
-        //printf("\nHand should sum to 2*5 + %i: %i\n", j, G.coins);
-        countErrors += asserttrue(G.coins == (2*5 + j));
-        
-        //printf("\n");
-    }
+    countErrors += asserttrue(getCost(ambassador) == 3);
     
+    countErrors += asserttrue(getCost(cutpurse) == 4);
     
-    //TEST GOLD
-    for(j = 0; j < BONUS_TO_TEST; ++j){
-        //Set hand to all Gold
-        for(i = 0; i < G.handCount[player]; ++i){
-            G.hand[player][i] = gold;
-        }
+    countErrors += asserttrue(getCost(embargo) == 2);
+    
+    countErrors += asserttrue(getCost(outpost) == 5);
+    
+    countErrors += asserttrue(getCost(salvager) == 4);
+    
+    countErrors += asserttrue(getCost(sea_hag) == 4);
+    
+    countErrors += asserttrue(getCost(treasure_map) == 4);
 
-        //Output hand contents
-        player = 0;
-        //printf("Hand contents of p%i:", player);
-        for(i = 0; i < G.handCount[player]; ++i){
-        //    printf(" c: %i", G. hand[player][i]);
-        }
-
-        //update player with no bonus
-        updateCoins(player, &G, j);
-        //printf("\nHand should sum to 3*5 + %i: %i\n", j, G.coins);
-        countErrors += asserttrue(G.coins == (3*5 + j));
-        
-        //printf("\n");
-    }
+    //Use a deliberately invalid value
+    countErrors += asserttrue(getCost(47) == -1);
     
     if(!countErrors){
         printf("__ALL TESTS PASSED!__");

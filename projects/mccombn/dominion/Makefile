@@ -38,7 +38,13 @@ unittest1.o: unittest1.c
 unittest2.o: unittest2.c
 	gcc -c unittest2.c -g $(CFLAGS)
 
-unittestresults.out: dominion.o rngs.o unittest1.o unittest2.o testingtools.o 
+unittest3.o: unittest3.c
+	gcc -c unittest3.c -g $(CFLAGS)
+	
+unittest4.o: unittest4.c
+	gcc -c unittest4.c -g $(CFLAGS)
+
+unittestresults.out: dominion.o rngs.o unittest1.o unittest2.o unittest3.o unittest4.o testingtools.o 
 	gcc -o test.run -g dominion.o rngs.o unittest1.o testingtools.o $(CFLAGS)
 	./test.run 1234
 	./test.run 1234 > unittestresults.out
@@ -49,6 +55,17 @@ unittestresults.out: dominion.o rngs.o unittest1.o unittest2.o testingtools.o
 	./test.run 1234 >> unittestresults.out
 	gcov dominion.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out
+	gcc -o test.run -g dominion.o rngs.o unittest3.o testingtools.o $(CFLAGS)
+	./test.run 1234
+	./test.run 1234 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	cat dominion.c.gcov >> unittestresults.out
+	gcc -o test.run -g dominion.o rngs.o unittest4.o testingtools.o $(CFLAGS)
+	./test.run 1234
+	./test.run 1234 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	cat dominion.c.gcov >> unittestresults.out
+
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

@@ -24,6 +24,7 @@
       <in>unittest1.c</in>
       <in>unittest2.c</in>
       <in>unittest3.c</in>
+      <in>unittest4.c</in>
     </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
