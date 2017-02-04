@@ -17,11 +17,37 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 
-/*
- * 
- */
-int main(int argc, char** argv) {
+int testing_assert(int expression);
 
+int main(int argc, char** argv) {
+    struct gameState G;
+    int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
+        sea_hag, tribute, smithy};
+
+    initializeGame(2, k, 65432, &G);
+
+    //If province cards are empty or are least three supply piles are, game end
+    //else game is not over. 1 is game end, 0 is game continues
+    
+    unsigned int min_players = 2;
+    unsigned int max_players = MAX_PLAYERS;
+    unsigned int max_hand = MAX_HAND;
+    unsigned int max_copper = 60;
+    unsigned int max_silver = 40;
+    unsigned int max_gold = 30;
+    unsigned int arbitrary_bonus_max = 1000;
+    
+    
+    
     return (EXIT_SUCCESS);
 }
 
+int testing_assert(int expression) {
+    if (expression) {
+        printf("TEST SUCEEDED!\n");
+        return 1;
+    } else {
+        printf("TEST FAILED!\n");
+        return 0;
+    }
+}
