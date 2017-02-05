@@ -135,6 +135,19 @@ int playSmithy(struct gameState *state, int handPos);
 int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
-
+int playMine(struct gameState *state, int handPos, int choice1, int choice2);
+int playRemodel(struct gameState *state, int handPos, int choice1, int choice2);
+int playBaron(struct gameState *state, int choice1);
+int playGreat_hall(struct gameState *state, int handPos);
+int playMinion(struct gameState *state, int handPos, int choice1, int choice2);
+int playSteward(struct gameState *state, int handPos, int choice1, int choice2, int choice3);
+int playTribute(struct gameState *state);
+int playAmbassador(struct gameState *state, int handPos, int choice1, int choice2);
+int playCutpurse(struct gameState *state, int handPos);
+int playEmbargo(struct gameState *state, int handPos, int choice1);
+int playOutpost(struct gameState *state, int handPos, int choice1, int choice2);
+int playSalvager(struct gameState *state, int handPos, int choice1);
+int plsySea_hag(struct gameState *state);
+int playTreasure_map(struct gameState *state, int handPos);
 
 #endif

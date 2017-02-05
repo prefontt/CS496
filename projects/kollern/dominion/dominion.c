@@ -643,6 +643,100 @@ int getCost(int cardNumber)
   return -1;
 }
 
+int adventurer(struct gameState *state, int handPos){
+	int currentPlayer = whoseTurn(state);
+	int drawntreasure=0;
+	while(drawntreasure<2){
+	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
+	  shuffle(currentPlayer, state);
+	}
+	drawCard(currentPlayer, state);
+	cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+	  drawntreasure++;
+	else{
+	  temphand[z]=cardDrawn;
+	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+	  z++;
+	}
+      }
+      while(z-1>=0){
+	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
+	z=z-1;
+      }
+      return 0;
+}
+
+int smithy(int card, struct gameState *state, int handPos){
+    int currentPlayer = whoseTurn(state);    
+	//+3 Cards
+      for (i = 0; i <= 3; i++)
+	{
+	  drawCard(currentPlayer, state);
+	}
+			
+      //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+      return 0;
+}
+
+int village (int card, struct gameState *state, int handPos){
+    int currentPlayer = whoseTurn(state);    
+	//+1 Card
+      drawCard(currentPlayer, state);
+	
+      //+2 Actions
+      state->numActions = state->numActions + 2;
+	
+      //discard played card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+      return 0;
+}
+
+int MoneyLender(int card, struct gameState *state, int handPos, int choice1){
+    int currentPlayer = whoseTurn(state);
+	j = state->hand[currentPlayer][choice1];  //store card we will trash
+	
+	State->coins += 4;      
+
+  for (i = 0; i < state->handCount[currentPlayer]; i++)
+	{
+	  if (state->hand[currentPlayer][i] == j)
+	    {
+	      discardCard(i, currentPlayer, state, 1);			
+	      break;
+	    }
+	}
+	//discard card from hand
+    discardCard(handPos, currentPlayer, state, 0);
+    return 0;
+}
+
+int militia(int card, struct gameState *state, int handPos){
+      int currentPlayer = whoseTurn(state);
+	  //discard card from hand
+      discardCard(handPos, currentPlayer, state, 0);
+      state->coins = state->coins + 2;
+	 
+ //other players discard hand and redraw if hand size > 4
+	  for (i = 0; i < state->numPlayers; i++)
+	    {
+	      if (i != currentPlayer)
+		{
+		  if ( state->handCount[i] > 3 )
+		    {
+		      //discard hand
+		      while( state->handCount[i] > 0 )
+			{
+			  discardCard(handPos, i, state, 0);
+			}
+		    }
+		}
+	    }
+      return 0;
+}
+
+
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
   int i;
