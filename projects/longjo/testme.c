@@ -103,7 +103,7 @@ void testme()
             && s[4] == 't' && s[5] == '\0' && state == 9)
         {
             printf("error ");
-            
+            exit(200);
             
         }
     }
@@ -113,26 +113,7 @@ void testme()
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-    
-    
-    //clock measurement reference: http://tinyurl.com/zql2zhv
-    clock_t t;
-    t = clock();
-    
-    
     testme();
-    
-    
-    
-    // Calculate the time taken by testme()
-    //clock measurement reference: http://tinyurl.com/zql2zhv
-    t = clock() - t;
-    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
-    printf("testme() took %f seconds to execute \n", time_taken);
-    exit(200);
-    
-    
-    
     return 0;
 
 }
