@@ -136,5 +136,13 @@ int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
 
+void adventurerCard(struct gameState *state, int currentPlayer, int temphand[]);
+void smithyCard(struct gameState *state, int currentPlayer, int handPos);
+void stewardCard(struct gameState *state, int currentPlayer, int handPos,
+  int choice1, int choice2, int choice3);
+void councilRoomCard(struct gameState *state, int currentPlayer, int handPos);
+void villageCard(struct gameState *state, int currentPlayer, int handPos);
+
+
 
 #endif
