@@ -136,5 +136,12 @@ int playVillage(struct gameState *state, int handPos);
 int playFeast(struct gameState *state, int choice1);
 int playCouncil_Room(struct gameState *state, int handPos);
 
+// start of my refactor functions
+// Christopher Grant
+int cardAdventurer(struct gameState *state);
+int cardSmithy(struct gameState *state, int handPos);
+int cardMinion(struct gameState *state, int handPos, int choice1, int choice2);
+int cardCutpurse(struct gameState *state, int handPos);
+int cardGreatHall(struct gameState *state, int handPos);
 
 #endif

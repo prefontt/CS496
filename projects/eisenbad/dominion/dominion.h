@@ -130,11 +130,15 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
-int playAdventurer(struct gameState *state);
-int playSmithy(struct gameState *state, int handPos);
-int playVillage(struct gameState *state, int handPos);
-int playFeast(struct gameState *state, int choice1);
-int playCouncil_Room(struct gameState *state, int handPos);
+//Daniel Eisenbach's edits
+//REFACTORED FUNCTIONS
+int adventurer_refact(struct gameState *state);
+int smithy_refact(struct gameState *state, int handPos);
+int village_refact(struct gameState *state, int handPos);
+int council_room_refact(struct gameState *state, int handPos);
+int great_hall_refact(struct gameState *state, int handPos);
+//HELPER FUNCTIONS
+void testAssert(int testNum, int *pass_count, int cmp);
 
 
 #endif
