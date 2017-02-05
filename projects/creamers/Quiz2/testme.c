@@ -8,7 +8,7 @@
 
 char inputChar()
 {
-    char ALPHA[34] = "resetax []{}()";
+    char ALPHA[16] = "resetax []{}()";
     int idx = rand() % 15;
     return ALPHA[idx];
 }
