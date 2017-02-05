@@ -66,5 +66,7 @@ for (i=0; i < numPlayer; i++) {
     printf("Function %s passed %d/%d tests.\n", FUNC_NAME, r_main, testCount);
     printf("END testing %s\n", FUNC_NAME);
     printf("**********************************************************\n");
+
+    return 0;
 }
 

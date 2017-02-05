@@ -2,11 +2,12 @@
 Card tested: Adventurer
 
 Basic requirements:
--- Decreases hand count + discard count + deck count by 1
+-- Decreases Hand+Deck+Discard count by 1
 -- Increases playedCardCount by 1
 -- Adds card previously at handPos to playedCards
 -- Removes card previously at handPos from hand
 -- Does not change game state except for current player
+-- Does not change Hand+Deck+Discard for current player, except removing played card
 
 -- If deck+discard previously has 2+ Treasure:
     +) Increases handCount by 1 (2 Treasure drawn - 1 Adventurer removed)
@@ -27,24 +28,25 @@ Basic requirements:
 #include <assert.h>
 
 #define CARD_NAME "Adventurer"
-#define NOISY_TEST 0
+#define NOISY_TEST 1
 
 
 /* Function to test general requirements that apply to most cards and Deck+Hand+Discard scenarios:
--- Decreases hand count + discard count + deck count by 1
+-- Decreases Hand+Deck+Discard count by 1
 -- Increases playedCardCount by 1
 -- Adds card previously at handPos to playedCards
 -- Removes card previously at handPos from hand
 -- Does not change game state except for current player
  */
-
 void testGeneralRequirements(int caseCount, char* casename, int* testCount, int* r_main,
     int card, int choice1, int choice2, int choice3, int handPos, int* bonus,
     struct gameState* G, struct gameState* preG) 
 {
-    int count1, count2, r, i;
+    int count1, count2, r, i, j;
     struct gameState preG_mod;
     int player = G->whoseTurn;
+    int G_HandDeckDiscard[2*MAX_DECK + MAX_HAND], preG_HandDeckDiscard[2*MAX_DECK + MAX_HAND];
+    int G_HandDeckDiscardCount, preG_HandDeckDiscardCount;
 
     /*********/
     printf("---------CASE %d: %s -- TEST %d: Successful execution\n", caseCount, casename, ++(*testCount));
@@ -58,10 +60,10 @@ void testGeneralRequirements(int caseCount, char* casename, int* testCount, int*
     }   
 
     /*********/
-    printf("---------CASE %d: %s -- TEST %d: Hand count + Discard count + Deck count decreased by 1\n", caseCount, casename, ++(*testCount));
+    printf("---------CASE %d: %s -- TEST %d: Hand+Deck+Discard count decreased by 1\n", caseCount, casename, ++(*testCount));
     count1 = preG->handCount[player] + preG->discardCount[player] + preG->deckCount[player];
     count2 = G->handCount[player] + G->discardCount[player] + G->deckCount[player];
-    asserttrue(count1=count2-1, r_main);
+    asserttrue(count1==count2+1, r_main);
     if (NOISY_TEST) printf("Count before: %d\nCount after: %d\n", count1, count2);
 
     /*********/
@@ -95,6 +97,72 @@ void testGeneralRequirements(int caseCount, char* casename, int* testCount, int*
     preG_mod.playedCardCount = G->playedCardCount;
     for (i=0; i<MAX_DECK; i++) preG_mod.playedCards[i] = G->playedCards[i];
     asserttrue(memcmp(G, &preG_mod, sizeof(struct gameState))==0, r_main);
+
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: Cards in Hand+Deck+Discard unchanged except removing played card\n", caseCount, casename, ++(*testCount));
+    // Copy Hand+Deck+Discard before execution to preG_HandDeckDiscard
+    preG_HandDeckDiscardCount = 0;
+    for (i=0; i<preG->handCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->hand[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    for (i=0; i<preG->deckCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->deck[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    for (i=0; i<preG->discardCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->discard[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    // Copy Hand+Deck+Discard after execution to G_HandDeckDiscard
+    G_HandDeckDiscardCount = 0;
+    for (i=0; i<G->handCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->hand[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    for (i=0; i<G->deckCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->deck[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    for (i=0; i<G->discardCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->discard[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    // Make -1 all cards in preG_HandDeckDiscard that appear in G_HandDeckDiscard, and vice versa
+    for (i=0; i<preG_HandDeckDiscardCount; i++) {
+        for (j=0; j<G_HandDeckDiscardCount; j++) {
+            if (preG_HandDeckDiscard[i] == G_HandDeckDiscard[j] && preG_HandDeckDiscard[i] != -1) {
+                preG_HandDeckDiscard[i] = -1;
+                G_HandDeckDiscard[j] = -1;
+                break;
+            }
+        }
+    }
+    for (i=0; i<G_HandDeckDiscardCount; i++) {
+        for (j=0; j<preG_HandDeckDiscardCount; j++) {
+            if (G_HandDeckDiscard[i] == preG_HandDeckDiscard[j] && G_HandDeckDiscard[i] != -1) {
+                G_HandDeckDiscard[i] = -1;
+                preG_HandDeckDiscard[j] = -1;
+                break;
+            }
+        }
+    }
+    // There should be no -1 cards in preG_HandDeckDiscard and G_HandDeckDiscard now (except played card)
+    count1 = 0;
+    for (i=0; i<preG_HandDeckDiscardCount; i++) {
+        if (preG_HandDeckDiscard[i] > -1 && preG_HandDeckDiscard[i] != card) {
+            count1++;
+            if (NOISY_TEST) printf("Card in Hand+Deck+Discard before but not after #%d: %s\n", count1, getCardName(preG_HandDeckDiscard[i]));
+        }
+    }
+    count2 = 0;
+    for (i=0; i<G_HandDeckDiscardCount; i++) {
+        if (G_HandDeckDiscard[i] > -1) {
+            count2++;
+            if (NOISY_TEST) printf("Card in Hand+Deck+Discard after but not before #%d: %s\n", count2, getCardName(G_HandDeckDiscard[i]));
+        }
+    }
+    asserttrue(count1==0 && count2==0, r_main);
 }
 
 
@@ -248,5 +316,7 @@ int main() {
     printf("Card %s passed %d/%d tests.\n", CARD_NAME, r_main, testCount);
     printf("END testing %s\n", CARD_NAME);
     printf("**********************************************************\n");
+
+    return 0;
 }
 

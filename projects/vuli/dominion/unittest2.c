@@ -117,5 +117,6 @@ int main() {
     printf("END testing %s\n", FUNC_NAME);
     printf("**********************************************************\n");
 
+    return 0;
 }
 

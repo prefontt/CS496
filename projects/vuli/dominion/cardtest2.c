@@ -2,14 +2,16 @@
 Card tested: Smithy
 
 Basic requirements:
--- Decreases hand count + discard count + deck count by 1
+-- Decreases Hand+Deck+Discard count by 1
 -- Increases playedCardCount by 1
 -- Adds card previously at handPos to playedCards
 -- Removes card previously at handPos from hand
 -- Does not change game state except for current player
+-- Does not change Hand+Deck+Discard for current player, except removing played card
+
 
 -- Increases hand count by 2 (3 cards drawn - 1 Smithy card played)
--- Decreases discard count + deck count by 3
+-- Decreases Deck+Discard count by 3
 -- 3 cards are added to Hand and 3 cards are removed from Discard + Deck
 -- The 3 cards added to hand are the 3 cards removed from discard + deck
 */
@@ -28,20 +30,21 @@ Basic requirements:
 #define NOISY_TEST 1
 
 /* Function to test general requirements that apply to most cards and Deck+Hand+Discard scenarios:
--- Decreases hand count + discard count + deck count by 1
+-- Decreases Hand+Deck+Discard count by 1
 -- Increases playedCardCount by 1
 -- Adds card previously at handPos to playedCards
 -- Removes card previously at handPos from hand
 -- Does not change game state except for current player
  */
-
 void testGeneralRequirements(int caseCount, char* casename, int* testCount, int* r_main,
     int card, int choice1, int choice2, int choice3, int handPos, int* bonus,
     struct gameState* G, struct gameState* preG) 
 {
-    int count1, count2, r, i;
+    int count1, count2, r, i, j;
     struct gameState preG_mod;
     int player = G->whoseTurn;
+    int G_HandDeckDiscard[2*MAX_DECK + MAX_HAND], preG_HandDeckDiscard[2*MAX_DECK + MAX_HAND];
+    int G_HandDeckDiscardCount, preG_HandDeckDiscardCount;
 
     /*********/
     printf("---------CASE %d: %s -- TEST %d: Successful execution\n", caseCount, casename, ++(*testCount));
@@ -55,10 +58,10 @@ void testGeneralRequirements(int caseCount, char* casename, int* testCount, int*
     }   
 
     /*********/
-    printf("---------CASE %d: %s -- TEST %d: Hand count + Discard count + Deck count decreased by 1\n", caseCount, casename, ++(*testCount));
+    printf("---------CASE %d: %s -- TEST %d: Hand+Deck+Discard count decreased by 1\n", caseCount, casename, ++(*testCount));
     count1 = preG->handCount[player] + preG->discardCount[player] + preG->deckCount[player];
     count2 = G->handCount[player] + G->discardCount[player] + G->deckCount[player];
-    asserttrue(count1=count2-1, r_main);
+    asserttrue(count1==count2+1, r_main);
     if (NOISY_TEST) printf("Count before: %d\nCount after: %d\n", count1, count2);
 
     /*********/
@@ -92,6 +95,72 @@ void testGeneralRequirements(int caseCount, char* casename, int* testCount, int*
     preG_mod.playedCardCount = G->playedCardCount;
     for (i=0; i<MAX_DECK; i++) preG_mod.playedCards[i] = G->playedCards[i];
     asserttrue(memcmp(G, &preG_mod, sizeof(struct gameState))==0, r_main);
+
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: Cards in Hand+Deck+Discard unchanged except removing played card\n", caseCount, casename, ++(*testCount));
+    // Copy Hand+Deck+Discard before execution to preG_HandDeckDiscard
+    preG_HandDeckDiscardCount = 0;
+    for (i=0; i<preG->handCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->hand[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    for (i=0; i<preG->deckCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->deck[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    for (i=0; i<preG->discardCount[player]; i++) {
+        preG_HandDeckDiscard[preG_HandDeckDiscardCount] = preG->discard[player][i];
+        preG_HandDeckDiscardCount++;
+    }
+    // Copy Hand+Deck+Discard after execution to G_HandDeckDiscard
+    G_HandDeckDiscardCount = 0;
+    for (i=0; i<G->handCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->hand[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    for (i=0; i<G->deckCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->deck[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    for (i=0; i<G->discardCount[player]; i++) {
+        G_HandDeckDiscard[G_HandDeckDiscardCount] = G->discard[player][i];
+        G_HandDeckDiscardCount++;
+    }
+    // Make -1 all cards in preG_HandDeckDiscard that appear in G_HandDeckDiscard, and vice versa
+    for (i=0; i<preG_HandDeckDiscardCount; i++) {
+        for (j=0; j<G_HandDeckDiscardCount; j++) {
+            if (preG_HandDeckDiscard[i] == G_HandDeckDiscard[j] && preG_HandDeckDiscard[i] != -1) {
+                preG_HandDeckDiscard[i] = -1;
+                G_HandDeckDiscard[j] = -1;
+                break;
+            }
+        }
+    }
+    for (i=0; i<G_HandDeckDiscardCount; i++) {
+        for (j=0; j<preG_HandDeckDiscardCount; j++) {
+            if (G_HandDeckDiscard[i] == preG_HandDeckDiscard[j] && G_HandDeckDiscard[i] != -1) {
+                G_HandDeckDiscard[i] = -1;
+                preG_HandDeckDiscard[j] = -1;
+                break;
+            }
+        }
+    }
+    // There should be no -1 cards in preG_HandDeckDiscard and G_HandDeckDiscard now (except played card)
+    count1 = 0;
+    for (i=0; i<preG_HandDeckDiscardCount; i++) {
+        if (preG_HandDeckDiscard[i] > -1 && preG_HandDeckDiscard[i] != card) {
+            count1++;
+            if (NOISY_TEST) printf("Card in Hand+Deck+Discard before but not after #%d: %s\n", count1, getCardName(preG_HandDeckDiscard[i]));
+        }
+    }
+    count2 = 0;
+    for (i=0; i<G_HandDeckDiscardCount; i++) {
+        if (G_HandDeckDiscard[i] > -1) {
+            count2++;
+            if (NOISY_TEST) printf("Card in Hand+Deck+Discard after but not before #%d: %s\n", count2, getCardName(G_HandDeckDiscard[i]));
+        }
+    }
+    asserttrue(count1==0 && count2==0, r_main);
 }
 
 
@@ -113,206 +182,158 @@ int main() {
     int count1, count2;
 
     char* casename;
+    int G_DeckDiscard[2*MAX_DECK], preG_DeckDiscard[2*MAX_DECK];
+    int G_DeckDiscardCount, preG_DeckDiscardCount;
 
     printf("**********************************************************\n");
     printf("BEGIN testing %s\n", CARD_NAME);
     
 
-    // /*-------------------------------------------------------------------------*/
-    // casename = "3+ cards in Deck, empty Discard";
-    // caseCount++;
-    // initializeGame(numPlayer, k, seed, &G);
-    // player = G.whoseTurn;
-    // G.hand[player][handPos] = smithy; // make current card smithy
-    // card = G.hand[player][handPos];  // card previously at handPos
-    // assert(G.deckCount[player] >=3); // Deck should have 5 cards after initialization
-    // memcpy(&preG, &G, sizeof(struct gameState));  // save gameState to preG
+    /*-------------------------------------------------------------------------*/
+    casename = "3+ cards in Deck, empty Discard";
+    caseCount++;
+    initializeGame(numPlayer, k, seed, &G);
+    player = G.whoseTurn;
+    G.hand[player][handPos] = smithy; // make current card smithy
+    card = G.hand[player][handPos];  // card previously at handPos
+    assert(G.deckCount[player] >=3); // Deck should have 5 cards after initialization
+    memcpy(&preG, &G, sizeof(struct gameState));  // save gameState to preG
 
-    // /*********/
-    // testGeneralRequirements(caseCount, casename, &testCount, &r_main,
-    //     card, choice1, choice2, choice3, handPos, &bonus,
-    //     &G, &preG);
+    /*********/
+    testGeneralRequirements(caseCount, casename, &testCount, &r_main,
+        card, choice1, choice2, choice3, handPos, &bonus,
+        &G, &preG);
 
-    // /*********/
-    // printf("---------CASE %d: %s -- TEST %d: Hand count increased by 2\n", caseCount, casename, ++testCount);
-    // count1 = preG.handCount[player];
-    // count2 = G.handCount[player];
-    // asserttrue(count2==count1+2, &r_main);
-    // if (NOISY_TEST) printf("Hand count before: %d\nHand count after: %d\n", count1, count2);
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: Hand count increased by 2\n", caseCount, casename, ++testCount);
+    count1 = preG.handCount[player];
+    count2 = G.handCount[player];
+    asserttrue(count2==count1+2, &r_main);
+    if (NOISY_TEST) printf("Hand count before: %d\nHand count after: %d\n", count1, count2);
 
-    // /*********/
-    // printf("---------CASE %d: %s -- TEST %d: Discard count + Deck count decreased by 3\n", caseCount, casename, ++testCount);
-    // count1 = preG.handCount[player];
-    // count2 = G.handCount[player];
-    // asserttrue(count2==count1+2, &r_main);
-    // if (NOISY_TEST) printf("Discard count + Deck count before: %d\nDiscard count + Deck count after: %d\n", count1, count2);
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: Deck+Discard count decreased by 3\n", caseCount, casename, ++testCount);
+    count1 = preG.deckCount[player] + preG.discardCount[player];
+    count2 = G.deckCount[player] + G.discardCount[player];
+    asserttrue(count2==count1-3, &r_main);
+    if (NOISY_TEST) printf("Deck+Discard count before: %d\nDeck+Discard count after: %d\n", count1, count2);
 
-    // /*********/
-    // printf("---------CASE %d: %s -- TEST %d: 3 new cards added to Hand\n", caseCount, casename, ++testCount);
-    // assert(G.handCount[player] >= 3);  // hand should have 3+ cards
-    // memcpy(&G_mod, &G, sizeof(struct gameState));  // make a copy of G & preG that can be modified
-    // memcpy(&preG_mod, &preG, sizeof(struct gameState));
-    // // What cards were added to Hand?
-    // for (i=0; i<G_mod.handCount[player]; i++) {
-    //     if (G_mod.hand[player][i] == smithy) {
-    //         G_mod.hand[player][i] = -1;  // cross out Smithy as it'd be moved to played
-    //     }
-    //     for (j=0; j<preG_mod.handCount[player]; j++) {
-    //         if (G_mod.hand[player][i] == preG_mod.hand[player][j] && G_mod.hand[player][i] != -1) {
-    //             G_mod.hand[player][i] = -1;  // cross out cards that appear in both G_mod.hand and preG_mod.hand
-    //             preG_mod.hand[player][j] = -1;
-    //             break;
-    //         }
-    //     }
-    // }
-    // // Added cards are those uncrossed in G_mod.hand
-    // count1 = 0;
-    // for (i=0; i<G_mod.handCount[player]; i++) {
-    //     if (G_mod.hand[player][i] > 0) {
-    //         count1++;  // how many new cards in Hand?
-    //         if (NOISY_TEST) printf("Card added to Hand #%d: %s\n", count1, getCardName(G_mod.hand[player][i]));
-    //     }
-    // }
-    // asserttrue(count1==3, &r_main);
-
-
-    // /*********/
-    // printf("---------CASE %d: %s -- TEST %d: 3 cards removed from Deck+Discard\n", caseCount, casename, ++testCount);    
-    //  // What cards were removed from Deck?
-    // for (i=0; i<preG_mod.deckCount[player]; i++) {
-    //     for (j=0; j<G_mod.deckCount[player]; j++) {
-    //         if (preG_mod.deck[player][i] == G_mod.deck[player][j] && preG_mod.deck[player][i] != -1) {
-    //             preG_mod.deck[player][i] = -1;
-    //             G_mod.deck[player][j] = -1;
-    //             break;
-    //         }
-    //     }
-    //     for (j=0; j<G_mod.discardCount[player]; j++) {
-    //         if (preG_mod.deck[player][i] == G_mod.discard[player][j] && preG_mod.deck[player][i] != -1) {
-    //             preG_mod.deck[player][i] = -1;
-    //             G_mod.discard[player][j] = -1;
-    //             break;
-    //         }
-    //     }
-    // }
-    // // What cards were removed from Discard?
-    // for (i=0; i<preG_mod.discardCount[player]; i++) {
-    //     for (j=0; j<G_mod.discardCount[player]; j++) {
-    //         if (preG_mod.discard[player][i] == G_mod.discard[player][j] & preG_mod.discard[player][i] != -1) {
-    //             preG_mod.discard[player][i] = -1;
-    //             G_mod.discard[player][j] = -1;
-    //             break;
-    //         }
-    //     }
-    //     for (j=0; j<G_mod.deckCount[player]; j++) {
-    //         if (preG_mod.discard[player][i] == G_mod.deck[player][j] & preG_mod.discard[player][i] != -1) {
-    //             preG_mod.discard[player][i] = -1;
-    //             G_mod.deck[player][j] = -1;
-    //             break;
-    //         }
-    //     }
-    // }
-    // // // What cards were removed from Deck?
-    // // for (i=0; i<preG_mod.deckCount[player]; i++) {
-    // //     for (j=0; j<G_mod.deckCount[player]; j++) {
-    // //         if (preG_mod.deck[player][i] == G_mod.deck[player][j] && preG_mod.deck[player][i] != -1) {
-    // //             preG_mod.deck[player][i] = -1;
-    // //             G_mod.deck[player][j] = -1;
-    // //             break;
-    // //         }
-    // //     }
-    // // }
-    // // // What cards were removed from Discard?
-    // // for (i=0; i<preG_mod.discardCount[player]; i++) {
-    // //     for (j=0; j<G_mod.discardCount[player]; j++) {
-    // //         if (preG_mod.discard[player][i] == G_mod.discard[player][j] & preG_mod.discard[player][i] != -1) {
-    // //             preG_mod.discard[player][i] = -1;
-    // //             G_mod.discard[player][j] = -1;
-    // //             break;
-    // //         }
-    // //     }
-    // // }
-    // // Added cards are those uncrossed in preG_mod.deck and preG_mod.discard
-    // count2 = 0;
-    // for (i=0; i<preG_mod.deckCount[player]; i++) {
-    //     if (preG_mod.deck[player][i] > 0) {
-    //         count2++;
-    //         if (NOISY_TEST) printf("Card removed from Deck #%d: %s\n", count1, getCardName(G_mod.deck[player][i]));
-    //     }
-    // }
-    // for (i=0; i<preG_mod.discardCount[player]; i++) {
-    //     if (preG_mod.discard[player][i] > 0) {
-    //         count2++;
-    //         if (NOISY_TEST) printf("Card removed from Discard #%d: %s\n", count1, getCardName(G_mod.discard[player][i]));
-    //     }
-    // }
-    // asserttrue(count2==3, &r_main);
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: 3 new cards added to Hand\n", caseCount, casename, ++testCount);
+    assert(G.handCount[player] >= 3);  // hand should have 3+ cards
+    memcpy(&G_mod, &G, sizeof(struct gameState));  // make a copy of G & preG that can be modified
+    memcpy(&preG_mod, &preG, sizeof(struct gameState));
+    // What cards are added to Hand?
+    for (i=0; i<G_mod.handCount[player]; i++) {
+        if (G_mod.hand[player][i] == smithy) {
+            G_mod.hand[player][i] = -1;  // cross out Smithy as it'd be moved to played
+        }
+        for (j=0; j<preG_mod.handCount[player]; j++) {
+            if (G_mod.hand[player][i] == preG_mod.hand[player][j] && G_mod.hand[player][i] != -1) {
+                G_mod.hand[player][i] = -1;  // cross out cards that appear in both G_mod.hand and preG_mod.hand
+                preG_mod.hand[player][j] = -1;
+                break;
+            }
+        }
+    }
+    // Added cards are those uncrossed in G_mod.hand
+    count1 = 0;
+    for (i=0; i<G_mod.handCount[player]; i++) {
+        if (G_mod.hand[player][i] > -1) {
+            count1++;  // how many new cards in Hand?
+            if (NOISY_TEST) printf("Card added to Hand #%d: %s\n", count1, getCardName(G_mod.hand[player][i]));
+        }
+    }
+    asserttrue(count1==3, &r_main);
 
 
-    // /*********/
-    // printf("---------CASE %d: %s -- TEST %d: Cards added to Hand were the same as cards removed from Deck+Discard\n", caseCount, casename, ++testCount); 
-    // // What cards added to Hand are not removed from Deck+Discard?
-    // for (i=0; i<G_mod.handCount[player]; i++) {
-    //     for (j=0; j<preG_mod.deckCount[player]; j++) {
-    //         if (G_mod.hand[player][i] == preG_mod.deck[player][j] && G_mod.hand[player][i] != -1) {
-    //             G_mod.hand[player][i] = -1;
-    //             preG_mod.deck[player][j] = -1;
-    //             count1--;
-    //             count2--;
-    //         }
-    //     }
-    //     for (j=0; j<preG_mod.discardCount[player]; j++) {
-    //         if (G_mod.hand[player][i] == preG_mod.discard[player][j] && G_mod.hand[player][i] != -1) {
-    //             G_mod.hand[player][i] = -1;
-    //             preG_mod.discard[player][j] = -1;
-    //             count1--;
-    //             count2--;
-    //         }
-    //     }
-    // }
-    // // What cards added to Hand are not removed from Deck+Discard?
-    // for (j=0; j<preG_mod.deckCount[player]; j++) {
-    //     for (i=0; i<G_mod.handCount[player]; i++) {
-    //          if (G_mod.hand[player][i] == preG_mod.deck[player][j] && G_mod.hand[player][i] != -1) {
-    //             G_mod.hand[player][i] = -1;
-    //             preG_mod.deck[player][j] = -1;
-    //             count1--;
-    //             count2--;
-    //         }           
-    //     }
-    // }
-    // for (j=0; j<preG_mod.discardCount[player]; j++) {
-    //     for (i=0; i<G_mod.handCount[player]; i++) {
-    //          if (G_mod.hand[player][i] == preG_mod.discard[player][j] && G_mod.hand[player][i] != -1) {
-    //             G_mod.hand[player][i] = -1;
-    //             preG_mod.discard[player][j] = -1;
-    //             count1--;
-    //             count2--;
-    //         }           
-    //     }
-    // }
-    // asserttrue(count1==0 && count2==0, &r_main);
-    // if (NOISY_TEST) {
-    //     if (count1>0) {
-    //         printf("Cards added to Hand but not removed from Deck+Discard: ");
-    //         for (i=0; i<G_mod.handCount[player]; i++) {
-    //             if (G_mod.hand[player][i] > 0) printf("%s\t", getCardName(G_mod.hand[player][i]));
-    //         }
-    //     }
-    //     if (count2>0) {
-    //         printf("Cards removed from Deck+Discard but not added to Hand: ");
-    //         for (j=0; j<G_mod.deckCount[player]; j++) {
-    //             if (preG_mod.deck[player][j] > 0) printf("%s\t", getCardName(preG_mod.deck[player][j]));
-    //         }
-    //         for (j=0; j<G_mod.discardCount[player]; j++) {
-    //             if (preG_mod.discard[player][j] > 0) printf("%s\t", getCardName(preG_mod.discard[player][j]));
-    //         }
-    //     }
-    // }
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: 3 cards removed from Deck+Discard\n", caseCount, casename, ++testCount);    
+    // Copy Deck+Discards before execution to preG_DeckDiscard
+    preG_DeckDiscardCount = 0;
+    for (i=0; i<preG_mod.deckCount[player]; i++) {
+        preG_DeckDiscard[preG_DeckDiscardCount] = preG_mod.deck[player][i];
+        preG_DeckDiscardCount++;
+    }
+    for (i=0; i<preG_mod.discardCount[player]; i++) {
+        preG_DeckDiscard[preG_DeckDiscardCount] = preG_mod.discard[player][i];
+        preG_DeckDiscardCount++;
+    }
+    // Copy Deck+Discards after execution to G_DeckDiscard
+    G_DeckDiscardCount = 0;
+    for (i=0; i<G_mod.deckCount[player]; i++) {
+        G_DeckDiscard[G_DeckDiscardCount] = G_mod.deck[player][i];
+        G_DeckDiscardCount++;
+    }
+    for (i=0; i<G_mod.discardCount[player]; i++) {
+        G_DeckDiscard[G_DeckDiscardCount] = G_mod.discard[player][i];
+        G_DeckDiscardCount++;
+    }
+    // What cards are removed from Deck+Discards?
+    for (i=0; i<preG_DeckDiscardCount; i++) {
+        for (j=0; j<G_DeckDiscardCount; j++) {
+            if (preG_DeckDiscard[i] == G_DeckDiscard[j] && preG_DeckDiscard[i] != -1) {
+                preG_DeckDiscard[i] = -1;
+                G_DeckDiscard[j] = -1;
+                break;
+            }
+        }
+    }
+    // Added cards are those uncrossed in preG_DeckDiscard
+    count2 = 0;
+    for (i=0; i<preG_DeckDiscardCount; i++) {
+        if (preG_DeckDiscard[i] > -1) {
+            count2++;  // how many new cards in Hand?
+            if (NOISY_TEST) printf("Card removed from Deck+Discard #%d: %s\n", count2, getCardName(preG_DeckDiscard[i]));
+        }
+    }
+    asserttrue(count2==3, &r_main);
+
+    /*********/
+    printf("---------CASE %d: %s -- TEST %d: Cards added to Hand were the same as cards removed from Deck+Discard\n", caseCount, casename, ++testCount); 
+    // What cards added to Hand are not removed from Deck+Discard?
+    for (i=0; i<G_mod.handCount[player]; i++) {
+        for (j=0; j<preG_DeckDiscardCount; j++) {
+            if (G_mod.hand[player][i] == preG_DeckDiscard[j] && G_mod.hand[player][i] != -1) {
+                G_mod.hand[player][i] = -1;
+                preG_DeckDiscard[j] = -1;
+                count1--;
+                count2--;
+            }
+        }
+    }
+    // What cards added to Hand are not removed from Deck+Discard?
+    for (j=0; j<preG_DeckDiscardCount; j++) {
+        for (i=0; i<G_mod.handCount[player]; i++) {
+             if (G_mod.hand[player][i] == preG_DeckDiscard[j] && G_mod.hand[player][i] != -1) {
+                G_mod.hand[player][i] = -1;
+                preG_DeckDiscard[j] = -1;
+                count1--;
+                count2--;
+            }           
+        }
+    }
+    asserttrue(count1==0 && count2==0, &r_main);
+    if (NOISY_TEST) {
+        if (count1>0) {
+            printf("Cards added to Hand but not removed from Deck+Discard: ");
+            for (i=0; i<G_mod.handCount[player]; i++) {
+                if (G_mod.hand[player][i] > -1) printf("%s\t", getCardName(G_mod.hand[player][i]));
+            }
+            printf("\n");
+        }
+        if (count2>0) {
+            printf("Cards removed from Deck+Discard but not added to Hand: ");
+            for (j=0; j<preG_DeckDiscardCount; j++) {
+                if (preG_DeckDiscard[j] > -1) printf("%s\t", getCardName(preG_DeckDiscard[j]));
+            }
+            printf("\n");
+        }
+    }
 
 
     /*-------------------------------------------------------------------------*/
-    casename = "2 cards in Deck, non-empty Discard";  // to test shuffle portion
+    casename = "2 cards in Deck, 4 cards in Discard";  // to test shuffle portion
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);
     player = G.whoseTurn;
@@ -344,18 +365,18 @@ int main() {
     if (NOISY_TEST) printf("Hand count before: %d\nHand count after: %d\n", count1, count2);
 
     /*********/
-    printf("---------CASE %d: %s -- TEST %d: Discard count + Deck count decreased by 3\n", caseCount, casename, ++testCount);
-    count1 = preG.handCount[player];
-    count2 = G.handCount[player];
-    asserttrue(count2==count1+2, &r_main);
-    if (NOISY_TEST) printf("Discard count + Deck count before: %d\nDiscard count + Deck count after: %d\n", count1, count2);
+    printf("---------CASE %d: %s -- TEST %d: Deck+Discard count decreased by 3\n", caseCount, casename, ++testCount);
+    count1 = preG.deckCount[player] + preG.discardCount[player];
+    count2 = G.deckCount[player] + G.discardCount[player];
+    asserttrue(count2==count1-3, &r_main);
+    if (NOISY_TEST) printf("Deck+Discard count before: %d\nDeck+Discard count after: %d\n", count1, count2);
 
     /*********/
     printf("---------CASE %d: %s -- TEST %d: 3 new cards added to Hand\n", caseCount, casename, ++testCount);
     assert(G.handCount[player] >= 3);  // hand should have 3+ cards
     memcpy(&G_mod, &G, sizeof(struct gameState));  // make a copy of G & preG that can be modified
     memcpy(&preG_mod, &preG, sizeof(struct gameState));
-    // What cards were added to Hand?
+    // What cards are added to Hand?
     for (i=0; i<G_mod.handCount[player]; i++) {
         if (G_mod.hand[player][i] == smithy) {
             G_mod.hand[player][i] = -1;  // cross out Smithy as it'd be moved to played
@@ -371,7 +392,7 @@ int main() {
     // Added cards are those uncrossed in G_mod.hand
     count1 = 0;
     for (i=0; i<G_mod.handCount[player]; i++) {
-        if (G_mod.hand[player][i] > 0) {
+        if (G_mod.hand[player][i] > -1) {
             count1++;  // how many new cards in Hand?
             if (NOISY_TEST) printf("Card added to Hand #%d: %s\n", count1, getCardName(G_mod.hand[player][i]));
         }
@@ -381,117 +402,65 @@ int main() {
 
     /*********/
     printf("---------CASE %d: %s -- TEST %d: 3 cards removed from Deck+Discard\n", caseCount, casename, ++testCount);    
-    // What cards were removed from Deck?
+    // Copy Deck+Discards before execution to preG_DeckDiscard
+    preG_DeckDiscardCount = 0;
     for (i=0; i<preG_mod.deckCount[player]; i++) {
-        for (j=0; j<G_mod.deckCount[player]; j++) {
-            if (preG_mod.deck[player][i] == G_mod.deck[player][j] && preG_mod.deck[player][i] != -1) {
-                preG_mod.deck[player][i] = -1;
-                G_mod.deck[player][j] = -1;
-                break;
-            }
-        }
-    }
-    for (i=0; i<preG_mod.deckCount[player]; i++) {
-        for (j=0; j<G_mod.discardCount[player]; j++) {
-            if (preG_mod.deck[player][i] == G_mod.discard[player][j] && preG_mod.deck[player][i] != -1) {
-                preG_mod.deck[player][i] = -1;
-                G_mod.discard[player][j] = -1;
-                break;
-            }
-        }
-    }
-    // What cards were removed from Discard?
-    for (i=0; i<preG_mod.discardCount[player]; i++) {
-        for (j=0; j<G_mod.discardCount[player]; j++) {
-            if (preG_mod.discard[player][i] == G_mod.discard[player][j] & preG_mod.discard[player][i] != -1) {
-                preG_mod.discard[player][i] = -1;
-                G_mod.discard[player][j] = -1;
-                break;
-            }
-        }
+        preG_DeckDiscard[preG_DeckDiscardCount] = preG_mod.deck[player][i];
+        preG_DeckDiscardCount++;
     }
     for (i=0; i<preG_mod.discardCount[player]; i++) {
-        for (j=0; j<G_mod.discardCount[player]; j++) {
-            if (preG_mod.discard[player][i] == G_mod.discard[player][j] & preG_mod.discard[player][i] != -1) {
-                preG_mod.discard[player][i] = -1;
-                G_mod.discard[player][j] = -1;
+        preG_DeckDiscard[preG_DeckDiscardCount] = preG_mod.discard[player][i];
+        preG_DeckDiscardCount++;
+    }
+    // Copy Deck+Discards after execution to G_DeckDiscard
+    G_DeckDiscardCount = 0;
+    for (i=0; i<G_mod.deckCount[player]; i++) {
+        G_DeckDiscard[G_DeckDiscardCount] = G_mod.deck[player][i];
+        G_DeckDiscardCount++;
+    }
+    for (i=0; i<G_mod.discardCount[player]; i++) {
+        G_DeckDiscard[G_DeckDiscardCount] = G_mod.discard[player][i];
+        G_DeckDiscardCount++;
+    }
+    // What cards are removed from Deck+Discards?
+    for (i=0; i<preG_DeckDiscardCount; i++) {
+        for (j=0; j<G_DeckDiscardCount; j++) {
+            if (preG_DeckDiscard[i] == G_DeckDiscard[j] && preG_DeckDiscard[i] != -1) {
+                preG_DeckDiscard[i] = -1;
+                G_DeckDiscard[j] = -1;
                 break;
             }
         }
     }
-
-    printCurrentPlayer(player, &G_mod);
-    printCurrentPlayer(player, &preG_mod);
-    // // preG_mod.deck:
-    // printf("\npreG_mod.deck:\n");
-    // int card_temp;
-    // char* card_str_temp;
-    // for (i=0; i<preG_mod.deckCount[player]; i++){
-    //     card_temp = preG_mod.deck[player][i];
-    //     if (card_temp == -1) card_str_temp = "-1"; else card_str_temp = getCardName(card_temp);
-    //     printf("%s\t", card_str_temp);
-    // }
-    // // preG_mod.discard:
-    // printf("\npreG_mod.discard:\n");
-    // for (i=0; i<preG_mod.discardCount[player]; i++){
-    //     card_temp = preG_mod.discard[player][i];
-    //     if (card_temp == -1) card_str_temp = "-1"; else card_str_temp = getCardName(card_temp);
-    //     printf("%s\t", card_str_temp);
-    // }
-
-    // // Added cards are those uncrossed in preG_mod.deck and preG_mod.discard
-    // count2 = 0;
-    // for (i=0; i<preG_mod.deckCount[player]; i++) {
-    //     if (preG_mod.deck[player][i] != -1) {
-    //         count2++;
-    //         if (NOISY_TEST) printf("Card removed from Deck #%d: %s\n", count1, getCardName(G_mod.deck[player][i]));
-    //     }
-    // }
-    // for (i=0; i<preG_mod.discardCount[player]; i++) {
-    //     if (preG_mod.discard[player][i] != -1) {
-    //         count2++;
-    //         if (NOISY_TEST) printf("Card removed from Discard #%d: %s\n", count1, getCardName(G_mod.discard[player][i]));
-    //     }
-    // }
+    // Added cards are those uncrossed in preG_DeckDiscard
+    count2 = 0;
+    for (i=0; i<preG_DeckDiscardCount; i++) {
+        if (preG_DeckDiscard[i] > -1) {
+            count2++;  // how many new cards in Hand?
+            if (NOISY_TEST) printf("Card removed from Deck+Discard #%d: %s\n", count2, getCardName(preG_DeckDiscard[i]));
+        }
+    }
     asserttrue(count2==3, &r_main);
 
     /*********/
     printf("---------CASE %d: %s -- TEST %d: Cards added to Hand were the same as cards removed from Deck+Discard\n", caseCount, casename, ++testCount); 
     // What cards added to Hand are not removed from Deck+Discard?
     for (i=0; i<G_mod.handCount[player]; i++) {
-        for (j=0; j<preG_mod.deckCount[player]; j++) {
-            if (G_mod.hand[player][i] == preG_mod.deck[player][j] && G_mod.hand[player][i] != -1) {
+        for (j=0; j<preG_DeckDiscardCount; j++) {
+            if (G_mod.hand[player][i] == preG_DeckDiscard[j] && G_mod.hand[player][i] != -1) {
                 G_mod.hand[player][i] = -1;
-                preG_mod.deck[player][j] = -1;
-                count1--;
-                count2--;
-            }
-        }
-        for (j=0; j<preG_mod.discardCount[player]; j++) {
-            if (G_mod.hand[player][i] == preG_mod.discard[player][j] && G_mod.hand[player][i] != -1) {
-                G_mod.hand[player][i] = -1;
-                preG_mod.discard[player][j] = -1;
+                preG_DeckDiscard[j] = -1;
                 count1--;
                 count2--;
             }
         }
     }
     // What cards added to Hand are not removed from Deck+Discard?
-    for (j=0; j<preG_mod.deckCount[player]; j++) {
+    for (j=0; j<preG_DeckDiscardCount; j++) {
         for (i=0; i<G_mod.handCount[player]; i++) {
-             if (G_mod.hand[player][i] == preG_mod.deck[player][j] && G_mod.hand[player][i] != -1) {
+             if (G_mod.hand[player][i] == preG_DeckDiscard[j] && G_mod.hand[player][i] != -1) {
                 G_mod.hand[player][i] = -1;
-                preG_mod.deck[player][j] = -1;
-                count1--;
-                count2--;
-            }           
-        }
-    }
-    for (j=0; j<preG_mod.discardCount[player]; j++) {
-        for (i=0; i<G_mod.handCount[player]; i++) {
-             if (G_mod.hand[player][i] == preG_mod.discard[player][j] && G_mod.hand[player][i] != -1) {
-                G_mod.hand[player][i] = -1;
-                preG_mod.discard[player][j] = -1;
+                preG_DeckDiscard[j] = -1;
                 count1--;
                 count2--;
             }           
@@ -502,17 +471,14 @@ int main() {
         if (count1>0) {
             printf("Cards added to Hand but not removed from Deck+Discard: ");
             for (i=0; i<G_mod.handCount[player]; i++) {
-                if (G_mod.hand[player][i] > 0) printf("%s\t", getCardName(G_mod.hand[player][i]));
+                if (G_mod.hand[player][i] > -1) printf("%s\t", getCardName(G_mod.hand[player][i]));
             }
             printf("\n");
         }
         if (count2>0) {
             printf("Cards removed from Deck+Discard but not added to Hand: ");
-            for (j=0; j<G_mod.deckCount[player]; j++) {
-                if (preG_mod.deck[player][j] > 0) printf("%s\t", getCardName(preG_mod.deck[player][j]));
-            }
-            for (j=0; j<G_mod.discardCount[player]; j++) {
-                if (preG_mod.discard[player][j] > 0) printf("%s\t", getCardName(preG_mod.discard[player][j]));
+            for (j=0; j<preG_DeckDiscardCount; j++) {
+                if (preG_DeckDiscard[j] > -1) printf("%s\t", getCardName(preG_DeckDiscard[j]));
             }
             printf("\n");
         }
@@ -525,5 +491,7 @@ int main() {
     printf("Card %s passed %d/%d checks.\n", CARD_NAME, r_main, testCount);
     printf("END testing %s\n", CARD_NAME);
     printf("**********************************************************\n");
+
+    return 0;
 }
 
