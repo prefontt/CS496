@@ -18,30 +18,36 @@
 #include "rngs.h"
 #include <stdlib.h>
 
-int checkOtherPlayerState(int testNum, int card_state[6], struct gameState G) {
+int checkCoins(int testNum, int card_state[6], int xtraCoins, struct gameState G) {
   struct gameState testG;
-  int currentPlayer = 0;
-  int nextPlayer = currentPlayer + 1;
-  int test_pass = 1;
-  int i;
-	
-  printf("\n  TEST %d: No state change occurs for other players\n", testNum);
+
+  printf("\n  TEST %d: %d extra coins are awarded to the current player\n", testNum, xtraCoins);
 
   // copy the game state to a test case
   memcpy(&testG, &G, sizeof(struct gameState));
   cardEffect(card_state[0], card_state[1], card_state[2], card_state[3], &testG, card_state[4], &card_state[5]);
 
-  // other players' decks should not change
-  printf("    next player hand count = %d, expected = %d\n", testG.handCount[nextPlayer], G.handCount[nextPlayer]);
-  printf("    next player deck count = %d, expected = %d\n", testG.deckCount[nextPlayer], G.deckCount[nextPlayer]);
+  printf("    coins = %d, expected = %d\n", testG.coins, G.coins + xtraCoins);
 
   // assert test passed
-  // compare next player's current deck to stored deck (hand is drawn at start of turn, so all cards stored in deck)
-  for (i = 0; i < G.deckCount[nextPlayer]; i++) {
-    if (testG.deck[nextPlayer][i] != G.deck[nextPlayer][i]) {test_pass = 0; break;} 
-  }
+  if (testG.coins == G.coins + xtraCoins) {return 1;}
+  else {return 0;}
+}
+
+int checkActions(int testNum, int card_state[6], int xtraActions, struct gameState G) {
+  struct gameState testG;
+
+  printf("\n  TEST %d: %d extra actions are gained\n", testNum, xtraActions);
+
+  // copy the game state to a test case
+  memcpy(&testG, &G, sizeof(struct gameState));
+  cardEffect(card_state[0], card_state[1], card_state[2], card_state[3], &testG, card_state[4], &card_state[5]);
 	
-  return test_pass;
+  printf("    actions = %d, expected = %d\n", testG.numActions , G.numActions + xtraActions);
+
+  // assert test passed
+  if (testG.numActions == G.numActions + xtraActions) {return 1;}
+  else {return 0;}
 }
 
 int checkSupplyCount(int testNum, int card_state[6], struct gameState G) {
@@ -89,35 +95,28 @@ int checkSupplyCount(int testNum, int card_state[6], struct gameState G) {
   else {return 0;}
 }
 
-
-int checkActions(int testNum, int card_state[6], int xtraActions, struct gameState G) {
+int checkOtherPlayerState(int testNum, int card_state[6], struct gameState G) {
   struct gameState testG;
-
-  printf("\n  TEST %d: No extra actions are gained\n", testNum);
+  int thisPlayer = G.whoseTurn;
+  int nextPlayer = thisPlayer + 1;
+  int i;
+	
+  printf("\n  TEST %d: No state change occurs for other players\n", testNum);
 
   // copy the game state to a test case
   memcpy(&testG, &G, sizeof(struct gameState));
   cardEffect(card_state[0], card_state[1], card_state[2], card_state[3], &testG, card_state[4], &card_state[5]);
 
-  printf("    actions = %d, expected = %d\n", testG.numActions , G.numActions + xtraActions);
+  // other players' decks should not change
+  printf("    next player hand count = %d, expected = %d\n", testG.handCount[nextPlayer], G.handCount[nextPlayer]);
+  printf("    next player deck count = %d, expected = %d\n", testG.deckCount[nextPlayer], G.deckCount[nextPlayer]);
 
   // assert test passed
-  if (testG.numActions == G.numActions + xtraActions) {return 1;}
-  else {return 0;}
-}
+  // compare next player's current deck to stored deck (hand is drawn at start of turn, so all cards stored in deck)
+  for (i = 0; i < G.deckCount[nextPlayer]; i++) {
+    if (testG.deck[nextPlayer][i] != G.deck[nextPlayer][i]) {return 0;} 
+  }
 
-int checkCoins(int testNum, int card_state[6], int xtraCoins, struct gameState G) {
-  struct gameState testG;
-
-  printf("\n  TEST %d: No extra coins are awarded to the current player\n", testNum);
-
-  // copy the game state to a test case
-  memcpy(&testG, &G, sizeof(struct gameState));
-  cardEffect(card_state[0], card_state[1], card_state[2], card_state[3], &testG, card_state[4], &card_state[5]);
-
-  printf("    coins = %d, expected = %d\n", testG.coins, G.coins + xtraCoins);
-
-  // assert test passed
-  if (testG.coins == G.coins + xtraCoins) {return 1;}
-  else {return 0;}
+  if (testG.handCount[nextPlayer] != 0) {return 0;}
+  else {return 1;}
 }
