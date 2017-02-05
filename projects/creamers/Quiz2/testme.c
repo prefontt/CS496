@@ -1,3 +1,6 @@
+/* Stephanie Creamer - CS 362
+* Winter 2017 - Quiz 2*/
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
