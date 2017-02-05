@@ -1,7 +1,7 @@
 /* unittest3.c
 Function tested: numHandCards()
 
-Basic requirements:
+Requirements:
 -- Fails if current player's hand count < 0
 -- Returns number of cards in current player's hand. 
 -- Number returned equals both current player's handCount

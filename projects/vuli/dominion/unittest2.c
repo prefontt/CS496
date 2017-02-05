@@ -1,7 +1,7 @@
 /* unittest2.c
 Function tested: shuffle()
 
-Basic requirements:
+Requirements:
 -- Fails if deck count < 1
 -- Does not change game state after function execution, except deck of current player
 -- The same cards remain in deck of current player after execution

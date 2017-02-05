@@ -1,7 +1,7 @@
 /* unittest4.c
 Function tested: whoseTurn()
 
-Basic requirements:
+Requirements:
 -- Returns 0 immediately after initializing game
 -- Returns correct current player in range 0..numPlayer
 -- Does not change game state after execution

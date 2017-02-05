@@ -1214,45 +1214,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 
-// // TEST VERS (CORRECTED)
-// int cardEffectAdventurer(int handPos, int currentPlayer, struct gameState *state, int choice1, int choice2, int choice3) {
-//   int temphand[MAX_HAND];
-//   int drawntreasure=0;
-//   int cardDrawn;
-//   int z = 0;// this is the counter for the temp hand
-
-//   while (drawntreasure < 2) {
-//     // printf("\nNEW ITER\n");
-//     if (state->deckCount[currentPlayer] < 1) { //if the deck is empty we need to shuffle discard and add to deck
-//       shuffle(currentPlayer, state);
-//       // printf("shuffled\n");
-//     }
-//     drawCard(currentPlayer, state);
-//     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];
-//     if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold) {
-//       drawntreasure++;
-//       // printf("DRAW %s, drawntreasure=%d\n", getCardName(cardDrawn), drawntreasure);
-//       // printCurrentPlayer(currentPlayer, state);
-//     } else {
-//       temphand[z++]=cardDrawn;
-//       // printf("Temp hand: ");
-//       // for (int i=0;i<z;i++)
-//       //   printf("%s\t", getCardName(temphand[i]));
-//       // printf("\n");
-//       state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-//     } 
-//   }
-  
-//   while (z > 0){
-//     state->discard[currentPlayer][state->discardCount[currentPlayer]] = temphand[z-1]; // discard all cards in play that have been drawn
-//     state->discardCount[currentPlayer]++;
-//     z--;
-//   }
-
-//   discardCard(handPos, currentPlayer, state, 0);
-  
-//   return 0;
-// }
 
 int cardEffectAdventurer(int handPos, int currentPlayer, struct gameState *state, int choice1, int choice2, int choice3) {
   int temphand[MAX_HAND];
@@ -1283,27 +1244,16 @@ int cardEffectAdventurer(int handPos, int currentPlayer, struct gameState *state
   return 0;
 }
 
-// TEST VERS (CORRECT)
+
 int cardEffectSmithy(int handPos, int currentPlayer, struct gameState *state, int choice1, int choice2, int choice3) {
   int i;
 
   //+3 Cards
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i <= 3; i++) {
     drawCard(currentPlayer, state);
   }
-  discardCard(handPos, currentPlayer, state, 0);
   return 0;
 }
-
-// int cardEffectSmithy(int handPos, int currentPlayer, struct gameState *state, int choice1, int choice2, int choice3) {
-//   int i;
-
-//   //+3 Cards
-//   for (i = 0; i <= 3; i++) {
-//     drawCard(currentPlayer, state);
-//   }
-//   return 0;
-// }
 
 
 int cardEffectCouncil_Room(int handPos, int currentPlayer, struct gameState *state, int choice1, int choice2, int choice3) {

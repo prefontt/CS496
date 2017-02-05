@@ -46,4 +46,5 @@ unittests: unittest1.c unittest2.c unittest3.c unittest4.c dominion.o rngs.o
 cardtests: cardtest1.c cardtest2.c dominion.o rngs.o
 	gcc -o cardtest1 -g  cardtest1.c dominion.o rngs.o $(CFLAGS)
 	gcc -o cardtest2 -g  cardtest2.c dominion.o rngs.o $(CFLAGS)
+	gcc -o cardtest3 -g  cardtest3.c dominion.o rngs.o $(CFLAGS)
  

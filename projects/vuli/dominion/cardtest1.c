@@ -1,7 +1,7 @@
 /* cardtest1.c
 Card tested: Adventurer
 
-Basic requirements:
+Requirements:
 -- Decreases Hand+Deck+Discard count by 1
 -- Increases playedCardCount by 1
 -- Adds card previously at handPos to playedCards
@@ -10,10 +10,10 @@ Basic requirements:
 -- Does not change Hand+Deck+Discard for current player, except removing played card
 
 -- If deck+discard previously has 2+ Treasure:
-    +) Increases handCount by 1 (2 Treasure drawn - 1 Adventurer removed)
+    +) Increases handCount by 1 (2 Treasure drawn - 1 card played)
     +) hand contains 2 new Treasure
 -- If deck+discard previously has 1 Treasure:
-    +) handCount unchanged (1 Treasure drawn - 1 Adventurer removed)
+    +) handCount unchanged (1 Treasure drawn - 1 card played)
     +) hand contains 1 new Treasure
 */
 
@@ -188,7 +188,7 @@ int main() {
     printf("BEGIN testing %s\n", CARD_NAME);
     
 
-    /*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/
     casename = "3 Treasure in Deck, empty Discard";
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);
@@ -229,7 +229,7 @@ int main() {
     if (NOISY_TEST) printf("Treasure count before: %d\nTreasure count after: %d\n", count1, count2);
 
 
-    /*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/
     casename = "1 Treasure in Deck, 1 Treasure in Discard";
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);
@@ -272,7 +272,7 @@ int main() {
     if (NOISY_TEST) printf("Treasure count before: %d\nTreasure count after: %d\n", count1, count2);
 
 
-    /*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/
     casename = "1 Treasure in Deck, empty Discard";
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);

@@ -1,7 +1,7 @@
 /* unittest1.c
 Function tested: isGameOver()
 
-Basic requirements:
+Requirements:
 -- Returns 1 if Supply pile of Province cards is empty
 -- Returns 1 if any three Supply piles are empty
 -- Returns 0 in all other cases
