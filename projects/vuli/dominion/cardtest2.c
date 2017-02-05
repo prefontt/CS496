@@ -487,7 +487,7 @@ int main() {
     /*-------------------------------------------------------------------------*/
     /******** Result */
     printf("---------\n");
-    printf("Card %s passed %d/%d checks.\n", CARD_NAME, r_main, testCount);
+    printf("Card %s passed %d/%d tests.\n", CARD_NAME, r_main, testCount);
     printf("END testing %s\n", CARD_NAME);
     printf("**********************************************************\n");
 

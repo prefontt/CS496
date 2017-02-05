@@ -1,5 +1,5 @@
-/* cardtest3.c
-Card tested: Village
+/* cardtest4.c
+Card tested: Great Hall
 
 Requirements:
 -- Decreases Hand+Deck+Discard count by 1
@@ -13,7 +13,7 @@ Requirements:
 -- Decreases Deck+Discard count by 1
 -- 1 card is added to Hand and 1 card is removed from Deck+Discard
 -- The card added to hand is the card removed from Deck+Discard
--- Increases number of actions by 2
+-- Increases number of actions by 1
 */
 
 
@@ -26,7 +26,7 @@ Requirements:
 #include <string.h>
 #include <assert.h>
 
-#define CARD_NAME "Village"
+#define CARD_NAME "Great Hall"
 #define NOISY_TEST 1
 
 /* Function to test general requirements that apply to most cards and Deck+Hand+Discard scenarios:
@@ -194,7 +194,7 @@ int main() {
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);
     player = G.whoseTurn;
-    G.hand[player][handPos] = village; // make current card village
+    G.hand[player][handPos] = great_hall; // make current card great_hall
     card = G.hand[player][handPos];  // card previously at handPos
     assert(G.deckCount[player] >=1); // Deck should have 5 cards after initialization
     memcpy(&preG, &G, sizeof(struct gameState));  // save gameState to preG
@@ -225,8 +225,8 @@ int main() {
     memcpy(&preG_mod, &preG, sizeof(struct gameState));
     // What cards are added to Hand?
     for (i=0; i<G_mod.handCount[player]; i++) {
-        if (G_mod.hand[player][i] == village) {
-            G_mod.hand[player][i] = -1;  // cross out Village as it'd be moved to played
+        if (G_mod.hand[player][i] == great_hall) {
+            G_mod.hand[player][i] = -1;  // cross out great_hall as it'd be moved to played
         }
         for (j=0; j<preG_mod.handCount[player]; j++) {
             if (G_mod.hand[player][i] == preG_mod.hand[player][j] && G_mod.hand[player][i] != -1) {
@@ -331,10 +331,10 @@ int main() {
     }
 
     /*********/
-    printf("---------CASE %d: %s -- TEST %d: Number of actions increased by 2\n", caseCount, casename, ++testCount);
+    printf("---------CASE %d: %s -- TEST %d: Number of actions increased by 1\n", caseCount, casename, ++testCount);
     count1 = preG.numActions;
     count2 = G.numActions;
-    asserttrue(count2==count1+2, &r_main);
+    asserttrue(count2==count1+1, &r_main);
     if (NOISY_TEST) printf("Action count before: %d\nAction count after: %d\n", count1, count2);
 
 
@@ -343,7 +343,7 @@ int main() {
     caseCount++;
     initializeGame(numPlayer, k, seed, &G);
     player = G.whoseTurn;
-    G.hand[player][handPos] = village; // make current card village
+    G.hand[player][handPos] = great_hall; // make current card great_hall
     card = G.hand[player][handPos];  // card previously at handPos
 
     /* Construct empty Deck and Discard with 4 cards */
@@ -382,8 +382,8 @@ int main() {
     memcpy(&preG_mod, &preG, sizeof(struct gameState));
     // What cards are added to Hand?
     for (i=0; i<G_mod.handCount[player]; i++) {
-        if (G_mod.hand[player][i] == village) {
-            G_mod.hand[player][i] = -1;  // cross out Village as it'd be moved to played
+        if (G_mod.hand[player][i] == great_hall) {
+            G_mod.hand[player][i] = -1;  // cross out great_hall as it'd be moved to played
         }
         for (j=0; j<preG_mod.handCount[player]; j++) {
             if (G_mod.hand[player][i] == preG_mod.hand[player][j] && G_mod.hand[player][i] != -1) {
@@ -488,10 +488,10 @@ int main() {
     }
 
     /*********/
-    printf("---------CASE %d: %s -- TEST %d: Number of actions increased by 2\n", caseCount, casename, ++testCount);
+    printf("---------CASE %d: %s -- TEST %d: Number of actions increased by 1\n", caseCount, casename, ++testCount);
     count1 = preG.numActions;
     count2 = G.numActions;
-    asserttrue(count2==count1+2, &r_main);
+    asserttrue(count2==count1+1, &r_main);
     if (NOISY_TEST) printf("Action count before: %d\nAction count after: %d\n", count1, count2);
 
 
