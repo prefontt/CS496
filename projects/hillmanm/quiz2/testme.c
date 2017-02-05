@@ -4,7 +4,7 @@
  File			: testme.c (a C program)
  Author			: Matthew Hillman (CS 362 Winter 2017)
  Date			: February 1, 2017
- Description	: Random    
+ Description	: Random test of a testme() function   
  
 ==================================================================================================
 */
