@@ -1,0 +1,1 @@
+// randomstring.c is a text file that outlines how I developed my solution for the Random Testing Quiz 2
