@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	temp = post = pre; //hmm, are we using C90 or higher?
 
 	printf("=============================================\n");
-	printf("Beginning testing of GREAT HALL card:\n\n");
+	printf("Beginning testing of GREAT HALL card:\n");
 	printf("=============================================\n\n");
 
 	greatHallPlay(curPlayer, handPos, &post);

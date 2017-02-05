@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	pre.discardCount[curPlayer] = 5;
 	temp = post = pre; //hmm, are we using C90 or higher?
 	printf("=============================================\n");
-	printf("Beginning testing of Treasure Map card:\n\n");
+	printf("Beginning testing of Treasure Map card:\n");
 	printf("=============================================\n\n");
 	treasureMapPlay(curPlayer, handPos, &post);
 

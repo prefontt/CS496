@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 	initializeGame(numPlayers, k, seed, &pre);
 	
 	printf("=============================================\n");
-	printf("Beginning testing of isGameOver function:\n\n");
+	printf("Beginning testing of isGameOver function:\n");
 	printf("=============================================\n\n");
 
 	temp = post = pre;

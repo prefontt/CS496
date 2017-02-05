@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 	temp = post = pre; //hmm, are we using C90 or higher?
 	
 	printf("=============================================\n");
-	printf("Beginning testing of SMITHY card:\n\n");
+	printf("Beginning testing of SMITHY card:\n");
 	printf("=============================================\n\n");
 	smithyPlay(curPlayer, handPos, &post);
 
