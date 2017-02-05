@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <assert.h>
 
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
@@ -1174,8 +1173,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     */
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
-  //Pre-Condition asserts
-  assert(state->handCount[currentPlayer] > handPos);
   int origCardCount;
   //if card is discarded, added to Played pile before removing from hand
   if (trashFlag < 1)
@@ -1209,14 +1206,6 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
       //reduce number of cards in hand
       state->handCount[currentPlayer]--;
     }
-  //Post-condition assert statements
-    //if discarded, discard pile must have gained one
-  if (trashFlag < 1){
-    assert(state->playedCardCount = 1 + origCardCount);
-  }
-  // if trashed, discard pile has same number of cards
-  else
-    assert(state->playedCardCount = origCardCount);
   return 0;
 }
 
@@ -1267,8 +1256,6 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
     */
 int updateCoins(int player, struct gameState *state, int bonus)
 {
-  //Pre-condition asserts
-  assert(state->handCount[player] > 0);
   int i;
   
   //reset coin count
@@ -1297,8 +1284,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
   //add bonus
   state->coins += bonus;
 
-  //Post-condition assertions
-  assert(state->coins > 0);
 
   return 0;
 }
@@ -1321,11 +1306,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
       */
 int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int card){
 
-       //assert statements for preconditions
-       assert (card >= adventurer && card <= treasure_map);
-       assert(state->phase == 0);
-       assert(state->numActions > 0);
-       assert(card == adventurer);
        int z=0;
        int drawntreasure = 0;
        int temphand[MAX_HAND];
@@ -1333,7 +1313,7 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
        
       // drawn treasure is the number of cards that have been drawn that are treasure cards
       // keep going until 2 treasure cards are drawn
-      while(drawntreasure<2){
+      while(drawntreasure<1){ //BUG
         //if the deck is empty we need to shuffle discard and add to deck
         if (state->deckCount[currentPlayer] <1){
           shuffle(currentPlayer, state);
@@ -1345,21 +1325,18 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
         else{
           temphand[z]=cardDrawn; //storing the non-treasure drawn card in a temporary hand to discard before continuing play
           state->handCount[currentPlayer]--; //removing the non-treasure card from the current hand
+        
           z++;
-        }
+          }
       }
       //discarding the non-treasure cards that were drawn. 
-      while(z-1>=0){
+      while(z-1>0){ //BUG
         state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn 
         z=z-1;
       }
 
       discardCard(handPos, currentPlayer, state, 0); // discard the adventure card since it has been played
 
-      //Post-condition asserts
-      assert(state->numActions >=0);
-      assert(state->handCount[currentPlayer] = startNumCards + drawntreasure);
-      assert(state->discard[currentPlayer][state->playedCardCount-1] == adventurer);
 }
 
 
@@ -1376,26 +1353,20 @@ int playAdventurer(struct gameState *state, int currentPlayer, int handPos, int 
 
 int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card){
 
-      //Pre-condition asserts
-      assert (card >= adventurer && card <= treasure_map);
-      assert(state->phase == 0);
-      assert(state->numActions > 0);
-      assert(card == smithy);
+
       int i;
       int startNumCards = state->handCount[currentPlayer];
+      printf("start num cards: %d\n", startNumCards);
       //+3 Cards
-      for (i = 0; i < 3; i++)
+      for (i = 0; i <= 3; i++) //BUG
         {
           drawCard(currentPlayer, state);
         }
             
       //discard smithy card from hand
       discardCard(handPos, currentPlayer, state, 0);
+      printf("end num cards: %d\n", state->handCount[currentPlayer]);
 
-      //Post-condition asserts
-      assert(state->numActions >=0);
-      assert(state->handCount[currentPlayer] = startNumCards + 2);
-      assert(state->discard[currentPlayer][state->playedCardCount-1] == smithy);
       return 0;
     }
 
@@ -1411,11 +1382,7 @@ int playSmithy(struct gameState *state, int currentPlayer, int handPos, int card
                     The village card should be discarded
 */
 int playVillage(struct gameState *state, int currentPlayer, int handPos, int card){
-     //assert statements for preconditions
-       assert (card >= adventurer && card <= treasure_map);
-       assert(state->phase == 0);
-       assert(state->numActions > 0);
-       assert(card == village);
+   
 
        int origNumActions = state->numActions;
        int startNumCards = state->handCount[currentPlayer];
@@ -1427,11 +1394,6 @@ int playVillage(struct gameState *state, int currentPlayer, int handPos, int car
       
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
-
-      //assert statements for postconditions
-      assert(state->numActions = origNumActions + 2);
-      assert(state->handCount[currentPlayer] = startNumCards); //gain card but lose one
-      assert(state->discard[currentPlayer][state->playedCardCount-1] == village);
       return 0;
 }
 
@@ -1450,47 +1412,26 @@ int playVillage(struct gameState *state, int currentPlayer, int handPos, int car
                     The steward card should be discarded
 */
 int playSteward(struct gameState *state, int currentPlayer, int choice1, int choice2, int choice3, int handPos, int card){
-  //assert statments for pre-conditions
-  assert (card >= adventurer && card <= treasure_map);
-  assert(state->phase == 0);
-  assert(state->numActions > 0);
-  assert(card == steward);
 
-  int startNumCards = state->handCount[currentPlayer]; //storing starting card count for later asserts
-  int origNumCoins = state->coins;
-  if (choice1 == 1)
-  {
+  if (choice1 == 1){
     //+2 cards
     drawCard(currentPlayer, state);
     drawCard(currentPlayer, state);
   }
-  else if (choice1 == 2)
-  {
+  else if (choice1 == 2){
     //+2 coins
     state->coins = state->coins + 2;
   }
-  else
-  {
+  else{
     //trash 2 cards in hand
-    discardCard(choice2, currentPlayer, state, 1);
-    discardCard(choice3, currentPlayer, state, 1);
+    discardCard(choice2, currentPlayer, state, 0); //BUG
+    discardCard(choice3, currentPlayer, state, 0); //BUG
   }
       
     //discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1); //BUG
 
-  //assert statements for postconditions
-  if (choice1 == 1){
-    assert(state->handCount[currentPlayer] = startNumCards + 2); //gained 2 cards
-  }
-  else if (choice1 == 2){
-    assert(state->coins = origNumCoins + 2); //gained 2 coins
-  }
-  else{
-    assert(state->handCount[currentPlayer] = startNumCards - 2); //trashed 2 cards
-  }
-  assert(state->numActions >=0);
-  assert(state->discard[currentPlayer][state->playedCardCount-1] == steward);
+  
   return 0;
 
 }
@@ -1509,35 +1450,23 @@ int playSteward(struct gameState *state, int currentPlayer, int choice1, int cho
                     The salvager card should be the last discarded card
 */
 int playSalvager(struct gameState *state, int currentPlayer, int choice1, int handPos, int card){
-    //assert statments for pre-conditions
-    assert (card >= adventurer && card <= treasure_map);
-    assert(state->phase == 0);
-    assert(state->numActions > 0);
-    assert(card == salvager);
-    assert(inHand(state, currentPlayer, choice1));
-    int origBuy = state->numBuys;
+   
 
    //+1 buy
     state->numBuys++;
     
-    if (choice1)
-    {
+    if (choice1 == smithy){ //BUG
       //gain coins equal to trashed card
       state->coins = state->coins + getCost( handCard(choice1, state) );
       //trash card
-      discardCard(choice1, currentPlayer, state, 1);  
+      discardCard(choice1, currentPlayer, state, 0);  //BUG
     }
       
-      //discard  salvager card
-      discardCard(handPos, currentPlayer, state, 0);
+    //discard  salvager card
+    discardCard(handPos, currentPlayer, state, 0);
 
-      //assert statements for postconditions
-      assert(state->numActions >= 0); //check if number of actions is 
-      assert(state->handCount[currentPlayer] = origBuy); //check if gain 1 buy
-      //checking that the most recent discarded card is salvager
-      assert(state->discard[currentPlayer][state->playedCardCount-1] == salvager);
 
-      return 0;
+    return 0;
 }
 
 //Helper function for playSalvager
