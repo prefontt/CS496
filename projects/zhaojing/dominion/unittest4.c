@@ -15,9 +15,10 @@ int main(){
 	randomVar = rand() % 10;
 	result = initializeGame(2, k, randomVar, &G);
 	int turn = 0;
+	int i;
 	
 	//testing for successful turns
-	for (int i = 0; i < 10; i++){
+	for (i = 0; i < 10; i++){
 		G.whoseTurn = turn;
 		result = whoseTurn(&G);
 		asserttrue(result == turn);
