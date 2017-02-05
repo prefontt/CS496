@@ -22,7 +22,7 @@ char *inputString()
       //if even index
       if(i % 2 == 0){
         //randomly select lower case letter
-        //str[i] = rand() % 3 + 114;
+        
         str[i] = rand() % 26 + 97;
 
       //if odd index select a vowel
@@ -59,7 +59,6 @@ void testme()
     c = inputChar();
     s = inputString();
     printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
-    printf("State = %d", state);
     if (c == '[' && state == 0) state = 1;
     if (c == '(' && state == 1) state = 2;
     if (c == '{' && state == 2) state = 3;
