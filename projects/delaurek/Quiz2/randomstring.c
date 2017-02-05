@@ -1,3 +1,7 @@
+to compile:
+
+gcc -o testme testme.c
+
 I developed my solution by first studying the code provided.
 inputChar() -
 REASONING: I assumed based on the code that this was looking for some type of
