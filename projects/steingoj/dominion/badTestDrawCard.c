@@ -12,6 +12,8 @@ int checkDrawCard(int p, struct gameState *post) {
   int r;
     
   r = drawCard (p, post);
+
+	return 0;
 }
 
 int main () {
