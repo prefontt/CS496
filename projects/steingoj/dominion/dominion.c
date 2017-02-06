@@ -168,7 +168,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
       //draw 5 cards
       // for (j = 0; j < 5; j++)
       //	{
-      //	  drawCard(i, state);
+      	//  drawCard(i, state);
       //	}
     }
   
@@ -194,6 +194,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
   }
 
   updateCoins(state->whoseTurn, state, 0);
+
 
   return 0;
 }
@@ -526,7 +527,6 @@ int drawCard(int player, struct gameState *state)
 {	int count;
   int deckCounter;
   if (state->deckCount[player] <= 0){//Deck is empty
-    
     //Step 1 Shuffle the discard pile back into a deck
     int i;
     //Move discard to deck
@@ -1144,8 +1144,11 @@ int playAdventurer(struct gameState *state){
 		drawCard(currentPlayer, state);
 		cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
 		if (cardDrawn == copper || cardDrawn == silver) //Removed cardDrawn == gold
-	  		drawntreasure++;
+	  	{	drawntreasure++;
+			
+		}
 		else{
+			
 	  		temphand[z]=cardDrawn;
 	  		state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
 	  		z++;
@@ -1167,6 +1170,7 @@ int playSmithy(struct gameState *state, int handPos){
       for (i = 0; i < 3; i++)
 	{
 	  drawCard(currentPlayer, state);
+	
 	}
 			
       //discard card from hand
@@ -1252,7 +1256,7 @@ int playFeast(struct gameState *state, int choice1){
 	return 0;
 }
 
-int playcouncil_Room(struct gameState *state, int handPos){
+int playCouncil_Room(struct gameState *state, int handPos){
 	int i;
 	int currentPlayer = whoseTurn(state); 
 

@@ -25,7 +25,7 @@ void assert(bool j, char * msg){
 void gameStateCompare(struct gameState * G, struct gameState * GCopy, char * msg) {
 	int i, k; 	// loop iterators
 
-	printf("%s \n", msg);
+//	printf("%s \n", msg);
 	
 	// go through all attributes of struct gameState and see if any have changed
 	assert(G->numPlayers == GCopy->numPlayers, "numPlayers changed after call");
@@ -95,6 +95,8 @@ int main(){
 	int playWhoseTurn = 0;		// player identfier for person who will play the card
 	int coinBonus = 0;
 
+	printf("cardtest1.c\n");
+
 	// initialize the game and make two copies of the game state
 	G = newGame();
 	GCopy = newGame();
@@ -117,16 +119,16 @@ int main(){
 	memcpy(G, GCopy, sizeof(struct gameState));
 
 	/**********************************  TEST TWO *****************************************
-	* seven things from gameState not compared in above gameStateCompare because they were
-	* expected to change.  Those seven things are: numBuys, handCount, playedCardCount, 
+	* six things from gameState not compared in above gameStateCompare because they were
+	* expected to change.  Those six things are: handCount, playedCardCount, 
 	* playedCards, hand, deck, and deckCount. They will be tested to see if they match
 	* expected values.
 	* ************************************************************************************/
 	printf("\n--TEST TWO--\n");
 	useSmithy(0, playWhoseTurn, G); 
 	
-	// numBuys should decrease by 1
-	assert(G->numBuys == (GCopy->numBuys -1), "numBuys not decremented by 1");
+	// numBuys shouldn't decrease by 1
+//	assert(G->numBuys == (GCopy->numBuys -1), "numBuys not decremented by 1");
 	// handCount should decrease by 2 (+3 drawn cards, -1 played card)
 	assert(G->handCount[playWhoseTurn] == (GCopy->handCount[playWhoseTurn] + 3 - 1), "handCount not incremented by 2 (+3 - 1)") ;
 	// playedCardCount should increase by 1
