@@ -1,6 +1,6 @@
 /* File: cardtest1.c
    Author: Daniel Eisenbach
-   Date: 2/3/17
+   Date: 2/5/17
 
    Description: Tests the implementation of the dominion smithy action card. Smithy costs four coin to buy, 
    and when played lets the player draw three additional cards from the top of their deck into their hand.

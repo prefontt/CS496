@@ -117,6 +117,7 @@ int checkOtherPlayerState(int testNum, int card_state[6], struct gameState G) {
     if (testG.deck[nextPlayer][i] != G.deck[nextPlayer][i]) {return 0;} 
   }
 
-  if (testG.handCount[nextPlayer] != 0) {return 0;}
+  // check that deck/hand counts didn't change
+  if ((testG.handCount[nextPlayer] != 0) || (testG.deckCount[nextPlayer] != G.deckCount[nextPlayer])) {return 0;}
   else {return 1;}
 }
