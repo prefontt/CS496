@@ -42,7 +42,7 @@ cardtests: cardtest1.c cardtest2.c cardtest3.c cardtest4.c testfuncs.c dominion.
 	gcc -o cardtest1 -g cardtest1.c dominion.c rngs.c testfuncs.c $(CFLAGS)
 	gcc -o cardtest2 -g cardtest2.c dominion.c rngs.c testfuncs.c $(CFLAGS)
 	gcc -o cardtest3 -g cardtest3.c dominion.c rngs.c testfuncs.c $(CFLAGS)
-	#gcc -o cardtest4 -g cardtest4.c dominion.c rngs.c testfuncs.c $(CFLAGS)
+	gcc -o cardtest4 -g cardtest4.c dominion.c rngs.c testfuncs.c $(CFLAGS)
 
 unittestresults.out: unittests cardtests
 	./cardtest1 > unittestresults.out
