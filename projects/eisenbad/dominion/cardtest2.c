@@ -1,6 +1,6 @@
 /* File: cardtest2.c
    Author: Daniel Eisenbach
-   Date: 2/4/17
+   Date: 2/5/17
 
    Description: Tests the implementation of the dominion adventurer action card. Adventurer costs six coin to buy, 
    and when used the player will reveal cards from their deck until two treasure cards are revealed, which will
