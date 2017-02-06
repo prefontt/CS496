@@ -5,30 +5,28 @@
 
 char inputChar()
 {
-    // TODO: rewrite this function
-  char c = rand() % 95 + 32;
-    return c;
+
+    char c[] = "[({ ax})]";
+    int randNum=rand()%9;
+    return c[randNum];
 }
 
 char *inputString()
 {
-    // TODO: rewrite this function
-  char * s = malloc(6);
-  int i = 0;
-  for(i = 0; i<= 4; i++){
-    s[i] = rand() % 95 + 32;
-  }
-  s[5] = '\0';
-  /*
-  s[0] = 'r';
-  s[1] = 'e';
-  s[2] = 's';
-  s[3] = 'e';
-  s[4] = 't';
-  s[5] = '\0';
-  */
-
-    return s;
+    int rand1;
+    int rand2;
+    char temp;
+    char mystring[] = "reset";
+    int i;
+    for(i=0; i<200; i++){
+      rand1 = rand()%5;
+      rand2 = rand()%5;
+      temp = mystring[rand1];
+      mystring[rand1] = mystring[rand2];
+      mystring[rand2] = temp;
+      //printf("%s\n", mystring);
+    }
+    return mystring;
 }
 
 void testme()
@@ -58,7 +56,7 @@ void testme()
        && s[4] == 't' && s[5] == '\0'
        && state == 9)
     {
-      printf("error \n");
+      printf("error ");
       exit(200);
     }
   }

@@ -23,4 +23,5 @@ trying to produce). The last character was the null-charcter to end the string.
 
 In addtion to these to functions I made one last change so that the error message would appear on it's
 own line. This doesnt really change the code in any way; rather to make it more visually appealing when
-completed.  
+completed. 
+*/ 
