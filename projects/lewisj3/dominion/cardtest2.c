@@ -18,7 +18,7 @@ int NUM_PLAYERS = 4;
 int LAST_ENUM_VALUE = treasure_map;
 int MAXHAND = 5;
 int DECK1[] = {baron, copper, council_room, copper};
-int DECK2[] = {silver, gold, village, feast, baron};
+int DECK2[] = {silver, gold};
 
 void fillDeck(int *cards, int size, int player, struct gameState *state)
 {
@@ -32,6 +32,7 @@ void fillDeck(int *cards, int size, int player, struct gameState *state)
 void reset(struct gameState *state, int player)
 {
 	int i;
+	state->whoseTurn = player;
 	//Empty hand
 	for(i = 0; i < state->handCount[player]; i++){
 		state->hand[player][i] = -1;
@@ -48,9 +49,15 @@ void reset(struct gameState *state, int player)
 	for(i = 0; i < state->discardCount[player]; i++){
 		state->discard[player][i] = -1;
 	}
+	
+	//Empty played cards
+	for(i = 0; i < state->playedCardCount; i++){
+		state->playedCards[i] = 0;
+	}
+	state->playedCardCount = 0;
+	
 	state->discardCount[player] = 0;
 	
-	state->whoseTurn = player;
 }
 
 static void handler(int sig)
@@ -74,23 +81,23 @@ int main () {
 	returnVal = playSmithy(state, 0);
 	assert(returnVal == 0);
 	assert(state->handCount[player] == 3);
-	assert(state->discardCount[player] == 1);
-	assert(state->discard[player][0] == council_room);
+	assert(state->playedCardCount == 1);
+	assert(state->playedCards[0] == smithy);
 	
 	reset(state, player);
 	
-	//Deck2
+	//Deck2 - 2 cards in deck
 	fillDeck(DECK2, deck2Size, player, state);
-	returnVal = playSmithy(state, 0);
-	assert(state->discardCount[player] == 1);
-	assert(state->handCount[player] == 3);
+	assert(returnVal == -1);
+	assert(state->playedCardCount == 0);
+	assert(state->handCount[player] == 1);
 	
 	reset(state, player);
 	
 	//NoDeck
 	returnVal = playSmithy(state, 0);
 	assert(returnVal == -1);
-	assert(state->discardCount[player] == 0);
+	assert(state->playedCardCount == 0);
 	assert(state->handCount[player] == 1);
 	
 	free(state);

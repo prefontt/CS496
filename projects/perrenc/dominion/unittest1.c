@@ -24,8 +24,6 @@ int main(int argc, char** argv) {
     int k[10] = {adventurer, gardens, embargo, village, minion, mine, cutpurse,
         sea_hag, tribute, smithy};
 
-    printf("Starting game.\n");
-
     initializeGame(2, k, 65432, &G);
 
     //If province cards are empty or are least three supply piles are, game end
@@ -62,7 +60,7 @@ int main(int argc, char** argv) {
 
 int testing_assert(int expression) {
     if (expression) {
-        printf("TEST SUCEEDED!\n");
+        printf("TEST SUCCEEDED!\n");
         return 1;
     } else {
         printf("TEST FAILED!\n");
