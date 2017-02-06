@@ -19,7 +19,6 @@ char *inputString()
     s[i] = rand() % 95 + 32;
   }
   s[5] = '\0';
-
   /*
   s[0] = 'r';
   s[1] = 'e';
