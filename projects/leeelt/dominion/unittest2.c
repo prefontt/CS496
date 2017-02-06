@@ -43,7 +43,7 @@ int main()
             initTest(&G, p);
             currentHandCount = G.handCount[p];
             playedCard = G.hand[p][i];
-            printf("Test a. handPos = 0, trashFlag = 0\n");
+            printf("Test a. handPos = %d, trashFlag = 0\n", i);
             discardCard(i, p, &G, 0);
             printf("played count = %d, expected = %d\n", G.playedCardCount, 1);
             printf("played card enum = %d, expected = %d\n", G.playedCards[0], playedCard);
@@ -55,7 +55,7 @@ int main()
             // Test b. trashFlag = 1
             initTest(&G, p);
             currentHandCount = G.handCount[p];
-            printf("Test b. handPos = 0, trashFlag = 1\n");
+            printf("Test b. handPos = %d, trashFlag = 1\n", i);
             discardCard(i, p, &G, 1);
             printf("played count = %d, expected: %d\n", G.playedCardCount, 0);
             printf("hand count = %d, expected = %d\n", G.handCount[p], currentHandCount - 1);
