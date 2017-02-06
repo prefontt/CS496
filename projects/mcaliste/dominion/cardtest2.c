@@ -38,7 +38,7 @@ int main() {
   assertResult(actions > 0);
 
   printf("Test smithy in player hand:\n");
-  // adventurer is 13 in cards enum
+  // smithy is 13 in cards enum
   state.hand[currentPlayer][2] = smithy;
   assertResult(handCard(2, &state) == 13);
 
