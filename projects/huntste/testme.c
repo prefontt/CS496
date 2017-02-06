@@ -5,35 +5,20 @@
 
 char inputChar()
 {
-  // TODO: rewrite this function
-
-  //Returns a random printable ASCII character
-  //ASCII printable characters range from 32 to 127
-  return (char) (32 + (rand() % 96));
+    // TODO: rewrite this function
+    return rand() % 94 + 32;
 }
 
 char *inputString()
 {
-  // TODO: rewrite this function
-
-  //For simplification purposes, string length is hard coded to 5 (plus the '\0')
-  //See writeString.c for more details
-  int strLen = 5;
-  //Length of string is increased by 1 to account for the extra '\0'
-  char *newStr = malloc( (strLen + 1) * sizeof(char) );
-
-  int i;
-  for (i = 0; i < strLen;  i++)
-  {
-    newStr[i] = inputChar();
-
-  } 
-
-  //Remember to terminate string 
-  newStr[strLen] = '\0';
-
-  return newStr;
-
+    // TODO: rewrite this function
+    static char whatQuiz[6];
+    int i;
+    for (i = 0; i < 5; i++){
+	whatQuiz[i] = rand() % 16 + 101;
+    }
+    whatQuiz[5] = '\0';
+    return whatQuiz;
 }
 
 void testme()

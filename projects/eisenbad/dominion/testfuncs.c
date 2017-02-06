@@ -99,6 +99,7 @@ int checkOtherPlayerState(int testNum, int card_state[6], struct gameState G) {
   struct gameState testG;
   int thisPlayer = G.whoseTurn;
   int nextPlayer = thisPlayer + 1;
+  int pass_check = 1;
   int i;
 	
   printf("\n  TEST %d: No state change occurs for other players\n", testNum);
@@ -114,10 +115,11 @@ int checkOtherPlayerState(int testNum, int card_state[6], struct gameState G) {
   // assert test passed
   // compare next player's current deck to stored deck (hand is drawn at start of turn, so all cards stored in deck)
   for (i = 0; i < G.deckCount[nextPlayer]; i++) {
-    if (testG.deck[nextPlayer][i] != G.deck[nextPlayer][i]) {return 0;} 
+    if (testG.deck[nextPlayer][i] != G.deck[nextPlayer][i]) {pass_check = 0; break;} 
   }
 
   // check that deck/hand counts didn't change
-  if ((testG.handCount[nextPlayer] != 0) || (testG.deckCount[nextPlayer] != G.deckCount[nextPlayer])) {return 0;}
-  else {return 1;}
+  if ((testG.handCount[nextPlayer] != 0) || (testG.deckCount[nextPlayer] != G.deckCount[nextPlayer])) {pass_check = 0;}
+	
+  return pass_check;
 }
