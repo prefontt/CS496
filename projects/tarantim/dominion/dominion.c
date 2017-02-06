@@ -271,25 +271,17 @@ int playCard(int handPos, int choice1, int choice2, int choice3, struct gameStat
 
 int buyCard(int supplyPos, struct gameState *state) {
   int who;
-  if (DEBUG){
-    printf("Entering buyCard...\n");
-  }
+  
 
   // I don't know what to do about the phase thing.
 
   who = state->whoseTurn;
 
   if (state->numBuys < 1){
-    if (DEBUG)
-      printf("You do not have any buys left\n");
     return -1;
   } else if (supplyCount(supplyPos, state) <1){
-    if (DEBUG)
-      printf("There are not any of that type of card left\n");
     return -1;
   } else if (state->coins < getCost(supplyPos)){
-    if (DEBUG) 
-      printf("You do not have enough money to buy that. You have %d coins.\n", state->coins);
     return -1;
   } else {
     state->phase=1;
@@ -298,8 +290,6 @@ int buyCard(int supplyPos, struct gameState *state) {
   
     state->coins = (state->coins) - (getCost(supplyPos));
     state->numBuys--;
-    if (DEBUG)
-      printf("You bought card number %d for %d coins. You now have %d buys and %d coins.\n", supplyPos, getCost(supplyPos), state->numBuys, state->coins);
   }
 
   //state->discard[who][state->discardCount[who]] = supplyPos;
