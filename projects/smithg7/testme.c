@@ -1,46 +1,33 @@
-
-
-/*================================================================================================
- File			: testme.c (a C program)
- Author			: Matthew Hillman (CS 362 Winter 2017)
- Date			: February 1, 2017
- Description	: Random    
- 
-==================================================================================================
-*/
-
-
-
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
 
-
-//randomly return one of the 95 characters between space (ASCII 32) and tilde~ (ASCII 126)
 char inputChar()
 {
-    char randChar = (rand() % (95)) + 32;
-    return randChar;
-	
+    //Generate a random integer between 32 & 126 (ASCII values)
+    //Cast that to a character and return that.
+    int newC = 32+rand()%94;
+    char newChar = (char)newC;
+
+    return newChar;
 }
 
-//generate and return a random string having five chars each being one of the 26 characters
-// between between a (ASCII 97) and z (ASCII 123)in the first five positions and a terminating
-// null in the sixth position
 char *inputString()
 {
-  	
-	int i;
-	static char string[6];
-    
-    for (i = 0; i < 5; i++) {
-		string[i] = (rand() % (26)) + 97;
+    //Create a string of random length
+    //fill in that string with random characters
+    int randStringLength = 6; //rand()%10; //Limiting the random string to at most 10 characters.
+    char *newString = malloc(sizeof(char)*randStringLength);
+    int i = 0;
+    for (i = 0; i < randStringLength-1; i++)
+    {
+      int newC = 97+rand()%26;
+      newString[i] = (char)newC;
     }
-    
-	string[5] = '\0'; 
-    return string;
-	
+    newString[randStringLength-1] = '\0'; //NULL terminator
+
+    return newString;
 }
 
 void testme()
@@ -56,10 +43,11 @@ void testme()
     s = inputString();
     printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
 
+    //Looking for characters in this order: [({ ax})] and then the string 'reset\0'
     if (c == '[' && state == 0) state = 1;
     if (c == '(' && state == 1) state = 2;
     if (c == '{' && state == 2) state = 3;
-    if (c == ' ' && state == 3) state = 4;
+    if (c == ' '&& state == 3) state = 4;
     if (c == 'a' && state == 4) state = 5;
     if (c == 'x' && state == 5) state = 6;
     if (c == '}' && state == 6) state = 7;
@@ -73,6 +61,9 @@ void testme()
       printf("error ");
       exit(200);
     }
+
+    //added a counter exit @ 24,000,000 to prevent an infinite while loop.
+    //if(tcCount == 24000000) exit(100);
   }
 }
 

@@ -1,46 +1,39 @@
-
-
-/*================================================================================================
- File			: testme.c (a C program)
- Author			: Matthew Hillman (CS 362 Winter 2017)
- Date			: February 1, 2017
- Description	: Random    
- 
-==================================================================================================
-*/
-
-
-
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
 
-
-//randomly return one of the 95 characters between space (ASCII 32) and tilde~ (ASCII 126)
 char inputChar()
 {
-    char randChar = (rand() % (95)) + 32;
-    return randChar;
-	
+  // TODO: rewrite this function
+
+  //Returns a random printable ASCII character
+  //ASCII printable characters range from 32 to 127
+  return (char) (32 + (rand() % 96));
 }
 
-//generate and return a random string having five chars each being one of the 26 characters
-// between between a (ASCII 97) and z (ASCII 123)in the first five positions and a terminating
-// null in the sixth position
 char *inputString()
 {
-  	
-	int i;
-	static char string[6];
-    
-    for (i = 0; i < 5; i++) {
-		string[i] = (rand() % (26)) + 97;
-    }
-    
-	string[5] = '\0'; 
-    return string;
-	
+  // TODO: rewrite this function
+
+  //For simplification purposes, string length is hard coded to 5 (plus the '\0')
+  //See writeString.c for more details
+  int strLen = 5;
+  //Length of string is increased by 1 to account for the extra '\0'
+  char *newStr = malloc( (strLen + 1) * sizeof(char) );
+
+  int i;
+  for (i = 0; i < strLen;  i++)
+  {
+    newStr[i] = inputChar();
+
+  } 
+
+  //Remember to terminate string 
+  newStr[strLen] = '\0';
+
+  return newStr;
+
 }
 
 void testme()
@@ -59,7 +52,7 @@ void testme()
     if (c == '[' && state == 0) state = 1;
     if (c == '(' && state == 1) state = 2;
     if (c == '{' && state == 2) state = 3;
-    if (c == ' ' && state == 3) state = 4;
+    if (c == ' '&& state == 3) state = 4;
     if (c == 'a' && state == 4) state = 5;
     if (c == 'x' && state == 5) state = 6;
     if (c == '}' && state == 6) state = 7;
