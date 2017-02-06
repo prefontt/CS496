@@ -6,13 +6,30 @@
 char inputChar()
 {
     // TODO: rewrite this function
-    return ' ';
+  char c = rand() % 95 + 32;
+    return c;
 }
 
 char *inputString()
 {
     // TODO: rewrite this function
-    return "";
+  char * s = malloc(6);
+  int i = 0;
+  for(i = 0; i<= 4; i++){
+    s[i] = rand() % 95 + 32;
+  }
+  s[5] = '\0';
+
+  /*
+  s[0] = 'r';
+  s[1] = 'e';
+  s[2] = 's';
+  s[3] = 'e';
+  s[4] = 't';
+  s[5] = '\0';
+  */
+
+    return s;
 }
 
 void testme()
@@ -42,7 +59,7 @@ void testme()
        && s[4] == 't' && s[5] == '\0'
        && state == 9)
     {
-      printf("error ");
+      printf("error \n");
       exit(200);
     }
   }
